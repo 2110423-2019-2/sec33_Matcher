@@ -1,0 +1,26 @@
+{
+  "name": "fastphoto-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest --forceExit",
+    "start": "nodemon"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/express": "^4.17.2",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "@types/jest": "^25.1.0",
+    "@types/supertest": "^2.0.8",
+    "jest": "^25.1.0",
+    "supertest": "^4.0.2",
+    "ts-jest": "^25.0.0",
+    "ts-node": "^8.6.2",
+    "typescript": "^3.7.5"
+  }
+}
