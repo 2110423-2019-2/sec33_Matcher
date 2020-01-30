@@ -16,7 +16,7 @@ export default class FastphotoApp {
     constructor() {
         const app = express();
 
-        mongoose.connect(`mongodb://${process.env.DB_HOST}:27017/${process.env.DB_NAME}`, { useNewUrlParser: true });
+        mongoose.connect(process.env.DB_CONNECTION_URI || `mongodb://${process.env.DB_HOST}:27017/${process.env.DB_NAME}`, { useNewUrlParser: true });
 
         app.use(bodyParser.json());
         app.use(bodyParser.urlencoded({ extended: true }));
