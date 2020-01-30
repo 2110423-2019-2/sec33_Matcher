@@ -1,22 +1,21 @@
-import express, { Application } from 'express'
+import express, { Application } from 'express';
 
-const port = process.env.PORT || 8080
+const port = process.env.PORT || 8080;
 
 export default class FastphotoApp {
-    application: Application
+    application: Application;
 
     constructor() {
-        const app = express()
+        const app = express();
 
         app.get('/', (req, res) => {
-            res.send('Hello World')
-        })
+            res.send('Hello World');
+        });
 
         app.listen(port, () => {
-            console.log(`Fastphoto listening on port ${port}!`)
-        })
+            console.log(`Fastphoto listening on port ${port}!`);
+        });
 
-        this.application = app
+        this.application = app;
     }
 }
-
