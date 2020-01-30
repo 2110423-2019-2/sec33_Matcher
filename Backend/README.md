@@ -3,11 +3,19 @@
 ## Getting Started
 
 ### TL;DR
-Firstly, create `.env` file in `src` directory. Then run following command.
+Firstly, create `.env` file in `src` directory with the content below. 
+```
+PORT=8080
+DB_HOST=db
+DB_NAME=fastphoto
+```
+
+Then run following command.
 ```
 cd Backend
 npm install
-docker-compose up
+docker-compose up 
+# or "npm run dev" if you don't want to use own db
 ```
 
 The server is running on port 8080.
