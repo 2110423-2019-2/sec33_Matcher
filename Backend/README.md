@@ -8,6 +8,7 @@ Firstly, create `.env` file in `src` directory with the content below.
 PORT=8080
 DB_HOST=db
 DB_NAME=fastphoto
+DB_CONNECTION_URI=mongodb+srv://<username>:<password>@matcher-cluster-grj4g.mongodb.net/test?retryWrites=true&w=majority
 ```
 
 Then run following command.
