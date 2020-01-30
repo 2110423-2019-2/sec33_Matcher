@@ -1,0 +1,15 @@
+version: "3.7"
+services:
+  api:
+    build: .
+    ports: 
+      - "8080:8080"
+    depends_on:
+      - db
+    volumes:
+      - ./:/usr/src/app
+    command: [ "npm", "run", "dev" ]
+  db:
+    image: mongo:latest
+    ports:
+      - "27017:27017"

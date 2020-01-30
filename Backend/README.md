@@ -3,10 +3,11 @@
 ## Getting Started
 
 ### TL;DR
+Firstly, create `.env` file in `src` directory. Then run following command.
 ```
 cd Backend
 npm install
-npm start
+docker-compose up
 ```
 
 The server is running on port 8080.
