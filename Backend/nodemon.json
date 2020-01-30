@@ -6,5 +6,5 @@
     "ignore": [
         
     ],
-    "exec": "ts-node index.ts"
+    "exec": "npm run lint && ts-node index.ts"
 }

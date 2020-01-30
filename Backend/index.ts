@@ -1,3 +1,3 @@
-import FastphotoApp from './src/server'
+import FastphotoApp from './src/server';
 
-export default new FastphotoApp()
+export default new FastphotoApp();
