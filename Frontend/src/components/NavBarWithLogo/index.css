@@ -1,0 +1,21 @@
+.navbar-with-logo {
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+    padding: 10px 20px;
+}
+
+.logo-text h5 {
+    font-family: 'Comfortaa', sans-serif;
+    color: #FFAB40;
+    margin-bottom: 0;
+}
+
+.logo-text {
+    font-size: 40px;
+    color: #FFAB40;
+    font-family: Comfortaa;
+}
+
+.navbar-item {
+    display: inline-block;
+    padding-top: 12px;
+}
