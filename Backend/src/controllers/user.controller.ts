@@ -1,10 +1,15 @@
 import { User } from '../models';
+import userHandlers = require('../utils/userHandlers');
 
 export default class UserController {
     async createUser(req: any, res: any): Promise<void> {
-        const user = new User(req.body);
+        const hash = userHandlers.generateHash(req.body.password);
+        const user = new User({
+            username: req.body.username,
+            password: hash
+        });
         await user.save();
-        res.send();
+        res.send("register complete");
     }
 
     async hello(req: any, res: any): Promise<void> {
