@@ -6,4 +6,8 @@ export default class UserController {
         await user.save();
         res.send();
     }
+
+    async hello(req: any, res: any): Promise<void> {
+        res.send('Hello World!');
+    }
 }

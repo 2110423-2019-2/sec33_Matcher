@@ -3,6 +3,7 @@ import * as dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import { UserController } from './controllers';
+import { errorHandler, asyncHandler } from './utils/handlers';
 
 dotenv.config();
 
@@ -19,17 +20,23 @@ export default class FastphotoApp {
         mongoose.connect(
             process.env.DB_CONNECTION_URI || `mongodb://${process.env.DB_HOST}:27017/${process.env.DB_NAME}`,
             { useNewUrlParser: true, useUnifiedTopology: true },
-            () => console.log('MongoDB Error'),
+            err => {
+                if (err) console.log('MongoDB Error');
+            },
         );
 
+        /* Start using middleware */
         app.use(bodyParser.json());
         app.use(bodyParser.urlencoded({ extended: true }));
+        /* End of middlewares */
 
-        app.get('/', (req, res) => {
-            res.send('Hello World');
-        });
+        app.get('/', asyncHandler(this.userController.hello));
 
-        app.post('/register', this.userController.createUser);
+        app.post('/register', asyncHandler(this.userController.createUser));
+
+        /* Middleware for error handling */
+        app.use(errorHandler);
+        /* End of error handling */
 
         app.listen(port, () => {
             console.log(`Fastphoto listening on port ${port}!`);
