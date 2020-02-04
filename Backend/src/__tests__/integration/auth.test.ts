@@ -1,7 +1,7 @@
 import chai = require('chai');
 import chaiHttp = require('chai-http');
-import validator from 'validator';
 import mongoose from 'mongoose';
+import { describe } from 'mocha';
 
 chai.use(chaiHttp);
 const { expect } = chai;

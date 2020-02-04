@@ -38,9 +38,12 @@ export default class FastphotoApp {
         app.use(errorHandler);
         /* End of error handling */
 
-        app.listen(port, () => {
-            console.log(`Fastphoto listening on port ${port}!`);
-        });
+        // Prevent port collision when running tests.
+        if (!module.parent || !/.*\.test\.ts\b/.test(module.parent.filename)) {
+            app.listen(port, () => {
+                console.log(`Fastphoto listening on port ${port}!`);
+            });
+        }
 
         this.application = app;
     }
