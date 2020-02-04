@@ -1,23 +1,27 @@
 import React from "react";
-import { Row, Col } from "antd";
-import "antd/dist/antd.css";
 import "./index.css";
+import { Row, Col } from "antd";
 
 export default () => {
   return (
-    <Row className="navbar-with-logo" justify="space-around" type="flex">
-      <Col className="logo-text" span={3}>
-        <h5 className="navbar-item-logo">matcher</h5>
-      </Col>
-      <Col span={3}>
-        <p className="navbar-item">Workshops</p>
-      </Col>
-      <Col span={3}>
-        <p className="navbar-item">Add new</p>
-      </Col>
-      <Col span={3}>
-        <p className="navbar-item">Manage</p>
-      </Col>
+    <Row>
+      <div className="container">
+        <ul>
+          <li className="one">
+            <a href="#">Uno</a>
+          </li>
+          <li className="two">
+            <a href="#">Dos</a>
+          </li>
+          <li className="three">
+            <a href="#">Tres</a>
+          </li>
+          <li className="four">
+            <a href="#">Quatro</a>
+          </li>
+          <hr />
+        </ul>
+      </div>
     </Row>
   );
 };
