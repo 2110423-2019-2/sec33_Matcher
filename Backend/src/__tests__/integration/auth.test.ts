@@ -106,7 +106,7 @@ describe('Registration', () => {
             expect(res).to.have.status(400);
         });
 
-        it('Firstame and Lastname length should be between 2 and up to 20 characters', async () => {
+        it('Firstname and Lastname length should be between 2 and up to 20 characters', async () => {
             const nameTooShortRes = await chai
                 .request(app)
                 .post('/register')
