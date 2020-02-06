@@ -4,6 +4,7 @@
 
 p {
   font-size: 20px;
+  font-family: Montserrat;
   text-align: center;
   display: inline-block;
   width: 10%;
@@ -19,10 +20,11 @@ p:hover{
 }
 
 button {
+  font-size: 18px !important;
+  font-family: Montserrat !important;
   background: none;
   display: inline-block;
   margin-left: 10% !important;
-  margin-right: 5% !important;
   padding: 5px 30px;
   border-color: #00577F;
 }
@@ -37,6 +39,8 @@ button:hover{
 }
 
 .logo {
+  font-family: Comfortaa;
+  margin: auto;
   width: 20%;
   font-size: 36px;
   display: inline-block;
@@ -52,7 +56,7 @@ body {
   width: 100%;
   display: inline-block;
   margin: auto;
-  margin-left: 10%;
+  margin-left: 5%;
   text-align: left;
 }
 
