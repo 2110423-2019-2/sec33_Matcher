@@ -50,7 +50,7 @@ export default class UserController {
             firstname: req.body.firstname,
             lastname: req.body.lastname,
             role: req.body.role,
-            createTime: Date.now,
+            createTime: new Date()
         });
         await user.save();
         res.json({ status: 'success' });
