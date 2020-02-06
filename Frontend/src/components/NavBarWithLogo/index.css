@@ -19,6 +19,11 @@ p:hover{
   transition: 0.3s ease-in-out;
 }
 
+UserBar {
+  display: inline-block;
+  margin-left: 10% !important;
+}
+
 button {
   font-size: 18px !important;
   font-family: Montserrat !important;
