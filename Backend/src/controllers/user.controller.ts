@@ -1,16 +1,12 @@
 import { User } from '../models';
 import { generateHash } from '../utils/userHandlers';
 import HttpErrors from 'http-errors';
+import validator from 'validator';
 
 export default class UserController {
     async createUser(req: any, res: any): Promise<void> {
         // Preconditions begin
         const fields = ['email', 'password', 'firstname', 'lastname', 'role'];
-        const re = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
-
-        const validateEmail = (email: string): boolean => {
-            return re.test(String(email).toLowerCase());
-        };
 
         // Precondition : Should contains all require fields
         if (
@@ -27,7 +23,7 @@ export default class UserController {
         }
 
         // Precondition : Should reject bad email
-        if (!validateEmail(req.body.email)) {
+        if (!validator.isEmail(req.body.email)) {
             throw new HttpErrors.BadRequest();
         }
 
