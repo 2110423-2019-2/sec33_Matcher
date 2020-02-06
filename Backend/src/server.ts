@@ -6,6 +6,7 @@ import { UserController } from './controllers';
 import { errorHandler, asyncHandler } from './utils/handlers';
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
+import { IUser, User } from './models';
 
 dotenv.config();
 
@@ -27,21 +28,35 @@ export default class FastphotoApp {
             },
         );
 
+        passport.serializeUser(function (user: IUser, done) {
+            done(null, user.email);
+        });
+
+        passport.deserializeUser(function (email, done) {
+            User.findOne(email, function (err, user) {
+                done(err, user);
+            });
+        });
+
         /* Start using middleware */
         app.use(bodyParser.json());
         app.use(bodyParser.urlencoded({ extended: true }));
-        passport.use(new LocalStrategy(this.userController.loginUser));
+        app.use(passport.initialize());
+        app.use(passport.session());
+        passport.use(new LocalStrategy(
+            {
+                usernameField: 'email',
+                passwordField: 'password'
+            },
+            this.userController.loginLocal
+        ));
         /* End of middlewares */
 
         app.get('/', asyncHandler(this.userController.hello));
 
         app.post('/register', asyncHandler(this.userController.createUser));
 
-        app.post('/login', (req, res) => passport.authenticate('local', function(err, user, info){
-            if(err){
-                console.log(err);
-            }
-        })(req, res));
+        app.post('/login', passport.authenticate('local'), this.userController.login);
 
         /* Middleware for error handling */
         app.use(errorHandler);

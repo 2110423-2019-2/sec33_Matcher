@@ -23,16 +23,14 @@ export default class UserController {
         res.json({ status: 'success' });
     }
 
-    async loginUser(email, password, done): Promise<void> {
-        console.log(email, password);
-        User.findOne({ email: email }, async (err, user: IUser) => {
-            if (err) { return done(err); }
-            if (!user) { return done(null, false); }
-            if(!await bcrypt.compare(password, user.password)){
-                return done(null, false);
-            }
-            return done(null, user);
-        });
+    async loginLocal(email, password, done): Promise<any> {
+        const user: IUser = await User.findOne({ email });
+        if (!await bcrypt.compare(password, user.password)) return done(null, false);
+        return done(null, user);
+    }
+
+    async login(req: any, res: any): Promise<void> {
+        res.json({ status: "success" })
     }
 
     async hello(req: any, res: any): Promise<void> {
