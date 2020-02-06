@@ -4,11 +4,11 @@ import HttpErrors from 'http-errors';
 import validator from 'validator';
 
 export default class UserController {
-    async createUser(req: any, res: any): Promise<void> {
+    static async createUser(req: any, res: any): Promise<void> {
         // Preconditions begin
         const fields = ['email', 'password', 'firstname', 'lastname', 'role'];
 
-        const inRange = (x, lowerBound, upperBound): boolean => {
+        const inRange = (x: number, lowerBound: number, upperBound: number): boolean => {
             return x >= lowerBound && x <= upperBound;
         };
 
@@ -41,13 +41,13 @@ export default class UserController {
             firstname: req.body.firstname,
             lastname: req.body.lastname,
             role: req.body.role,
-            createTime: new Date()
+            createTime: new Date(),
         });
         await user.save();
         res.json({ status: 'success' });
     }
 
-    async hello(req: any, res: any): Promise<void> {
+    static async hello(req: any, res: any): Promise<void> {
         res.send('Hello World!');
     }
 }

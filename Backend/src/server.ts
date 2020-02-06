@@ -12,8 +12,6 @@ const port = process.env.PORT || 8080;
 export default class FastphotoApp {
     application: Application;
 
-    userController = new UserController();
-
     constructor() {
         const app = express();
 
@@ -30,9 +28,9 @@ export default class FastphotoApp {
         app.use(bodyParser.urlencoded({ extended: true }));
         /* End of middlewares */
 
-        app.get('/', asyncHandler(this.userController.hello));
+        app.get('/', asyncHandler(UserController.hello));
 
-        app.post('/register', asyncHandler(this.userController.createUser));
+        app.post('/register', asyncHandler(UserController.createUser));
 
         /* Middleware for error handling */
         app.use(errorHandler);

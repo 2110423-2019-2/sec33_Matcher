@@ -10,8 +10,8 @@ export const errorHandler = (err: Error, req: Request, res: Response, next: any)
         res.status(err.statusCode).json({ ...err, type: err.constructor.name, message: err.message });
     } else {
         res.status(500).json({
-            statusCode: 500, 
-            message: process.env.NODE_ENV !== 'production' ? err.message : null
+            statusCode: 500,
+            message: process.env.NODE_ENV !== 'production' ? err.message : null,
         });
     }
     next();
