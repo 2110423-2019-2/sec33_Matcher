@@ -22,6 +22,7 @@ export default class FastphotoApp {
                 if (err) console.log('MongoDB Error');
             },
         );
+        mongoose.set('useCreateIndex', true);
 
         /* Start using middleware */
         app.use(bodyParser.json());

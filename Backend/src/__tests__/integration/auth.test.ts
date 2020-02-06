@@ -26,15 +26,21 @@ describe('Registration', () => {
     describe('POST /register', () => {
         beforeEach(() => {
             sinon.stub(User.prototype, 'save');
-
             (UserPrototype.save as sinon.SinonStub).callsFake(function(this: any) {
                 const currentRecord = this;
                 return Promise.resolve(currentRecord);
             });
+
+            sinon
+                .mock(User)
+                .expects('exists')
+                .atLeast(0)
+                .resolves(false);
         });
 
         afterEach(() => {
             (UserPrototype.save as sinon.SinonStub).restore();
+            sinon.restore();
         });
 
         it('Should contains all required fields', async () => {
@@ -154,16 +160,22 @@ describe('Registration', () => {
         let record: any;
         beforeEach(() => {
             sinon.stub(User.prototype, 'save');
-
             (UserPrototype.save as sinon.SinonStub).callsFake(function(this: any) {
                 const currentRecord = this;
                 record = currentRecord;
                 return Promise.resolve(currentRecord);
             });
+
+            sinon
+                .mock(User)
+                .expects('exists')
+                .atLeast(0)
+                .resolves(false);
         });
 
         afterEach(() => {
             (UserPrototype.save as sinon.SinonStub).restore();
+            sinon.restore();
         });
 
         it('Password must be hashed properly', async () => {
