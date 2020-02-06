@@ -4,6 +4,8 @@ import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import { UserController } from './controllers';
 import { errorHandler, asyncHandler } from './utils/handlers';
+import passport from 'passport';
+import { Strategy as LocalStrategy } from 'passport-local';
 
 dotenv.config();
 
@@ -28,11 +30,18 @@ export default class FastphotoApp {
         /* Start using middleware */
         app.use(bodyParser.json());
         app.use(bodyParser.urlencoded({ extended: true }));
+        passport.use(new LocalStrategy(this.userController.loginUser));
         /* End of middlewares */
 
         app.get('/', asyncHandler(this.userController.hello));
 
         app.post('/register', asyncHandler(this.userController.createUser));
+
+        app.post('/login', (req, res) => passport.authenticate('local', function(err, user, info){
+            if(err){
+                console.log(err);
+            }
+        })(req, res));
 
         /* Middleware for error handling */
         app.use(errorHandler);
