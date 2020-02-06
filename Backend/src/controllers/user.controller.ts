@@ -4,19 +4,23 @@ import HttpErrors from 'http-errors';
 
 export default class UserController {
     async createUser(req: any, res: any): Promise<void> {
-        // Preconditions
-        const fields = ['email', 'password', 'firstname', 'lastname', 'role', 'createTime'];
+        // Preconditions begin
+        const fields = ['email', 'password', 'firstname', 'lastname', 'role'];
 
+        // Precondition : Role should be either "photographer" or "customer"
         if (req.body.role != 'photographer' && req.body.role != 'customer') {
             throw new HttpErrors.BadRequest();
         }
+
+        // Precondition : Should contains all require fields
         if (
             !fields.every(field => {
-                req.body.hasOwnProperty(field);
+                return req.body.hasOwnProperty(field);
             })
         ) {
             throw new HttpErrors.BadRequest();
         }
+        // Preconditions end
 
         const hash = await generateHash(req.body.password);
         const user = new User({
