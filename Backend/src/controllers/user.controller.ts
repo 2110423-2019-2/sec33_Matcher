@@ -11,12 +11,12 @@ export default class UserController {
 
         const hash = await generateHash(req.body.password);
         const user = new User({
-            username: req.body.username,
+            email: req.body.email,
             password: hash,
             firstname: req.body.firstname,
             lastname: req.body.lastname,
             role: req.body.role,
-            createTime: req.body.createTime,
+            createTime: Date.now
         });
         await user.save();
         res.json({ status: 'success' });

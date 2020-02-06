@@ -1,12 +1,12 @@
 import mongoose from 'mongoose';
 
 const UserSchema = new mongoose.Schema({
-    username: { type: String, required: [true, 'username cannot be blank.'] },
+    email: {type: String, required: [true, 'email cannot be blank']},
     password: { type: String, required: [true, 'password cannot be blank.'] },
     firstname: String,
     lastname: String,
     role: String,
-    createTime: { type: Date, default: Date.now },
+    createTime: Date,
 });
 
 export default mongoose.model('User', UserSchema);
