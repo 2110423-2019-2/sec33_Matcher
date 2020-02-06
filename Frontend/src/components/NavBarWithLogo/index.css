@@ -13,6 +13,11 @@ p {
   color: #555555;
 }
 
+p:hover{
+  color: #00577F;
+  transition: 0.3s ease-in-out;
+}
+
 button {
   background: none;
   display: inline-block;
@@ -36,6 +41,7 @@ button:hover{
   font-size: 36px;
   display: inline-block;
   color: #C06C84;
+  text-align: center;
 }
 
 body {
@@ -46,9 +52,8 @@ body {
   width: 100%;
   display: inline-block;
   margin: auto;
-  margin-left: auto;
-  margin-right: auto;
-  text-align: center;
+  margin-left: 10%;
+  text-align: left;
 }
 
 .cont {
@@ -62,20 +67,21 @@ ul li {
 
 
 .type:hover ~ hr {
-  margin-left: 60%;
+  margin-left: 50%;
 }
 
 .aTask:hover ~ hr {
-  margin-left: 50%;
+  margin-left: 40%;
 }
 
 hr {
   align-content: center;
+  margin-right: 10%;
   height: 2px !important;
   width: 10%;
   margin: -2%;
-  margin-left: 40%;
-  background: tomato;
+  margin-left: 30%;
+  background: #00577F;
   border: none;
   transition: 0.3s ease-in-out;
 }
