@@ -8,39 +8,30 @@ export default class UserController {
         // Preconditions begin
         const fields = ['email', 'password', 'firstname', 'lastname', 'role'];
 
+        const inRange = (x, lowerBound, upperBound): boolean => {
+            return x >= lowerBound && x <= upperBound;
+        };
+
+        const fieldCheck = (body, fields): boolean =>
+            fields.every((field): boolean => {
+                return body.hasOwnProperty(field);
+            });
+
         // Precondition : Should contains all require fields
-        if (
-            !fields.every(field => {
-                return req.body.hasOwnProperty(field);
-            })
-        ) {
-            throw new HttpErrors.BadRequest();
-        }
+        if (!fieldCheck(req.body, fields)) throw new HttpErrors.BadRequest();
 
         // Precondition : Role should be either "photographer" or "customer"
-        if (req.body.role != 'photographer' && req.body.role != 'customer') {
-            throw new HttpErrors.BadRequest();
-        }
+        if (req.body.role != 'photographer' && req.body.role != 'customer') throw new HttpErrors.BadRequest();
 
         // Precondition : Should reject bad email
-        if (!validator.isEmail(req.body.email)) {
-            throw new HttpErrors.BadRequest();
-        }
+        if (!validator.isEmail(req.body.email)) throw new HttpErrors.BadRequest();
 
         // Precondition : Firstname and Lastname length must be between 2 and 20 characters
-        if (
-            req.body.firstname.length < 2 ||
-            req.body.firstname.length > 20 ||
-            req.body.lastname.length < 2 ||
-            req.body.lastname.length > 20
-        ) {
+        if (!inRange(req.body.firstname.length, 2, 20) || !inRange(req.body.lastname.length, 2, 20))
             throw new HttpErrors.BadRequest();
-        }
 
         // Precondition : Password length must be between 8 and 20 characters
-        if (req.body.password.length < 8 || req.body.password.length > 20) {
-            throw new HttpErrors.BadRequest();
-        }
+        if (!inRange(req.body.password.length, 8, 20)) throw new HttpErrors.BadRequest();
         // Preconditions end
 
         const hash = await generateHash(req.body.password);
