@@ -1,11 +1,12 @@
 import React from "react";
-import { NavBarWithLogo } from "./components";
+import { NavBarWithLogo, Footer } from "./components";
 import "./App.css";
 
 const App: React.FC = () => {
   return (
     <div>
       <NavBarWithLogo />
+      <Footer />
     </div>
   );
 };
