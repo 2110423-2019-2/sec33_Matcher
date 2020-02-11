@@ -15,8 +15,6 @@ const port = process.env.PORT || 8080;
 export default class FastphotoApp {
     application: Application;
 
-    userController = new UserController();
-
     constructor() {
         const app = express();
 
@@ -27,6 +25,7 @@ export default class FastphotoApp {
                 if (err) console.log('MongoDB Error');
             },
         );
+        mongoose.set('useCreateIndex', true);
 
         passport.serializeUser(function (user: IUser, done) {
             done(null, user.email);
@@ -52,9 +51,9 @@ export default class FastphotoApp {
         ));
         /* End of middlewares */
 
-        app.get('/', asyncHandler(this.userController.hello));
+        app.get('/', asyncHandler(UserController.hello));
 
-        app.post('/register', asyncHandler(this.userController.createUser));
+        app.post('/register', asyncHandler(UserController.createUser));
 
         app.post('/login', passport.authenticate('local'), this.userController.login);
 

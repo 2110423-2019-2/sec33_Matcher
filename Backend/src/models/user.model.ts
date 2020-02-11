@@ -1,12 +1,12 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
-const UserSchema = new Schema({
-    email: {type: String, required: [true, 'email cannot be blank']},
+const UserSchema = new mongoose.Schema({
+    email: { type: String, required: [true, 'email cannot be blank'], unique: true },
     password: { type: String, required: [true, 'password cannot be blank.'] },
-    firstname: String,
-    lastname: String,
-    role: String,
-    createTime: Date,
+    firstname: { type: String, required: [true, 'required'] },
+    lastname: { type: String, required: [true, 'required'] },
+    role: { type: String, required: [true, 'required'] },
+    createTime: { type: Date, required: [true, 'required'] },
 });
 
 export interface IUser extends Document {
