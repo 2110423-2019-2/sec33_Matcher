@@ -33,24 +33,20 @@ export default class UserController {
         // Precondition : Password length must be between 8 and 20 characters
         if (!inRange(req.body.password.length, 8, 20)) throw new HttpErrors.BadRequest();
 
+        // Precondition : Email must be unique
         if (await User.exists({ email: req.body.email })) throw new HttpErrors.BadRequest('Email is already in use');
         // Preconditions end
 
         const hash = await generateHash(req.body.password);
-        try {
-            const user = new User({
-                email: req.body.email,
-                password: hash,
-                firstname: req.body.firstname,
-                lastname: req.body.lastname,
-                role: req.body.role,
-                createTime: new Date(),
-            });
-            await user.save();
-        } catch (err) {
-            throw new HttpErrors.InternalServerError();
-        }
-
+        const user = new User({
+            email: req.body.email,
+            password: hash,
+            firstname: req.body.firstname,
+            lastname: req.body.lastname,
+            role: req.body.role,
+            createTime: new Date(),
+        });
+        await user.save();
         res.json({ status: 'success' });
     }
 
