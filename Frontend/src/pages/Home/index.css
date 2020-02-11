@@ -1,0 +1,31 @@
+.home {
+  padding-left: 100px;
+  padding-right: 100px;
+}
+.home-sub-title {
+  display: flex;
+}
+.home-sub-title h5 {
+  color: #00577f;
+  display: flex;
+  font-style: normal;
+  font-weight: normal;
+  margin-left: 1.74vw;
+  align-self: center;
+}
+.line-before-home-sub-title {
+  display: flex;
+  background: #f8b195;
+  width: 5.56vw;
+  height: 0.56vh;
+  align-self: center;
+}
+.home-title {
+  margin-top: 4.67vh;
+  width: 40vw;
+  height: auto;
+}
+.home-title h1 {
+  font-style: normal;
+  font-weight: normal;
+}
