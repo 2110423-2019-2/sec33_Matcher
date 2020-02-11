@@ -66,6 +66,8 @@ export default class FastphotoApp {
 
         app.get('/whoami', AuthController.whoami);
 
+        app.get('/logout', AuthController.logout);
+        
         /* Middleware for error handling */
         app.use(errorHandler);
         /* End of error handling */
