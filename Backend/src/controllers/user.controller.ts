@@ -1,7 +1,6 @@
-import { User, IUser } from '../models';
+import { User } from '../models';
 import { generateHash } from '../utils/userHandlers';
 import HttpErrors from 'http-errors';
-import bcrypt from 'bcryptjs';
 import validator from 'validator';
 
 export default class UserController {
@@ -34,6 +33,7 @@ export default class UserController {
         // Precondition : Password length must be between 8 and 20 characters
         if (!inRange(req.body.password.length, 8, 20)) throw new HttpErrors.BadRequest();
 
+        // Precondition : Email must be unique
         if (await User.exists({ email: req.body.email })) throw new HttpErrors.BadRequest('Email is already in use');
         // Preconditions end
 
@@ -44,24 +44,13 @@ export default class UserController {
             firstname: req.body.firstname,
             lastname: req.body.lastname,
             role: req.body.role,
-            createTime: new Date()
+            createTime: new Date(),
         });
         await user.save();
         res.json({ status: 'success' });
     }
 
-    static async loginLocal(email, password, done): Promise<any> {
-        const user: IUser = await User.findOne({ email });
-        if (!await bcrypt.compare(password, user.password)) return done(null, false);
-        return done(null, user);
-    }
-
-    static async login(req: any, res: any): Promise<void> {
-        res.json({ status: "success" });
-    }
-
     static async hello(req: any, res: any): Promise<void> {
         res.send('Hello World!');
     }
-
 }

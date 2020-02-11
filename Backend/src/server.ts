@@ -2,11 +2,12 @@ import express, { Application } from 'express';
 import * as dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
-import { UserController } from './controllers';
+import { UserController, AuthController } from './controllers';
 import { errorHandler, asyncHandler } from './utils/handlers';
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { IUser, User } from './models';
+import session from 'express-session';
 
 dotenv.config();
 
@@ -27,35 +28,43 @@ export default class FastphotoApp {
         );
         mongoose.set('useCreateIndex', true);
 
-        passport.serializeUser(function (user: IUser, done) {
-            done(null, user.email);
+        passport.serializeUser(async (user: IUser, done) => {
+            return done(null, user.email);
         });
 
-        passport.deserializeUser(function (email, done) {
-            User.findOne(email, function (err, user) {
-                done(err, user);
-            });
+        passport.deserializeUser(async (email: string, done) => {
+            const user = await User.findOne({ email });
+            return done(null, user);
         });
 
         /* Start using middleware */
         app.use(bodyParser.json());
         app.use(bodyParser.urlencoded({ extended: true }));
+        app.use(session({
+            secret: process.env.SESSION_SECRET,
+            resave: false,
+            saveUninitialized: false 
+        }));
         app.use(passport.initialize());
         app.use(passport.session());
-        passport.use(new LocalStrategy(
-            {
-                usernameField: 'email',
-                passwordField: 'password'
-            },
-            this.userController.loginLocal
-        ));
+        passport.use(
+            new LocalStrategy(
+                {
+                    usernameField: 'email',
+                    passwordField: 'password',
+                },
+                AuthController.loginLocal,
+            ),
+        );
         /* End of middlewares */
 
         app.get('/', asyncHandler(UserController.hello));
 
         app.post('/register', asyncHandler(UserController.createUser));
 
-        app.post('/login', passport.authenticate('local'), this.userController.login);
+        app.post('/login', passport.authenticate('local'), AuthController.login);
+
+        app.get('/whoami', AuthController.whoami);
 
         /* Middleware for error handling */
         app.use(errorHandler);

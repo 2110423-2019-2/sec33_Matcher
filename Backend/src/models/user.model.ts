@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
-const UserSchema = new mongoose.Schema({
+const UserSchema = new Schema({
     email: { type: String, required: [true, 'email cannot be blank'], unique: true },
     password: { type: String, required: [true, 'password cannot be blank.'] },
     firstname: { type: String, required: [true, 'required'] },
