@@ -8,15 +8,15 @@ export const generateHash = async (password: string): Promise<string> => {
 
 export const ensureLoggedIn = (role?: string | string[]) => async (req: any, res: any, next: any): Promise<void> => {
     if (!req.isAuthenticated()) {
-        next(new HttpErrors.Unauthorized());
+        return next(new HttpErrors.Unauthorized());
     }
     if (role) {
         const userRole = req.user.role;
         if (Array.isArray(role)) {
-            if (role.indexOf(userRole) !== -1) next(new HttpErrors.Unauthorized());
+            if (role.indexOf(userRole) === -1) return next(new HttpErrors.Unauthorized());
         } else {
-            if (role !== userRole) next(new HttpErrors.Unauthorized());
+            if (role !== userRole) return next(new HttpErrors.Unauthorized());
         }
     }
-    next();
+    return next();
 };
