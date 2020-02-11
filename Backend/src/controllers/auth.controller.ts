@@ -14,7 +14,7 @@ export default class AuthController {
 
     static async logout(req: any, res: any): Promise<void> {
         await req.logout();
-        res.json({status: 'success'});
+        res.json({ status: 'success' });
     }
 
     static async whoami(req: any, res: any): Promise<void> {

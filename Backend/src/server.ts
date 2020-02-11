@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import { UserController, AuthController } from './controllers';
 import { errorHandler, asyncHandler } from './utils/handlers';
+import { ensureLoggedIn } from './utils/userHandlers';
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { IUser, User } from './models';
@@ -40,11 +41,13 @@ export default class FastphotoApp {
         /* Start using middleware */
         app.use(bodyParser.json());
         app.use(bodyParser.urlencoded({ extended: true }));
-        app.use(session({
-            secret: process.env.SESSION_SECRET,
-            resave: false,
-            saveUninitialized: false 
-        }));
+        app.use(
+            session({
+                secret: process.env.SESSION_SECRET,
+                resave: false,
+                saveUninitialized: false,
+            }),
+        );
         app.use(passport.initialize());
         app.use(passport.session());
         passport.use(
@@ -64,10 +67,10 @@ export default class FastphotoApp {
 
         app.post('/login', passport.authenticate('local'), AuthController.login);
 
-        app.get('/whoami', AuthController.whoami);
+        app.get('/whoami', ensureLoggedIn(), AuthController.whoami);
 
         app.get('/logout', AuthController.logout);
-        
+
         /* Middleware for error handling */
         app.use(errorHandler);
         /* End of error handling */
