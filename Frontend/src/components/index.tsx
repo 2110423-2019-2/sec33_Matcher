@@ -1,7 +1,7 @@
-import NavBarWithLogo from './NavBarWithLogo'
+import NavBar from './NavBar'
 import UserBar from './UserBar'
 
 export {
-    NavBarWithLogo,
+    NavBar,
     UserBar,
 }

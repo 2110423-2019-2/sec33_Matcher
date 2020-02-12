@@ -1,6 +1,6 @@
 import React from "react";
 import "./index.css";
-import { UserBar } from '../../components'
+import { UserBar } from '..'
 
 interface  NavProps {
   isLogin: boolean,
