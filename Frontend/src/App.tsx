@@ -1,11 +1,12 @@
 import React from "react";
-import { NavBarWithLogo } from "./components";
+import { NavBar } from "./components";
 import "./App.css";
+
 
 const App: React.FC = () => {
   return (
     <div>
-      <NavBarWithLogo />
+      <NavBar isLogin = {false} Username = 'none'/>
     </div>
   );
 };
