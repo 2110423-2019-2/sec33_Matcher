@@ -25,7 +25,7 @@ The server is running on port 8080.
 - Node.js
 
 ## Testing
-We use Jest for testing. All test files are in `src/__tests__`.
+We use Mocha for testing. All test files are in `src/__tests__`.
 ```
 npm test
 ```
