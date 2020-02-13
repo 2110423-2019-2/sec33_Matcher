@@ -2,12 +2,14 @@ import chai = require('chai');
 import chaiHttp = require('chai-http');
 import { describe } from 'mocha';
 import { User } from '../../models';
+import { Document } from 'mongoose';
 
 chai.use(chaiHttp);
 const { expect } = chai;
 
 import FastphotoApp from '../../server';
 import * as sinon from 'sinon';
+const UserPrototype: Document = User.prototype;
 
 const app = new FastphotoApp().application;
 
@@ -26,20 +28,20 @@ const dummyLoginPayload = {
 };
 
 describe('Profile', () => {
+    beforeEach(() => {
+        sinon
+            .mock(User)
+            .expects('findOne')
+            .atLeast(1)
+            .atMost(2)
+            .resolves(dummyUser);
+    });
+
+    afterEach(() => {
+        sinon.restore();
+    });
+
     describe('GET /profile', () => {
-        beforeEach(() => {
-            sinon
-                .mock(User)
-                .expects('findOne')
-                .atLeast(1)
-                .atMost(2)
-                .resolves(dummyUser);
-        });
-
-        afterEach(() => {
-            sinon.restore();
-        });
-
         it('Should return Unauthorized for unauth user', async () => {
             const res = await chai.request(app).get('/profile');
             expect(res).to.have.status(401);
@@ -53,6 +55,44 @@ describe('Profile', () => {
             const expected = dummyUser;
             delete expected.password;
             expect(res.body).to.deep.equal(expected);
+        });
+    });
+
+    describe('POST /profile', () => {
+        beforeEach(() => {
+            sinon.stub(User.prototype, 'save');
+            (UserPrototype.save as sinon.SinonStub).callsFake(function(this: any) {
+                const currentRecord = this;
+                return Promise.resolve(currentRecord);
+            });
+        });
+
+        afterEach(() => {
+            (UserPrototype.save as sinon.SinonStub).restore();
+        });
+
+        it('Should return Unauthorized for unauth user', async () => {
+            const res = await chai.request(app).post('/profile');
+            expect(res).to.have.status(401);
+        });
+
+        it('Should not update role and createTime', async () => {
+            const agent = chai.request.agent(app);
+            await agent.post('/login').send(dummyLoginPayload);
+            const badRes = agent.post('/profile').send({
+                firstname: 'Octocat',
+                role: 'admin',
+                createTime: new Date(new Date().getTime() + 86400000),
+            });
+            expect(badRes).to.have.status(400);
+
+            const goodRes = agent.post('/profile').send({
+                firstname: 'Rebecca',
+                lastname: 'Davis',
+                email: 'orpha_fun9@yahoo.com',
+                password: 'password123',
+            });
+            expect(goodRes).to.have.status(200);
         });
     });
 });
