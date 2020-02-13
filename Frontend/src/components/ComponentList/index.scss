@@ -1,6 +1,4 @@
-.container {
-    margin: 3em 4em;
-}
+@import "../colors.scss";
 
 .circle {
     height: 75px;
@@ -9,4 +7,12 @@
     border-radius: 50%;
     display: flex;
     margin: auto;
+}
+
+.linkClick {
+    color: $color-ternary;
+}
+
+.linkHover {
+    color: $color-primary;
 }
