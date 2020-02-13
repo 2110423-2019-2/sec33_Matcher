@@ -1,14 +1,13 @@
 import React from "react";
 import "./index.css";
-import { UserBar } from '..'
+// import { UserBar } from "../";
 
-interface  NavProps {
-  isLogin: boolean,
-  Username: string
+interface NavProps {
+  isLogin: boolean;
+  Username: string;
 }
 
-export default ({ isLogin, Username}: NavProps) => {
-
+export default ({ isLogin, Username }: NavProps) => {
   return (
     <div className="container">
       <div>
@@ -16,7 +15,7 @@ export default ({ isLogin, Username}: NavProps) => {
         <p className="home NavBarItem">Home</p>
         <p className="aTask NavBarItem">All Tasks</p>
         <p className="type NavBarItem">Photo Types</p>
-        {isLogin? <UserBar Username = {Username}/>: <button>Sign in</button>}
+        {/* {isLogin ? <UserBar Username={Username} /> : <button>Sign in</button>} */}
         <hr />
       </div>
     </div>
