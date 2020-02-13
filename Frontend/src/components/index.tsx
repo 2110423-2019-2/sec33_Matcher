@@ -1,3 +1,3 @@
-import NavBarWithLogo from "./NavBarWithLogo";
+// import NavBar from "./NavBar";
 import Footer from "./Footer/Footer";
-export { NavBarWithLogo, Footer };
+// export { NavBar, Footer };
