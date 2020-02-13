@@ -2,14 +2,14 @@ import React from "react";
 import "./index.css";
 
 interface UserProps {
-    Username: string
+    username: string
 }
 
-export default ({Username}: UserProps) => {
+export default ({username}: UserProps) => {
 
   return (
       <div className="dropdown">
-        <button className="dropButton">{Username}</button>
+        <button className="dropButton">{username}</button>
           <div className="dropdown-content">
             <p>Profile</p>
             <p>Your Tasks</p>

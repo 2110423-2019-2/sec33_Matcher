@@ -4,19 +4,19 @@ import { UserBar } from "../";
 
 interface NavProps {
   isLogin: boolean;
-  Username: string;
+  username: string;
 }
 
-export default ({ isLogin, Username }: NavProps) => {
+export default ({ isLogin, username }: NavProps) => {
   return (
     <div className="container">
       <div>
         <h3 className="logo">matcher</h3>
-        <p className="home NavBarItem">Home</p>
-        <p className="aTask NavBarItem">All Tasks</p>
-        <p className="type NavBarItem">Photo Types</p>
-        {isLogin? <UserBar Username = {Username}/>: <button className="signIn">Sign in</button>}
-        <hr />
+        <p className="home navBarItem">Home</p>
+        <p className="aTask navBarItem">All Tasks</p>
+        <p className="type navBarItem">Photo Types</p>
+        {isLogin? <UserBar username = {username}/>: <button className="signIn">Sign in</button>}
+        <hr className="slider" />
       </div>
     </div>
   );

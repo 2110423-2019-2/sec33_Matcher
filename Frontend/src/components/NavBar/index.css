@@ -2,7 +2,7 @@
   box-sizing: border-box;
 }
 
-.NavBarItem {
+.navBarItem {
   font-size: 20px;
   font-family: Montserrat;
   text-align: center;
@@ -14,7 +14,7 @@
   color: #555555;
 }
 
-.NavBarItem:hover{
+.navBarItem:hover{
   color: #00577F;
   transition: 0.3s ease-in-out;
 }
@@ -79,7 +79,7 @@ ul li {
   margin-left: 40%;
 }
 
-hr {
+.slider {
   align-content: center;
   margin-right: 10%;
   height: 2px !important;
