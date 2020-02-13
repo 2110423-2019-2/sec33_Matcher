@@ -1,0 +1,7 @@
+.container {
+    width: 100%;
+    display: inline-block;
+    margin: auto;
+    margin-left: 5%;
+    text-align: left;
+  }
