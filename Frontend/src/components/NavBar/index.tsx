@@ -1,18 +1,17 @@
 import React from "react";
 import "./index.css";
-import { UserBar } from '..'
+import { UserBar } from "../";
 
-interface  NavProps {
-  isLogin: boolean,
-  Username: string
+interface NavProps {
+  isLogin: boolean;
+  Username: string;
 }
 
-export default ({ isLogin, Username}: NavProps) => {
-
+export default ({ isLogin, Username }: NavProps) => {
   return (
     <div className="container">
       <div>
-        <h5 className="logo">Matcher</h5>
+        <h3 className="logo">matcher</h3>
         <p className="home NavBarItem">Home</p>
         <p className="aTask NavBarItem">All Tasks</p>
         <p className="type NavBarItem">Photo Types</p>
