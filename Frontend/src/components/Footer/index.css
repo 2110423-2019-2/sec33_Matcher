@@ -1,0 +1,29 @@
+.inc {
+  font-size: 20px;
+  color: #f8b195;
+  margin-left: 7.08vw;
+  align-self: center;
+}
+.footer {
+  display: flex;
+  background: #f67280;
+  height: 7.22vh;
+  width: 100vw;
+  font-family: "Montserrat";
+  align-self: center;
+}
+.contact {
+  display: flex;
+  margin-left: auto;
+  align-self: center;
+  justify-content: space-around;
+}
+.contact-logo {
+  margin-left: 3.78vw;
+  margin-right: 3.78vw;
+}
+@media only screen and (max-width: 768px) {
+  .inc {
+    font-size: 16px;
+  }
+}
