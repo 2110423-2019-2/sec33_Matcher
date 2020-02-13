@@ -16,7 +16,7 @@ export default ({ isLogin, Username}: NavProps) => {
         <p className="home NavBarItem">Home</p>
         <p className="aTask NavBarItem">All Tasks</p>
         <p className="type NavBarItem">Photo Types</p>
-        {isLogin? <UserBar Username = {Username}/>: <button>Sign in</button>}
+        {isLogin? <UserBar Username = {Username}/>: <button className="signIn">Sign in</button>}
         <hr />
       </div>
     </div>

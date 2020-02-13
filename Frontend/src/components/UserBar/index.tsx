@@ -8,7 +8,14 @@ interface UserProps {
 export default ({Username}: UserProps) => {
 
   return (
-      <p>{Username}</p>
+      <div className="dropdown">
+        <button className="dropButton">{Username}</button>
+          <div className="dropdown-content">
+            <p>Profile</p>
+            <p>Your Tasks</p>
+            <p>Sign out</p>
+          </div>
+      </div>
   );
 };
 

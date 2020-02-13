@@ -6,7 +6,7 @@ import "./App.css";
 const App: React.FC = () => {
   return (
     <div>
-      <NavBar isLogin = {false} Username = 'none'/>
+      <NavBar isLogin = {true} Username = 'John Doe'/>
     </div>
   );
 };
