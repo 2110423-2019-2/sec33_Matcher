@@ -9,13 +9,13 @@ interface NavProps {
 
 export default ({ isLogin, username }: NavProps) => {
   return (
-    <div className="container">
+    <div className="navBar">
       <div>
         <h3 className="logo">matcher</h3>
-        <p className="home navBarItem">Home</p>
-        <p className="aTask navBarItem">All Tasks</p>
-        <p className="type navBarItem">Photo Types</p>
-        {isLogin? <UserBar username = {username}/>: <button className="signIn">Sign in</button>}
+        <h6 className="home navBarItem">Home</h6>
+        <h6 className="aTask navBarItem">All Tasks</h6>
+        <h6 className="type navBarItem">Photo Types</h6>
+        {isLogin? <UserBar username = {username}/>: <button className="signIn"><p>Sign in</p></button>}
         <hr className="slider" />
       </div>
     </div>

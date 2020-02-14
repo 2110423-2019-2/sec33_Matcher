@@ -3,8 +3,8 @@
 }
 
 .navBarItem {
-  font-size: 20px;
-  font-family: Montserrat;
+  /* font-size: 20px; */
+  /* font-family: Montserrat; */
   text-align: center;
   display: inline-block;
   width: 10%;
@@ -21,12 +21,10 @@
 
 
 .signIn {
-  font-size: 18px !important;
-  font-family: Montserrat !important;
   background: none;
   display: inline-block;
   margin-left: 10% !important;
-  padding: 5px 30px;
+  padding: 0px 30px;
   border-color: #00577F;
 }
 
@@ -43,7 +41,6 @@
   font-family: Comfortaa;
   margin: auto;
   width: 20%;
-  /* font-size: 36px; */
   display: inline-block;
   color: #C06C84;
   text-align: center;
@@ -53,16 +50,12 @@ body {
   font: 300 100% "Helvetica Neue", Helvetica, Arial;
 }
 
-.container {
+.navBar {
   width: 100%;
   display: inline-block;
   margin: auto;
   margin-left: 5%;
   text-align: left;
-}
-
-.cont {
-  display: inline;
 }
 
 ul li {

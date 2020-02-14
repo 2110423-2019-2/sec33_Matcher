@@ -1,7 +1,7 @@
 // SIMPLE GRID - SASS/SCSS
 
 @import url("https://fonts.googleapis.com/css?family=Montserrat&display=swap");
-@import url('https://fonts.googleapis.com/css?family=Comfortaa:300,400,500,600,700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Comfortaa&display=swap');
 @import "./components/colors.scss";
 
 // fonts
@@ -137,22 +137,10 @@ $breakpoint-large: 60em; // 960px
   //   width: 80%;
   // }
 
-<<<<<<< HEAD
-  // @media only screen and (min-width: $breakpoint-large) {
-  //   width: 75%;
-  //   max-width: 60rem;
-  // }
-||||||| merged common ancestors
-  @media only screen and (min-width: $breakpoint-large) {
-    width: 75%;
-    max-width: 60rem;
-  }
-=======
   @media only screen and (min-width: $breakpoint-large) {
     width: 75%;
     max-width: 75rem;
   }
->>>>>>> origin/feature_frontend_component
 }
 
 .row {

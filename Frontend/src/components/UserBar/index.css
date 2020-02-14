@@ -1,3 +1,7 @@
+.navBarProfilePic{
+  margin: auto;
+}
+
 .dropdown {
     width: 20%;
     margin-left: 10%;
@@ -12,7 +16,7 @@
   background: white;
   display: inline-block;
   /* margin-left: 10% !important; */
-  padding: 5px 30px;
+  /* padding: 5px 30px; */
   width: 70%;
   border: none;
   color:#00577F;
