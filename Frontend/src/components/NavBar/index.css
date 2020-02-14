@@ -21,11 +21,11 @@
 
 
 .signIn {
-  background: none;
-  display: inline-block;
+  /* background: none; */
+  /* display: inline-block; */
   margin-left: 10% !important;
-  padding: 0px 30px;
-  border-color: #00577F;
+  /* padding: 0px 30px; */
+  /* border-color: #00577F; */
 }
 
 .signIn:hover{

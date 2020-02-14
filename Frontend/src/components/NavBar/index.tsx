@@ -1,6 +1,6 @@
 import React from "react";
 import "./index.css";
-import { UserBar } from "../";
+import { UserBar, Button } from "../";
 
 interface NavProps {
   isLogin: boolean;
@@ -15,7 +15,7 @@ export default ({ isLogin, username }: NavProps) => {
         <h6 className="home navBarItem">Home</h6>
         <h6 className="aTask navBarItem">All Tasks</h6>
         <h6 className="type navBarItem">Photo Types</h6>
-        {isLogin? <UserBar username = {username}/>: <button className="signIn"><p>Sign in</p></button>}
+        {isLogin? <UserBar username = {username}/>: <Button type="outlined">Sign In</Button>}
         <hr className="slider" />
       </div>
     </div>

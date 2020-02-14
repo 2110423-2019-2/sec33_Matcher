@@ -1,5 +1,5 @@
 import React from "react";
-import { NavBar } from "./components"
+import { NavBar, ComponentList } from "./components"
 import "./index.scss";
 
 const App: React.FC = () => {
@@ -7,7 +7,7 @@ const App: React.FC = () => {
     <div>
       <NavBar isLogin = {false} username = 'John Doe'/>
       {/* <Footer/> */}
-      <h1>WOW</h1>
+      <ComponentList/>
     </div>
   );
 };
