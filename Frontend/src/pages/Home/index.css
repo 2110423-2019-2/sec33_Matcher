@@ -1,6 +1,7 @@
 .home {
-  padding-left: 100px;
+  padding-left: 80px;
   padding-right: 100px;
+  padding-top: 150px;
 }
 .home-sub-title {
   display: flex;
@@ -28,5 +29,12 @@
 .home-title h1 {
   font-style: normal;
   font-weight: normal;
+}
+
+.pic{
+  position: absolute;
+  right: 100px;
+  top: 200px;
+  float: right;
 }
 
