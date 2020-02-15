@@ -20,17 +20,13 @@
 }
 
 
-.signIn {
+.NavBarUser {
   /* background: none; */
-  /* display: inline-block; */
-  margin-left: 10% !important;
+  display: inline-block;
+  margin-left: 10%;
+  width: 15%
   /* padding: 0px 30px; */
   /* border-color: #00577F; */
-}
-
-.signIn:hover{
-  background: #d4d3d3;
-  transition: 0.3s ease-in-out;
 }
 
 .home {
