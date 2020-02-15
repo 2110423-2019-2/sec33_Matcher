@@ -1,0 +1,28 @@
+@import "../colors.scss";
+
+$frameHeight: 330px;
+
+.cardWrapper {
+    display: inline-flex;
+}
+
+.cardFrame {
+    width: 280px;
+    height: $frameHeight;
+    border: 1px solid $color-ternary;
+    display: flex;
+}
+
+.cardPic {
+    width: 200px;
+    margin: auto;
+    display: flex;
+}
+
+.cardText {
+    transform-origin: 0 0;
+    transform: rotate(270deg);
+    position: relative;
+    top: $frameHeight - 10px;
+    left: -35px;
+}
