@@ -40,23 +40,39 @@
 
 .seeBlock{
     float: left;
-    position: relative ;
+    position: relative;
     height: 100px;
     width: 50%;
     background-color:whitesmoke;
-    top: 100px;
+    top: 150px;
     text-align: left;
     padding-left: 100px;  
+    color: grey;
 }
 
 .matcherBlock{
   float: left;
-  position: relative ;
+  position: relative;
   height: 100px;
   width: 50%;
   background-color:lightcoral;
-  top: 100px;
+  top: 150px;
   text-align: left;
   padding-left: 70px;  
+  color:#f8b195;
+}
+
+.blank{
+  height: 300px;
+}
+
+.jobby{
+  float: left;
+  color: #00577f;
+}
+
+.seeall{
+  float: right;
+  color: grey;
 }
 

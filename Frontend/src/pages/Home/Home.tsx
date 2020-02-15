@@ -31,7 +31,17 @@ export default () => {
       <div className="matcherBlock">
         <h5>@Matcher inc.</h5>
       </div>
+      <br></br>
       
+      <div className="blank"></div>
+
+      <div className="jobby">
+      <h5>Jobs near by you</h5>
+      </div>
+
+      <div className="seeall">
+      <h5>see all <Chevron /> </h5>
+      </div>
         
        
       </div>
