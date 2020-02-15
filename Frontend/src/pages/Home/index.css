@@ -83,5 +83,21 @@
 .task{
   float: left;
   width: 200%;
+}
 
+.vcard{
+  float:left;
+  width: 100%;
+  background-color: aquamarine;
+}
+
+.matcherBlock2{
+  float: left;
+  position: relative;
+  height: 100px;
+  width: 100%;
+  background-color:lightcoral;
+  text-align: left;
+  padding-left: 70px;  
+  color:#f8b195;
 }
