@@ -76,3 +76,12 @@
   color: grey;
 }
 
+.blank2{
+  height: 100px;
+}
+
+.task{
+  float: left;
+  width: 200%;
+
+}

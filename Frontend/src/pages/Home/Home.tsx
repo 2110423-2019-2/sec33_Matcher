@@ -42,8 +42,24 @@ export default () => {
       <div className="seeall">
       <h5>see all <Chevron /> </h5>
       </div>
+
+      <div className="blank2"></div>
         
-       
+      <div className="task">
+            <TaskCard thumbnail="https://picsum.photos/200/300" name="John Doe" location="Siam Paragon" price={300}/>
+            <TaskCard thumbnail="https://picsum.photos/200/300" name="John Doe" location="Siam Paragon" price={300}/>
+            <TaskCard thumbnail="https://picsum.photos/200/300" name="John Doe" location="Siam Paragon" price={300}/>
+            <TaskCard thumbnail="https://picsum.photos/200/300" name="John Doe" location="Siam Paragon" price={300}/>
+            <TaskCard thumbnail="https://picsum.photos/200/300" name="John Doe" location="Siam Paragon" price={300}/>
+            <TaskCard thumbnail="https://picsum.photos/200/300" name="John Doe" location="Siam Paragon" price={300}/>
+        </div>
+
+      <div className="jobby">
+      <h5>Photo types</h5>
+      </div>
+        
+    
+
       </div>
 
     
