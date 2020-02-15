@@ -38,3 +38,25 @@
   float: right;
 }
 
+.seeBlock{
+    float: left;
+    position: relative ;
+    height: 100px;
+    width: 50%;
+    background-color:whitesmoke;
+    top: 100px;
+    text-align: left;
+    padding-left: 100px;  
+}
+
+.matcherBlock{
+  float: left;
+  position: relative ;
+  height: 100px;
+  width: 50%;
+  background-color:lightcoral;
+  top: 100px;
+  text-align: left;
+  padding-left: 70px;  
+}
+

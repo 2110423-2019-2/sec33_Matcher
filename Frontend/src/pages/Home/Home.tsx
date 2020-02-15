@@ -22,11 +22,20 @@ export default () => {
       <div className="home-button-line"> 
         <Button type="filled">Find jobs</Button>
         <Button type="outlined">Create task</Button> 
-        <br /><br />
       </div>
+
+      <div className="seeBlock">
+        <h5>see all task</h5>
+      </div>
+      
+      <div className="matcherBlock">
+        <h5>@Matcher inc.</h5>
+      </div>
+      
         
        
       </div>
+
     
   );
 };
