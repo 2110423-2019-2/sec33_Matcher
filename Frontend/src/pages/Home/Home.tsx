@@ -14,13 +14,13 @@ export default () => {
         <h1>Memorize your scene <br></br>with quality shots ...</h1>
       </div>
       
-        <div className="pic">
+      <div className="pic">
         <img src={camera}/>
-        </div>
-        <br></br>
+      </div>
+      <br></br>
 
       <div className="home-button-line"> 
-      <Button type="filled">Find jobs</Button>
+        <Button type="filled">Find jobs</Button>
         <Button type="outlined">Create task</Button> 
         <br /><br />
       </div>
