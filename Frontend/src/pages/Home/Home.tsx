@@ -2,6 +2,7 @@ import React from "react";
 import "./index.css";
 import { Button, VerticalCard, TaskCard } from "../../components/index";
 import { ReactComponent as Chevron } from '../../assets/icons/chevron-right.svg';
+import { ReactComponent as camera } from '../../assets/camera.svg';
 export default () => {
   return (
     <div className="home">
