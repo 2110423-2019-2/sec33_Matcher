@@ -3,7 +3,7 @@ import "./index.css";
 import { Button, VerticalCard, TaskCard } from "../../components/index";
 import { ReactComponent as Chevron } from '../../assets/icons/chevron-right.svg';
 import camera from '../../assets/camera.svg';
-import gradcard from '../../assets/vcard/graduation.svg';
+import social from '../../assets/icons/social icon.svg';
 export default () => {
   return (
     <div className="home">
@@ -30,7 +30,8 @@ export default () => {
       </div>
       
       <div className="matcherBlock">
-        <h5>© Matcher inc.</h5>
+        <div className="matcherletter"><h5>© Matcher inc.</h5></div>
+        <div className="socialicon"><img src={social}/></div>
       </div>
       <br></br>
       
@@ -70,7 +71,8 @@ export default () => {
       </div>
 
       <div className="matcherBlock2">
-        <h5>© Matcher inc.</h5>
+        <div className="matcherletter"><h5>© Matcher inc.</h5></div>
+        <div className="socialicon"><img src={social}/></div>
       </div>
 
         

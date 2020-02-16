@@ -126,3 +126,16 @@
   padding-left: 70px;  
   color:#f8b195;
 }
+
+.socialicon{
+  position: relative;
+  top:40px;
+  right:50px;
+  float: right;
+  
+}
+
+.matcherletter{
+  float: left;
+  height: 100%;
+}
