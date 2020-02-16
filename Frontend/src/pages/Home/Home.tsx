@@ -60,8 +60,13 @@ export default () => {
       </div>
 
       <div className="vcard">
-            <VerticalCard src="/images/type-product.png" alt="product" text="Product" />
-            <img src={gradcard}/>
+        <div className="vfloat3"><VerticalCard src="https://i.picsum.photos/id/696/280/330.jpg" alt="product" text="Product" /></div>
+        <div className="vfloat2"><VerticalCard src="https://i.picsum.photos/id/696/280/330.jpg" alt="product" text="Product" /></div>
+        <div className="vfloat1"><VerticalCard src="https://i.picsum.photos/id/696/280/330.jpg" alt="product" text="Product" /></div>
+        <div className="vfloat3"><VerticalCard src="https://i.picsum.photos/id/696/280/330.jpg" alt="product" text="Product" /></div>
+        <div className="vfloat2"><VerticalCard src="https://i.picsum.photos/id/696/280/330.jpg" alt="product" text="Product" /></div>
+        <div className="vfloat1"><VerticalCard src="https://i.picsum.photos/id/696/280/330.jpg" alt="product" text="Product" /></div>
+       
       </div>
 
       <div className="matcherBlock2">

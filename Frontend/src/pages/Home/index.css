@@ -91,7 +91,29 @@
 .vcard{
   float:left;
   width: 100%;
-  background-color: aquamarine;
+  height: 900px;
+}
+
+.vfloat1{
+  float: left;
+  width: 33%;
+  margin-bottom: 50px;
+}
+
+.vfloat2{
+  position: relative;
+  top: 50px;
+  float: left;
+  width: 33%;
+  margin-bottom: 50px;
+}
+
+.vfloat3{
+  position: relative;
+  top: 100px;
+  float: left;
+  width: 33%;
+  margin-bottom: 50px;
 }
 
 .matcherBlock2{
