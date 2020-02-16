@@ -1,6 +1,7 @@
 // SIMPLE GRID - SASS/SCSS
 
 @import url("https://fonts.googleapis.com/css?family=Montserrat&display=swap");
+@import "./components/colors.scss";
 
 // fonts
 $font-family: "Montserrat";
@@ -29,7 +30,15 @@ body {
   // line-height: $font-height;
 }
 
+code {
+  font-family: 'Courier New', Courier, monospace;
+}
+
 // typography
+
+h1, h2, h3, h4, h5, h6, p {
+  font-weight: normal;
+}
 
 h1 {
   font-size: 48px;
@@ -57,6 +66,21 @@ h6 {
 
 p {
   font-size: 18px;
+  color: $color-dark;
+}
+
+a {
+  color: $color-dark;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+a:hover {
+  color: $color-primary;
+}
+
+a:active {
+  color: $color-ternary;
 }
 
 .font-light {
@@ -114,7 +138,7 @@ $breakpoint-large: 60em; // 960px
 
   @media only screen and (min-width: $breakpoint-large) {
     width: 75%;
-    max-width: 60rem;
+    max-width: 75rem;
   }
 }
 
