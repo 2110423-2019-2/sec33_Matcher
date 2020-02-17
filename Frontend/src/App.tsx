@@ -7,8 +7,8 @@ import "./index.scss";
 const App: React.FC = () => {
   return (
     <div>
-      {/* <NavBarWithLogo /> */}
-      <BodySignIn Username = 'Email' Password = 'Password'/>
+      <NavBar isLogin={false} username="John Doe" />
+      <BodySignIn />
     </div>
   );
 };

@@ -1,52 +1,58 @@
 import React from "react";
-import Pic from "./loginPic.png";
-import Or from "./Sign in - or.png";
-import Login from "../../assets/LoginButton.png";
-import Apple from "../../assets/AppleLogin.png";
-import Facebook from "../../assets/FacebookLogin.png";
-import Gmail from "../../assets/GmailLogin.png";
-import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
-import Typography from '@material-ui/core/Typography';
-import "./index.css";
+import { ReactComponent as LoginBackground } from "../../assets/organize-photo.svg";
+import { ReactComponent as AppleLogin } from "../../assets/AppleLogin.svg";
+import { ReactComponent as FacebookLogin } from "../../assets/FacebookLogin.svg";
+import { ReactComponent as GmailLogin } from "../../assets/GmailLogin.svg"; 
+import { Input, Button } from "..";
+import "./index.scss";
 
-
-interface  loginProps {
-    Username: string,
-    Password: string
-  }
-
-function onClickSignUp(){
+function onClickSignUp() {
   console.log('ClickSignUp');
 }
 
-function onClickLogin(){
+function onClickLogin() {
   console.log('ClickLogin');
 }
 
-  export default ({ Username, Password}: loginProps) => {
+export default () => {
 
-    return (
-      <div>
-        <h1><img src={Pic} alt="login logo" /></h1>
-        <label className="SignIn">SIGN IN</label>
-        
-        <div><TextField className="email" id="standard-basic" label="Email" /></div>
-        <div><TextField className="password" id="filled-password-input" label="Password" type="password" variant="filled" /></div>
-        <div><Typography><label className="signUp">Not a member? </label><Link className="linkSignUp" href="#" onClick={onClickSignUp}>Sign up</Link></Typography></div>
-        <img className="signInOr" src={Or} alt="Sign in - or" />
-        <button className='loginButton' onClick={onClickLogin}>
-          <img src={Login} alt="Login Button" />
-        </button>
-        <button className='appleSignIn'>
-          <img src={Apple} alt="Login Button" />
-        </button>    
-        <button className='facebookSignIn'>
-          <img src={Facebook} alt="Login Button" />
-        </button> 
-        <button className='gmailSignIn'>
-          <img src={Gmail} alt="Login Button" />
-        </button>                            
-      </div>  
-    );
-  };  
+  return (
+    <div className="row">
+      <div className="col-6 hidden-sm">
+        <LoginBackground className="loginBackground" />
+      </div>
+      <div className="col-1" />
+      <div className="col-4">
+        <div className="row">
+          <div className="col-12">
+            <h1 className="signInHeader">SIGN IN</h1>
+            <div className="loginFormSection">
+              <Input label="Email" variant="filled" />
+            </div>
+            <div className="loginFormSection">
+              <Input label="Password" variant="filled" />
+            </div>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-8 col-7-sm">
+            <p>Not a member? <a href="/#" className="signUpLink">Sign Up</a></p>
+          </div>
+          <div className="col-4 col-3-sm right loginButton">
+            <Button type="invert">></Button>
+          </div>
+        </div>
+        <div className="row center">
+          <div className="col-5 col-4-sm"><hr /></div>
+          <div className="col-2 col-1-sm center">Or</div>
+          <div className="col-5 col-4-sm"><hr /></div>
+        </div>
+        <div className="row altSignin">
+          <div className="col-8 col-6-sm"><AppleLogin /></div>
+          <div className="col-2 col-1-sm"><FacebookLogin /></div>
+          <div className="col-2 col-1-sm"><GmailLogin /></div>
+        </div>
+      </div>
+    </div>
+  );
+};  
