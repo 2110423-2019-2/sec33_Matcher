@@ -1,6 +1,7 @@
 import React from "react";
-import "./index.css";
-import awesome from "../../assets/awesome.png"
+import "./index.scss";
+
+const awesome = "/images/awesome.png";
 
 interface UserProps {
     username: string
