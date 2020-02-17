@@ -1,12 +1,13 @@
 import React from "react";
-import { NavBarWithLogo } from "./components";
 import { BodySignIn } from "./components";
 import "./App.css";
+import { NavBar, ComponentList } from "./components"
+import "./index.scss";
 
 const App: React.FC = () => {
   return (
     <div>
-      <NavBarWithLogo />
+      {/* <NavBarWithLogo /> */}
       <BodySignIn Username = 'Email' Password = 'Password'/>
     </div>
   );
