@@ -7,7 +7,7 @@ import "./index.scss";
 const App: React.FC = () => {
   return (
     <div>
-
+      <NavBar isLogin = {true} username = 'Prayut'/>
       <Home/>
     </div>
   );
