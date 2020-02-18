@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 @import '../colors.scss';
 
 .button {
@@ -26,3 +27,33 @@
         color: white;
     }
 }
+||||||| merged common ancestors
+=======
+@import '../colors.scss';
+
+.button {
+    padding: 10px 50px;
+    font-size: 18px;
+    background-color: $color-ternary;
+    min-width: 100px;
+    display: inline-flex;
+    border: 2.5px solid $color-ternary;
+    cursor: pointer;
+
+    &.outlined {
+        border-color: $color-primary;
+        background-color: rgba(255,255,255,0);
+    }
+}
+
+.button:hover {
+    &.filled {
+        background-color: rgba(255,255,255,0);
+    }
+
+    &.outlined {
+        background-color: $color-primary;
+        color: white;
+    }
+}
+>>>>>>> dev_frontend
