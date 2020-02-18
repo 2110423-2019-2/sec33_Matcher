@@ -1,8 +1,14 @@
 .home {
-  padding-left: 80px;
-  padding-right: 100px;
+  /* padding-left: 80px; */
+  /* padding-right: 100px; */
   padding-top: 150px;
 }
+
+.pad{
+  padding-left: 80px;
+  padding-right: 100px;
+}
+
 .home-sub-title {
   display: flex;
 }
@@ -85,7 +91,9 @@
   width: 100%;
   height: 420px;
   overflow: auto;
-  white-space:nowrap
+  white-space:nowrap;
+  background-color:rgb(255, 225, 205);
+  
 }
 
 .vcard{
