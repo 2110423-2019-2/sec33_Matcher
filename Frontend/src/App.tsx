@@ -3,13 +3,12 @@ import logo from "./logo.svg";
 import "./App.css";
 import { Home } from "./pages";
 import { NavBar, ComponentList } from "./components"
-import "./index.css";
+import "./index.scss";
 const App: React.FC = () => {
   return (
     <div>
-      <NavBar isLogin = {true} username = 'John Doe'/>
-      {/* <Footer/> */}
-      <ComponentList/>
+
+      <Home/>
     </div>
   );
 };
