@@ -1,45 +1,3 @@
-<<<<<<< HEAD
-@import "../colors.scss";
-
-img.rounded {
-    object-fit: cover;
-    border-radius: 50%;
-    height: 50px;
-    width: 50px;
-}
-
-.taskHeaderText {
-    padding: 4px;
-
-    &.location {
-        color: $color-rose;
-    }
-}
-
-.taskPic {
-    width: 100%;
-    height: 150px;
-    padding: 10px 0;
-    object-fit: cover;
-}
-
-.taskPriceTag {
-    color: $color-primary;
-    margin: 6px 0;
-
-    .price {
-        color: $color-rose;
-        font-size: 28px;
-    }
-}
-
-.taskCardContainer {
-    width: 300px;
-    padding: 0;
-    margin: 20px;
-}
-||||||| merged common ancestors
-=======
 @import "../colors.scss";
 
 img.rounded {
@@ -78,4 +36,3 @@ img.rounded {
     width: 300px;
     padding: 0;
 }
->>>>>>> dev_frontend
