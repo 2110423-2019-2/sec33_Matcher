@@ -61,6 +61,7 @@ export default class FastphotoApp {
         );
         /* End of middlewares */
 
+        // User Routing
         app.get('/', asyncHandler(UserController.hello));
 
         app.post('/register', asyncHandler(UserController.createUser));
@@ -70,6 +71,9 @@ export default class FastphotoApp {
         app.get('/whoami', ensureLoggedIn(), AuthController.whoami);
 
         app.get('/logout', AuthController.logout);
+
+        // TODO: createtask route
+        // app.post('/createtask', ensureLoggedIn(), asyncHandle(TaskController.createTask))
 
         /* Middleware for error handling */
         app.use(errorHandler);
