@@ -3,6 +3,7 @@ import { ReactComponent as LoginBackground } from "../../assets/organize-photo.s
 import { ReactComponent as AppleLogin } from "../../assets/AppleLogin.svg";
 import { ReactComponent as FacebookLogin } from "../../assets/FacebookLogin.svg";
 import { ReactComponent as GmailLogin } from "../../assets/GmailLogin.svg";
+import { ReactComponent as ChevronRight } from "../../assets/icons/chevron-right.svg"
 import { Input, Button } from "..";
 import isEmail from 'validator/lib/isEmail';
 import "./index.scss";
@@ -32,7 +33,7 @@ export default () => {
       setErrorText('Email is invalid');
     }
   }
-
+  
   return (
     <div className="row">
       <div className="col-6 hidden-sm">
@@ -64,7 +65,8 @@ export default () => {
               <p>Not a member? <a href="/#" className="signUpLink">Sign Up</a></p>
             </div>
             <div className="col-4 col-5-sm right loginButton">
-              <Button type="invert">></Button>
+              <Button type="invert" ><ChevronRight /></Button>
+              
             </div>
           </div>
         </form>
