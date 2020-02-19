@@ -4,7 +4,7 @@ import { ReactComponent as AppleLogin } from "../../assets/AppleLogin.svg";
 import { ReactComponent as FacebookLogin } from "../../assets/FacebookLogin.svg";
 import { ReactComponent as GmailLogin } from "../../assets/GmailLogin.svg";
 import { ReactComponent as ChevronRight } from "../../assets/icons/chevron-right.svg"
-import { Input, Button } from "..";
+import { Input, Button } from "../../components/";
 import isEmail from 'validator/lib/isEmail';
 import "./index.scss";
 

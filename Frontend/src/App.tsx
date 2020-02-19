@@ -1,5 +1,5 @@
 import React from "react";
-import { BodySignIn } from "./components";
+import { BodySignIn } from "./pages";
 import "./App.css";
 import { NavBar, ComponentList } from "./components"
 import "./index.scss";
