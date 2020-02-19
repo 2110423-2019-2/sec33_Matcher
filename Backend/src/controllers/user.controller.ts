@@ -18,7 +18,6 @@ export default class UserController {
             role: req.body.role,
             createTime: new Date(),
         });
-        console.log(user.email, user.password);
         await user.save();
         res.json({ status: 'success' });
     }
@@ -52,7 +51,6 @@ export default class UserController {
             throw new HttpErrors.BadRequest();
         } else {
             if (fields.includes('firstname')) {
-                console.log('LOG:', req.user_id);
                 await User.findByIdAndUpdate({ _id: req.user._id }, { firstname: req.body.firstname });
             }
 
@@ -63,8 +61,8 @@ export default class UserController {
                 const hash = await generateHash(req.body.password);
                 await User.findByIdAndUpdate({ _id: req.user._id }, { password: hash });
             }
-            res.json({ status: 'success' });
         }
+        res.json({ status: 'success' });
     }
 
     static async validateInput(body: any, fields: string[]): Promise<boolean> {
