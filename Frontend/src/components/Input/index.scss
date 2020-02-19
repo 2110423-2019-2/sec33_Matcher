@@ -13,4 +13,8 @@
     .MuiFormLabel-root.Mui-focused {
         color: $color-primary; 
     }
+
+    .MuiInputBase-input {
+        font-family: $font-family;
+    }
 }

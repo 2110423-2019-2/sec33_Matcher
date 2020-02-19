@@ -7,6 +7,6 @@ interface ButtonProps {
 }
 
 export default ({ children, type = 'filled' }: ButtonProps) => 
-    <div className={`button ${type}`}>
-        { children }
-    </div>
+    <button className={`button ${type}`}>
+        { children }        
+    </button>
