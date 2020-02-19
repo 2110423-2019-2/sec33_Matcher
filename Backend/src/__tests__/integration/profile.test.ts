@@ -52,7 +52,7 @@ describe('Profile', () => {
             await agent.post('/login').send(dummyLoginPayload);
             const res = await agent.get('/profile');
             expect(res).to.have.status(200);
-            const expected = dummyUser;
+            const expected = JSON.parse(JSON.stringify(dummyUser));
             delete expected.password;
             expect(res.body).to.deep.equal(expected);
         });
