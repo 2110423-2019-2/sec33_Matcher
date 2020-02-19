@@ -6,14 +6,6 @@ import { ReactComponent as GmailLogin } from "../../assets/GmailLogin.svg";
 import { Input, Button } from "..";
 import "./index.scss";
 
-function onClickSignUp() {
-  console.log('ClickSignUp');
-}
-
-function onClickLogin() {
-  console.log('ClickLogin');
-}
-
 export default () => {
 
   return (
