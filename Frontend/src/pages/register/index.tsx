@@ -1,23 +1,22 @@
 import React from "react";
 import "./index.scss";
-import { NavBar } from "../../components";
+import { ReactComponent as RegisterBackground } from "../../assets/creating-photo.svg";
+import { NavBar, Footer } from "../../components";
 
 
 export default () => {
     return (
-      <div className="navBar">
-        <h3 className="logo">matcher</h3>
-        <h6 className="home navBarItem">Home</h6>
-        <h6 className="aTask navBarItem">All Tasks</h6>
-        <h6 className="type navBarItem">Photo Types</h6>
-        <div className="NavBarUser">
-          {isLogin ? (
-            <UserBar username={username} />
-          ) : (
-            <Button type="outlined">Sign In</Button>
-          )}
+      <div className="row center registerPage">
+        <NavBar isLogin = {false} username = 'John Doe'/>
+        <div className="col-6">
+          <RegisterBackground className="registerBackground" />
         </div>
-        <hr className="slider" />
+        <div className="col-6">
+          <div className="row center">
+          {/* <Input label="Firstname" variant="filled" /> */}
+          </div>
+        </div>
+        {/* <Footer/> */}
       </div>
     );
   };
