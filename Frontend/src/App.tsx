@@ -1,4 +1,6 @@
 import React from "react";
+import { BodySignIn } from "./components";
+import "./App.css";
 import { NavBar, ComponentList } from "./components"
 import { Register } from "./pages"
 import "./index.scss";
