@@ -67,7 +67,8 @@ export default class FastphotoApp {
 
         app.post('/login', passport.authenticate('local'), AuthController.login);
 
-        app.post('/updateprofile', ensureLoggedIn(), UserController.updateProfile);
+        app.get('/profile', ensureLoggedIn(), asyncHandler(UserController.getProfile));
+        app.post('/profile', ensureLoggedIn(), asyncHandler(UserController.updateProfile));
 
         app.get('/whoami', ensureLoggedIn(), AuthController.whoami);
 
