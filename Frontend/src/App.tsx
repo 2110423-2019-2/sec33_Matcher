@@ -1,4 +1,6 @@
-import React, { useReducer, useContext } from "react";
+import React, { useReducer } from "react";
+import { BodySignIn } from "./pages";
+import "./App.css";
 import { NavBar, ComponentList } from "./components";
 import "./index.scss";
 import {
@@ -10,13 +12,10 @@ import {
 const App: React.FC = () => {
   const [auth, authDispatcher] = useReducer(authReducer, defaultAuth);
   return (
-    <AuthContextProvider value={{ auth, authDispatcher }}>
-      <div>
-        <NavBar username="John Doe" />
-        {/* <Footer/> */}
-        <ComponentList />
-      </div>
-    </AuthContextProvider>
+    <div>
+      <NavBar isLogin={false} username="John Doe" />
+      <BodySignIn />
+    </div>
   );
 };
 

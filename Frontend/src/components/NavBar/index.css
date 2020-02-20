@@ -51,6 +51,8 @@ body {
   display: inline-block;
   margin: auto;
   margin-left: 5%;
+  padding-top: 2em;
+  padding-bottom: 4em;
   text-align: left;
 }
 
