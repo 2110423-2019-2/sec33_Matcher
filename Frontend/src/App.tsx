@@ -8,7 +8,7 @@ import "./index.scss";
 const App: React.FC = () => {
   return (
     <div>
-      <Register/>
+      <Register />
       {/* <NavBar isLogin = {true} username = 'John Doe'/>
       {/* <Footer/> */}
       {/* <ComponentList/> */}
