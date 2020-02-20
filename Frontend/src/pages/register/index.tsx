@@ -1,11 +1,14 @@
 import React from "react";
 import "./index.scss";
 import Checkbox, { CheckboxProps } from "@material-ui/core/Checkbox";
-import { ReactComponent as AppleLogin } from "../../assets/AppleLogin.svg";
-import { ReactComponent as FacebookLogin } from "../../assets/FacebookLogin.svg";
-import { ReactComponent as GmailLogin } from "../../assets/GmailLogin.svg";
-import { ReactComponent as ChevronRight } from "../../assets/icons/chevron-right.svg";
-import { ReactComponent as RegisterBackground } from "../../assets/creating-photo.svg";
+import {
+  AppleLogin,
+  FacebookLogin,
+  GmailLogin,
+  ChevronRight,
+  RegisterBackground,
+  ChooseImage
+} from "../../assets";
 import { NavBar, Footer, Input, Button } from "../../components";
 
 // const [checkedPhotographer, setCheckedPhotographer] = React.useState(false);
@@ -25,13 +28,21 @@ export default () => {
       <div className="col-4">
         <form>
           <div className="row">
-            <div className="col-8">
-              <h1 className="signInHeader">SIGN UP</h1>
-              <div className="registerFormSection">
+            <h1 className="signInHeader">SIGN UP</h1>
+          </div>
+          <div className="row" style={{ display: 'inline-flex'}}>
+            <div className="col-6">
+              <div className="row registerFormSection">
                 <Input label="Firstname" variant="filled" fullWidth />
               </div>
-              <div className="registerFormSection">
+              <div className="row registerFormSection">
                 <Input label="Lastname" variant="filled" fullWidth />
+              </div>
+            </div>
+            <div className="col-6 center chooseImg" style={{margin:'auto'}}>
+              <div className="row">
+                <ChooseImage className="registerChooseImg" />
+                <p className="chooseImageTxt">Choose Image</p>
               </div>
             </div>
           </div>
@@ -62,6 +73,11 @@ export default () => {
             </div>
           </div>
           {/* Add National Card Image?? */}
+          <div className="row">
+            <div className="col-12">
+              <Input label="National Card Image" variant="filled" fullWidth />
+            </div>
+          </div>
           <div className="row">
             <div className="col-8 col-7-sm">
               <p>
