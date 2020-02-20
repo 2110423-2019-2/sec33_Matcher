@@ -1,4 +1,3 @@
-import BodySignIn from './BodySignIn'
 import NavBar from './NavBar'
 import UserBar from './UserBar'
 import ComponentList from './ComponentList';
@@ -16,6 +15,5 @@ export {
     VerticalCard,
     TaskCard,
     Footer,
-    BodySignIn,
     Input,
 }
