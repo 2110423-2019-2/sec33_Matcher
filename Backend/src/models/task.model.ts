@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document } from 'mongoose';
-import { User, IUser } from '../models';
+import { IUser } from '../models';
 
 const TaskSchema = new Schema({
     title: { type: String, required: [true, 'title can not be blank'] },
