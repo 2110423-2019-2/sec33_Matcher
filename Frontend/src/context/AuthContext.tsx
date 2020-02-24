@@ -2,7 +2,8 @@ import React, { createContext } from "react";
 
 const initialState = {
   username: "Can",
-  isLogin: true
+  isLogin: true,
+  role: "admin"
 };
 
 export const authReducer = (
