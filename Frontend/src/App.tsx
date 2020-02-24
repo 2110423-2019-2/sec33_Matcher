@@ -1,15 +1,26 @@
-import React from "react";
-import { BodySignIn } from "./pages";
-import "./App.css";
-import { NavBar, ComponentList } from "./components"
+import React, { useReducer } from "react";
+import { NavBar, ComponentList } from "./components";
+import { EditProfile } from "./pages";
 import "./index.scss";
+import {
+  authReducer,
+  defaultAuth,
+  AuthContextProvider
+} from "./context/AuthContext";
+import Footer from "./components/Footer/Footer";
 
 const App: React.FC = () => {
+  const [auth, authDispatcher] = useReducer(authReducer, defaultAuth);
   return (
-    <div>
-      <NavBar isLogin={false} username="John Doe" />
-      <BodySignIn />
-    </div>
+    <AuthContextProvider value={{ auth, authDispatcher }}>
+      <div>
+        <NavBar username="John Doe" />
+        {/* <Footer/> */}
+        {/* <ComponentList /> */}
+        <EditProfile />
+        <Footer />
+      </div>
+    </AuthContextProvider>
   );
 };
 

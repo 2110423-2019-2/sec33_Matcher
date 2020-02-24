@@ -1,0 +1,29 @@
+@import "../colors.scss";
+
+.editProfilePage {
+  padding: 0 15vw;
+  padding-bottom: 25vh;
+}
+
+.helloMessage {
+  color: $color-primary;
+}
+.editProfileTitle {
+  display: flex;
+  align-items: center;
+}
+.editProfileMenu {
+  margin-left: 6vw;
+  margin-right: auto;
+}
+.lineAfterHello {
+  margin-left: 1.67vw;
+  height: 1px;
+  width: 5.56vw;
+  background: $color-dark;
+}
+.editProfileForm {
+  margin-top: 4vh;
+  display: inline-flex;
+  justify-content: space-between;
+}
