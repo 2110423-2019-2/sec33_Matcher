@@ -1,0 +1,18 @@
+@import "../colors.scss";
+.taskPage {
+  margin-left: 7.29vw;
+  padding-bottom: 14.11vh;
+}
+.taskTitle {
+  color: $color-primary;
+}
+.sortBy {
+  margin-left: 16vw !important;
+  margin-right: auto;
+}
+.sortBy p {
+  color: $color-primary;
+}
+.tasks {
+  margin-top: 4vh;
+}
