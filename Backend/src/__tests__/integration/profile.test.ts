@@ -33,7 +33,6 @@ describe('Profile', () => {
             .mock(User)
             .expects('findOne')
             .atLeast(0)
-            .atMost(20)
             .resolves(dummyUser);
     });
 
