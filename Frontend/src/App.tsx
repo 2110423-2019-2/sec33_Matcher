@@ -17,7 +17,11 @@ const App: React.FC = () => {
         <NavBar />
         <Switch>
           {/* <Route path="/signup" component={SignUp} /> */}
-          <PrivateRoute path="/protected" component={ComponentList} />
+          <PrivateRoute
+            path="/protected"
+            component={ComponentList}
+            roles={["admin"]}
+          />
           <Route path="/signin" component={BodySignIn} />
         </Switch>
       </AuthContextProvider>

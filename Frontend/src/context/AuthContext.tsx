@@ -3,7 +3,7 @@ import React, { createContext } from "react";
 const initialState = {
   username: "Can",
   isLogin: true,
-  role: "admin"
+  role: "photographer"
 };
 
 export const authReducer = (
