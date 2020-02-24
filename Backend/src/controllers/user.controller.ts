@@ -2,12 +2,15 @@ import { User } from '../models';
 import { generateHash } from '../utils/userHandlers';
 import HttpErrors from 'http-errors';
 import validator from 'validator';
+import pick from 'object.pick';
+import passport from 'passport';
 
 export default class UserController {
     static async createUser(req: any, res: any): Promise<void> {
         const fields = ['email', 'password', 'firstname', 'lastname', 'role'];
         //validate input ; pre-condition
-        const check = await UserController.validateInput(req.body, fields);
+        const inputBody = pick(req.body, fields);
+        const check = await UserController.validateInput(inputBody, fields);
         if (!check) throw new HttpErrors.BadRequest();
         const hash = await generateHash(req.body.password);
         const user = new User({
@@ -36,32 +39,23 @@ export default class UserController {
     }
     static async updateProfile(req: any, res: any): Promise<void> {
         //add fields by requested update and for only legal update field
-        const fields = [];
-        if (req.body.includes('firstname')) {
-            fields.push('firstname');
-        }
-        if (req.body.includes('lastname')) {
-            fields.push('lastname');
-        }
-        if (req.body.includes('password')) {
-            fields.push('password');
-        }
-        //additional precondition from validate input
-        if (!UserController.validateInput(req.body, fields)) {
+        const fields = ['email', 'password', 'firstname', 'lastname', 'role', 'createTime'];
+        const inputBody = pick(req.body, fields);
+        if (
+            inputBody.hasOwnProperty('role') ||
+            inputBody.hasOwnProperty('createTime') ||
+            inputBody.hasOwnProperty('email') ||
+            !UserController.validateInput(inputBody, fields)
+        ) {
             throw new HttpErrors.BadRequest();
         } else {
-            if (fields.includes('firstname')) {
-                await User.findByIdAndUpdate({ _id: req.user._id }, { firstname: req.body.firstname });
+            if (inputBody.hasOwnProperty('password')) {
+                const hash = await generateHash(inputBody.password);
+                inputBody.password = hash;
             }
-
-            if (fields.includes('lastname'))
-                await User.findByIdAndUpdate({ _id: req.user._id }, { lastname: req.body.lastname });
-
-            if (fields.includes('password')) {
-                const hash = await generateHash(req.body.password);
-                await User.findByIdAndUpdate({ _id: req.user._id }, { password: hash });
-            }
+            await User.findByIdAndUpdate(req.user._id, inputBody);
         }
+
         res.json({ status: 'success' });
     }
 

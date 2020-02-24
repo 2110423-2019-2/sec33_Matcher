@@ -32,8 +32,8 @@ describe('Profile', () => {
         sinon
             .mock(User)
             .expects('findOne')
-            .atLeast(1)
-            .atMost(2)
+            .atLeast(0)
+            .atMost(20)
             .resolves(dummyUser);
     });
 
@@ -60,15 +60,17 @@ describe('Profile', () => {
 
     describe('POST /profile', () => {
         beforeEach(() => {
-            sinon.stub(User.prototype, 'save');
-            (UserPrototype.save as sinon.SinonStub).callsFake(function(this: any) {
-                const currentRecord = this;
-                return Promise.resolve(currentRecord);
-            });
+            sinon
+                .mock(User)
+                .expects('findByIdAndUpdate')
+                .atLeast(0)
+                .atMost(20)
+                .resolves(dummyUser);
         });
 
         afterEach(() => {
-            (UserPrototype.save as sinon.SinonStub).restore();
+            // (UserPrototype.save as sinon.SinonStub).restore();
+            sinon.restore();
         });
 
         it('Should return Unauthorized for unauth user', async () => {
@@ -79,17 +81,15 @@ describe('Profile', () => {
         it('Should not update role and createTime', async () => {
             const agent = chai.request.agent(app);
             await agent.post('/login').send(dummyLoginPayload);
-            const badRes = agent.post('/profile').send({
+            const badRes = await agent.post('/profile').send({
                 firstname: 'Octocat',
                 role: 'admin',
                 createTime: new Date(new Date().getTime() + 86400000),
             });
             expect(badRes).to.have.status(400);
-
-            const goodRes = agent.post('/profile').send({
+            const goodRes = await agent.post('/profile').send({
                 firstname: 'Rebecca',
                 lastname: 'Davis',
-                email: 'orpha_fun9@yahoo.com',
                 password: 'password123',
             });
             expect(goodRes).to.have.status(200);
