@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import "./index.scss";
 import Checkbox, { CheckboxProps } from "@material-ui/core/Checkbox";
 import {
@@ -11,13 +11,28 @@ import {
 } from "../../assets";
 import { NavBar, Footer, Input, Button } from "../../components";
 
-// const [checkedPhotographer, setCheckedPhotographer] = React.useState(false);
 
-// const handleCheck = (field: boolean) => {
-
-// }
 
 export default () => {
+
+  const [userInfo, setUserInfo] = useState({ email: '', password: '' , passwordConfirm: '', firstName: '', lastName: '', asPhotographer: false});
+
+  const handleChange = (field: string) => (e: any) => {
+    console.log(e.target.value)
+    setUserInfo({
+      ...userInfo,
+      [field]: e.target.value
+    })
+  }
+
+  const handleCheck = () => (e: any) => {
+    console.log(e.target.value)
+    setUserInfo({
+      ...userInfo,
+      ['asPhotographer']: e.target.checked
+    })
+  }
+
   return (
     <div className="row registerPage">
       {/* <NavBar isLogin = {false} username = 'John Doe'/> */}
@@ -33,10 +48,10 @@ export default () => {
           <div className="row" style={{ display: 'inline-flex'}}>
             <div className="col-6">
               <div className="row registerFormSection">
-                <Input label="Firstname" variant="filled" fullWidth />
+                <Input label="Firstname" variant="filled" onChange={handleChange('firstName')} type='firstName' fullWidth />
               </div>
               <div className="row registerFormSection">
-                <Input label="Lastname" variant="filled" fullWidth />
+                <Input label="Lastname" variant="filled" onChange={handleChange('lastName')} type='lastName' fullWidth />
               </div>
             </div>
             <div className="col-6 center chooseImg" style={{margin:'auto'}}>
@@ -48,21 +63,19 @@ export default () => {
           </div>
           <div className="row">
             <div className="col-12">
-              <Input label="Email" variant="filled" fullWidth />
+              <Input label="Email" variant="filled" onChange={handleChange('email')} type='email' fullWidth />
               <div className="registerFormSection">
-                <Input label="Password" variant="filled" fullWidth />
+                <Input label="Password" variant="filled" onChange={handleChange('password')} type='password' fullWidth />
               </div>
               <div className="registerFormSection">
-                <Input label="Re-enter password" variant="filled" fullWidth />
+                <Input label="Re-enter password" variant="filled" onChange={handleChange('passwordConfirm')} type='passwordConfirm' fullWidth />
               </div>
             </div>
           </div>
           <div className="row">
             <div className="col-1 col-1-sm">
               <Checkbox
-                // checked={checkedPhotographer}
-                // onChange={handleCheck("checkedPhotographer")}
-                value="checkedPhotographer"
+                onChange={handleCheck()}
               />
             </div>
             <div className="col-8 col-8-sm">
@@ -72,7 +85,6 @@ export default () => {
               <hr className="checkBoxLine" />
             </div>
           </div>
-          {/* Add National Card Image?? */}
           <div className="row">
             <div className="col-12">
               <Input label="National Card Image" variant="filled" fullWidth />
