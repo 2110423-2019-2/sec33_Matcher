@@ -9,6 +9,8 @@ import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { IUser, User } from './models';
 import session from 'express-session';
+import { load as loadYAML } from 'yamljs';
+import * as swaggerUI from 'swagger-ui-express';
 
 dotenv.config();
 
@@ -40,8 +42,12 @@ export default class FastphotoApp {
         });
 
         /* Start using middleware */
+
+        /* Setup body parser */
         app.use(bodyParser.json());
         app.use(bodyParser.urlencoded({ extended: true }));
+
+        /* Setup session and passport */
         app.use(
             session({
                 secret: process.env.SESSION_SECRET,
@@ -60,6 +66,12 @@ export default class FastphotoApp {
                 AuthController.loginLocal,
             ),
         );
+
+        /* Setup swagger ui document */
+        if (process.env.NODE_ENV !== 'production') {
+            const swaggerDocument = loadYAML('./swagger.yaml');
+            app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
+        }
         /* End of middlewares */
 
         app.get('/', asyncHandler(UserController.hello));

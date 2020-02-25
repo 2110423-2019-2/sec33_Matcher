@@ -1,0 +1,225 @@
+swagger: '2.0'
+info:
+  description: |
+    This is a Matcher API server.
+  version: 1.0.0
+  title: Matcher
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+# host: petstore.swagger.io
+# basePath: /v2
+tags:
+- name: AuthController
+  description: Authentication
+- name: UserController
+  description: Access to user's profile
+- name: TaskController
+  description: Access task
+# schemes:
+# - http
+paths:
+  /:
+    get:
+      tags:
+      - Ping
+      summary: Root path
+      description: Root path
+      responses:
+        200:
+          description: OK
+  /login:
+    post:
+      tags:
+      - AuthController
+      summary: Login to the system
+      operationId: login
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: User's credential used for login.
+        required: true
+        schema:
+          type: object
+          properties:
+            email:
+              type: string
+            password:
+              type: string
+      responses:
+        200:
+          description: Logged in
+          schema:
+            $ref: '#/definitions/Success'
+        400:
+          description: Invalid input
+  /logout:
+    get:
+      tags:
+      - AuthController
+      summary: Logout from the system
+      operationId: logout
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        200:
+          description: Logged out
+          schema:
+            $ref: '#/definitions/Success'
+  /register:
+    post:
+      tags:
+      - UserController
+      summary: Create an account
+      responses:
+        200:
+          description: Created
+          schema:
+            $ref: '#/definitions/Success'
+        400:
+          description: Invalid input
+      parameters:
+      - in: body
+        name: body
+        description: User account
+        required: true
+        schema:
+          type: object
+          properties:
+            email:
+              type: string
+            password:
+              type: string
+            firstname:
+              type: string
+            lastname:
+              type: string
+            role:
+              type: string
+              enum:
+              - photographer
+              - customer
+  /whoami:
+    get:
+      tags:
+      - AuthController
+      summary: Fetch user instance
+      description: Duplicated to GET /profile, subject to remove.
+      responses:
+        200:
+          description: User object
+          schema:
+            $ref: '#/definitions/User'
+        401:
+          description: Unauthorized
+  /profile:
+    get:
+      tags:
+      - UserController
+      summary: Fetch user profile
+      responses:
+        200:
+          description: User object
+          schema:
+            $ref: '#/definitions/User'
+        401:
+          description: Unauthorized
+    post:
+      tags:
+      - UserController
+      summary: Update user profile
+      parameters:
+      - in: body
+        name: body
+        description: Field(s) to change
+        required: true
+        schema:
+          $ref: '#/definitions/User'
+      responses:
+        200:
+          description: Updated profile
+          schema:
+            $ref: '#/definitions/Success'
+      
+          
+# securityDefinitions:
+#   petstore_auth:
+#     type: oauth2
+#     authorizationUrl: http://petstore.swagger.io/oauth/dialog
+#     flow: implicit
+#     scopes:
+#       write:pets: modify pets in your account
+#       read:pets: read your pets
+#   api_key:
+#     type: apiKey
+#     name: api_key
+#     in: header
+
+definitions:
+  User:
+    type: object
+    required: 
+    - _id
+    - email
+    - firstname
+    - lastname
+    - role
+    - createTime
+    - password
+    properties:
+      _id:
+        type: integer
+      email:
+        type: string
+        format: email
+      password:
+        type: string
+      firstname:
+        type: string
+      lastname:
+        type: string
+      role:
+        type: string
+        description: User role for authorization
+        enum:
+        - admin
+        - customer
+        - photographer
+      createTime:
+        type: string
+        format: time
+    xml:
+      name: User
+  Task:
+    type: object
+    required: 
+    - _id
+    properties:
+      _id:
+        type: integer
+  Success:
+    type: object
+    properties:
+      status:
+        type: string
+        enum:
+        - success
+# basePath: /
+# schemes:
+#  - http
+#  - https
+# Added by API Auto Mocking Plugin
+# host: virtserver.swaggerhub.com
+basePath: /
+schemes:
+  - http
+  - https
