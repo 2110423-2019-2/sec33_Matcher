@@ -4,22 +4,24 @@ import { IUser } from '../models';
 const TaskSchema = new Schema({
     title: { type: String, required: [true, 'title can not be blank'] },
     description: { type: String },
-    Owner: { type: Schema.Types.ObjectId, ref: 'User', required: [true, 'owner is required'] },
-    avaibleTime: { type: Date, required: [true, 'available time is required'] },
+    location: { type: String, required: true },
+    owner: { type: Schema.Types.ObjectId, ref: 'User', required: [true, 'owner is required'] },
+    availableTime: { type: Date, required: [true, 'available time is required'] },
     photoStyle: { type: String, required: [true, 'photo style is required'] },
-    minPrice: { type: Number, required: [true, 'the minimum price is required'] },
-    maxPrice: { type: Number, required: [true, 'the maximum price is requried'] },
+    price: { type: Number, required: [true, 'the minimum price is required'] },
+    image: { type: String },
     createTime: { type: Date, required: [true, 'the created time is required'] },
 });
 
 export interface ITask extends Document {
     tile: string;
     description: string;
+    location: string;
     owner: IUser['_id'];
     availableTime: Date;
     photoStyle: string;
-    minPrice: number;
-    maxPrice: number;
+    price: number;
+    image: string;
     createTime: Date;
 }
 

@@ -2,7 +2,7 @@ import express, { Application } from 'express';
 import * as dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
-import { UserController, AuthController } from './controllers';
+import { UserController, AuthController, TaskController } from './controllers';
 import { errorHandler, asyncHandler } from './utils/handlers';
 import { ensureLoggedIn } from './utils/userHandlers';
 import passport from 'passport';
@@ -24,7 +24,7 @@ export default class FastphotoApp {
             process.env.DB_CONNECTION_URI || `mongodb://${process.env.DB_HOST}:27017/${process.env.DB_NAME}`,
             { useNewUrlParser: true, useUnifiedTopology: true },
             err => {
-                if (err) console.log('MongoDB Error');
+                if (err) console.log('MongoDB Error ' + err);
             },
         );
         mongoose.set('useCreateIndex', true);
@@ -72,8 +72,7 @@ export default class FastphotoApp {
 
         app.get('/logout', AuthController.logout);
 
-        // TODO: createtask route
-        // app.post('/createtask', ensureLoggedIn(), asyncHandle(TaskController.createTask))
+        app.post('/createtask', ensureLoggedIn(), asyncHandler(TaskController.createTask));
 
         /* Middleware for error handling */
         app.use(errorHandler);
