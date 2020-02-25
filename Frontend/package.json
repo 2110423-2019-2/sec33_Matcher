@@ -20,13 +20,21 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.3.0",
     "typescript": "~3.7.2",
-    "validator": "^12.2.0"
+    "validator": "^12.2.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "@typescript-eslint/eslint-plugin": "^2.18.0",
+    "@typescript-eslint/parser": "^2.18.0",
+    "prettier": "^1.19.1",
+    "eslint": "^6.8.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint \"**/*.tsx\" --ignore-pattern node_modules/",
+    "format": "eslint --fix \"**/*.tsx\""
   },
   "eslintConfig": {
     "extends": "react-app"
