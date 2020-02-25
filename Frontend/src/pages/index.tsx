@@ -1,5 +1,3 @@
-import BodySignIn from './BodySignIn'
+import BodySignIn from './BodySignIn';
 
-export {
-    BodySignIn,
-}
+export { BodySignIn };
