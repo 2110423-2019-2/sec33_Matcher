@@ -33,6 +33,10 @@ export default () => {
     })
   }
 
+  const handleSubmit = (e: any) => {
+    e.preventDefault()
+  }
+
   return (
     <div className="row registerPage">
       {/* <NavBar isLogin = {false} username = 'John Doe'/> */}
@@ -41,17 +45,17 @@ export default () => {
       </div>
       <div className="col-1" />
       <div className="col-4">
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="row">
             <h1 className="signInHeader">SIGN UP</h1>
           </div>
           <div className="row" style={{ display: 'inline-flex'}}>
             <div className="col-6">
               <div className="row registerFormSection">
-                <Input label="Firstname" variant="filled" onChange={handleChange('firstName')} type='firstName' fullWidth />
+                <Input label="Firstname" variant="filled" onChange={handleChange('firstName')} type='text' fullWidth />
               </div>
               <div className="row registerFormSection">
-                <Input label="Lastname" variant="filled" onChange={handleChange('lastName')} type='lastName' fullWidth />
+                <Input label="Lastname" variant="filled" onChange={handleChange('lastName')} type='text' fullWidth />
               </div>
             </div>
             <div className="col-6 center chooseImg" style={{margin:'auto'}}>
@@ -68,7 +72,7 @@ export default () => {
                 <Input label="Password" variant="filled" onChange={handleChange('password')} type='password' fullWidth />
               </div>
               <div className="registerFormSection">
-                <Input label="Re-enter password" variant="filled" onChange={handleChange('passwordConfirm')} type='passwordConfirm' fullWidth />
+                <Input label="Re-enter password" variant="filled" onChange={handleChange('passwordConfirm')} type='password' fullWidth />
               </div>
             </div>
           </div>
