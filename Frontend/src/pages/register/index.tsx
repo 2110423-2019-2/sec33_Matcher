@@ -25,30 +25,15 @@ export default () => {
     const validate = () => {
         setErrorText({
             ...errorText,
-            email: '',
-            passwordConfirm: '',
-            password: '',
+            email: isEmail(userInfo.email) ? '' : 'Please input a proper email.',
+            password: userInfo.password.length < 8 ? 'Password must no shorter than 8 character.' : '',
+            passwordConfirm: userInfo.password == userInfo.passwordConfirm? '' : 'Password confirmation must match the password entered.',
+
         });
-        if (!isEmail(userInfo.email)) {
-            setErrorText({
-                ...errorText,
-                email: 'Please input a proper email.',
-            });
+        if (Boolean(errorText.password) == Boolean(errorText.email) == Boolean(errorText.passwordConfirm) == false) {
+            return true;
         }
-        if (userInfo.password.length < 8) {
-            setErrorText({
-                ...errorText,
-                password: 'Password must be longer than 8 character.',
-            });
-        }
-        if (userInfo.password != userInfo.passwordConfirm) {
-            setErrorText({
-                ...errorText,
-                passwordConfirm: 'Password confirmation must match the password entered.',
-            });
-        }
-        // return true;
-        // return false;
+        return false;
     };
 
     const handleChange = (field: string) => (e: any) => {
@@ -56,7 +41,6 @@ export default () => {
             ...userInfo,
             [field]: e.target.value,
         });
-        validate();
     };
 
     const handleCheck = (e: any) => {
@@ -68,9 +52,9 @@ export default () => {
 
     const handleSubmit = (e: any) => {
         e.preventDefault();
-        // if (validate()) {
-        //     console.log('success!');
-        // }
+        if (validate()) {
+            console.log('success!');
+        }
     };
 
     return (
