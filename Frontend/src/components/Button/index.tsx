@@ -1,9 +1,9 @@
 import React from 'react';
-import "./index.scss";
+import './index.scss';
 
 interface ButtonProps {
     children?: React.ReactNode
-    type?: "filled" | "outlined"
+    type?: "filled" | "outlined" | "invert"
     className?: string
 }
 

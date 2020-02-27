@@ -1,16 +1,17 @@
 import React from "react";
-import logo from "./logo.svg";
+import { BodySignIn , Register} from "./pages";
 import "./App.css";
-import { Home } from "./pages";
 import { NavBar, ComponentList } from "./components"
 import "./index.scss";
+
+
 const App: React.FC = () => {
-  return (
-    <div>
-      <NavBar isLogin = {true} username = 'Prayut'/>
-      <Home/>
-    </div>
-  );
+    return (
+        <div>
+            <NavBar isLogin={false} username="John Doe" />
+            <BodySignIn />
+        </div>
+    );
 };
 
 export default App;

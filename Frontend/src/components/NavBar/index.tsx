@@ -1,10 +1,10 @@
-import React from "react";
-import "./index.css";
-import { UserBar, Button } from "../";
+import React from 'react';
+import './index.css';
+import { UserBar, Button } from '../';
 
 interface NavProps {
-  isLogin: boolean;
-  username: string;
+    isLogin: boolean;
+    username: string;
 }
 
 export default ({ isLogin, username }: NavProps) => {

@@ -47,10 +47,13 @@ body {
 }
 
 .navBar {
+  height: 7.22vh;
   width: 100%;
   display: inline-block;
   margin: auto;
   margin-left: 5%;
+  padding-top: 2em;
+  padding-bottom: 4em;
   text-align: left;
 }
 
