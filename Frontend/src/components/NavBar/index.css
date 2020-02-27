@@ -47,6 +47,7 @@ body {
 }
 
 .navBar {
+  height: 7.22vh;
   width: 100%;
   display: inline-block;
   margin: auto;
