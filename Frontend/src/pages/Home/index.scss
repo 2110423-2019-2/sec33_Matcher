@@ -1,7 +1,7 @@
+@import '../../components/colors.scss';
+
 .home {
-  /* padding-left: 80px; */
-  /* padding-right: 100px; */
-  padding-top: 150px;
+  padding-top: 4em;
 }
 
 .pad{
@@ -13,16 +13,25 @@
   display: flex;
 }
 .home-sub-title h5 {
-  color: #00577f;
+  color: $color-primary;
   display: flex;
   font-style: normal;
   font-weight: normal;
   margin-left: 1.74vw;
   align-self: center;
 }
+
+.subHeader {
+  color: $color-primary;
+
+  &.seeall {
+    color: $color-dark;
+  }
+}
+
 .line-before-home-sub-title {
   display: flex;
-  background: #f8b195;
+  background: $color-ternary;
   width: 5.56vw;
   height: 0.56vh;
   align-self: center;
@@ -61,67 +70,11 @@
   position: relative;
   height: 100px;
   width: 50%;
-  background-color:lightcoral;
+  background-color:$color-secondary;
   top: 150px;
   text-align: left;
   padding-left: 70px;  
-  color:#f8b195;
-}
-
-.blank{
-  height: 300px;
-}
-
-.jobby{
-  float: left;
-  color: #00577f;
-}
-
-.seeall{
-  float: right;
-  color: grey;
-}
-
-.blank2{
-  height: 100px;
-}
-
-.task{
-  float: left;
-  width: 100%;
-  height: 420px;
-  overflow: auto;
-  white-space:nowrap;
-  background-color:rgb(255, 225, 205);
-  
-}
-
-.vcard{
-  float:left;
-  width: 100%;
-  height: 900px;
-}
-
-.vfloat1{
-  float: left;
-  width: 33%;
-  margin-bottom: 50px;
-}
-
-.vfloat2{
-  position: relative;
-  top: 50px;
-  float: left;
-  width: 33%;
-  margin-bottom: 50px;
-}
-
-.vfloat3{
-  position: relative;
-  top: 100px;
-  float: left;
-  width: 33%;
-  margin-bottom: 50px;
+  color: $color-ternary;
 }
 
 .matcherBlock2{
@@ -129,16 +82,28 @@
   position: relative;
   height: 100px;
   width: 100%;
-  background-color:lightcoral;
+  background-color: $color-secondary;
   text-align: left;
   padding-left: 70px;  
-  color:#f8b195;
+  color: $color-ternary;
+}
+
+.blank{
+  height: 300px;
+}
+
+.task{
+  float: left;
+  width: 100%;
+  height: 420px;
+  overflow: auto;
+  white-space: nowrap;  
 }
 
 .socialicon{
   position: relative;
-  top:40px;
-  right:50px;
+  top: 40px;
+  right: 50px;
   float: right;
   
 }
@@ -146,4 +111,10 @@
 .matcherletter{
   float: left;
   height: 100%;
+}
+
+.home-button-line {
+  .createTaskBtn {
+    margin-left: 25px;
+  }
 }
