@@ -45,7 +45,7 @@ export default () => {
           <Input variant="filled" defaultValue="test" fullWidth />
         </div>
         <div className="col-6">
-          <Button type="filled">
+          <Button type="filled" fullWidth>
             Save Changes <Chevron style={{ strokeWidth: 1 }} />
           </Button>
         </div>
