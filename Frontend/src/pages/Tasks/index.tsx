@@ -1,8 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./index.scss";
 import { PHOTO_CATEGORIES, dummyTasks } from "../../const";
 import { TaskCard } from "../../components";
+import { getAllTasks } from "../../api/task";
 export default () => {
+  const [tasks, setTasks] = useState<Array<any>>([])
+  useEffect(() => {
+    getAllTasks().then(tasks => { setTasks(tasks) }
+    )
+  }, [])
   return (
     <div className="taskPage">
       <div className="row taskTitle">
@@ -21,7 +27,7 @@ export default () => {
         </div>
       </div>
       <div className="row tasks">
-        {dummyTasks.map(task => {
+        {tasks.map(task => {
           return (
             <div className="col">
               <TaskCard

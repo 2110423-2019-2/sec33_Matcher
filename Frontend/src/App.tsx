@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import { BodySignIn, Tasks } from "./pages";
 import "./App.css";
 import { NavBar, ComponentList, Footer } from "./components";

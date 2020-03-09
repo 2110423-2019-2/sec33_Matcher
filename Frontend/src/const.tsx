@@ -38,3 +38,6 @@ export const dummyTasks = [
     img: "https://picsum.photos/200/300"
   }
 ];
+
+export const apiEndpoint = 'https://localhost:8080';
+export const apiEndpointOf = (path: string) => `${apiEndpoint}${path}`; 
