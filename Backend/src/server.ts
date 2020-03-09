@@ -11,6 +11,7 @@ import { IUser, User } from './models';
 import session from 'express-session';
 import { load as loadYAML } from 'yamljs';
 import * as swaggerUI from 'swagger-ui-express';
+import cors from 'cors';
 
 dotenv.config();
 
@@ -46,6 +47,7 @@ export default class FastphotoApp {
         /* Setup body parser */
         app.use(bodyParser.json());
         app.use(bodyParser.urlencoded({ extended: true }));
+        app.use(cors()); // TODO: edit to whitelist
 
         /* Setup session and passport */
         app.use(
