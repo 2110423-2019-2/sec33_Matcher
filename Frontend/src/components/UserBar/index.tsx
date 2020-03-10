@@ -1,7 +1,7 @@
-import React from "react";
-import "./index.scss";
+import React from 'react';
+import './index.scss';
 
-const awesome = "/images/awesome.png";
+const awesome = '/images/awesome.png';
 
 interface UserProps {
   username: string;

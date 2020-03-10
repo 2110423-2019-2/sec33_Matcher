@@ -8,7 +8,7 @@ export default (props: any) => {
   return (
     <div className="navBar">
       <h3 className="logo">matcher</h3>
-      <h6 className="home navBarItem">Home</h6>
+      <h6 className="navHome navBarItem">Home</h6>
       <h6 className="aTask navBarItem">All Tasks</h6>
       <h6 className="type navBarItem">Photo Types</h6>
       <div className="NavBarUser">

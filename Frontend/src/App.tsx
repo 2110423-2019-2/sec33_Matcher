@@ -1,5 +1,5 @@
 import React, { useReducer } from "react";
-import { BodySignIn } from "./pages";
+import { BodySignIn , Register} from "./pages";
 import "./App.css";
 import { NavBar, ComponentList, PrivateRoute } from "./components";
 import "./index.scss";
@@ -9,6 +9,8 @@ import {
   AuthContextProvider
 } from "./context/AuthContext";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+
+
 const App: React.FC = () => {
   const [auth, authDispatcher] = useReducer(authReducer, defaultAuth);
   return (

@@ -52,10 +52,11 @@ export default () => {
                   onChange={handleChange('email')} 
                   error={Boolean(errorText)}
                   helperText={errorText}  
+                  fullWidth
                 />
               </div>
               <div className="loginFormSection">
-                <Input label="Password" variant="filled" onChange={handleChange('password')} type="password" />
+                <Input label="Password" variant="filled" onChange={handleChange('password')} type="password" fullWidth/>
               </div>
             </div>
           </div>
