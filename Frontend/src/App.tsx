@@ -1,5 +1,5 @@
 import React, { useReducer } from "react";
-import { BodySignIn , Register} from "./pages";
+import { BodySignIn , Register, Home} from "./pages";
 import "./App.css";
 import { NavBar, ComponentList, PrivateRoute } from "./components";
 import "./index.scss";
@@ -24,7 +24,9 @@ const App: React.FC = () => {
             component={ComponentList}
             roles={["admin"]}
           />
+          <Route path="/index" component={Home} />
           <Route path="/signin" component={BodySignIn} />
+          <Route path="/register" component={Register} />
         </Switch>
       </AuthContextProvider>
     </Router>
