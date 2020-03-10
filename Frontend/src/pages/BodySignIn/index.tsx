@@ -7,6 +7,7 @@ import { ReactComponent as ChevronRight } from "../../assets/icons/chevron-right
 import { Input, Button } from "../../components/";
 import isEmail from 'validator/lib/isEmail';
 import "./index.scss";
+import { Link } from "react-router-dom";
 
 export default () => {
   const [userCred, setUserCred] = useState({ email: '', password: '' });
@@ -62,7 +63,7 @@ export default () => {
           </div>
           <div className="row">
             <div className="col-8 col-7-sm">
-              <p>Not a member? <a href="/#" className="signUpLink">Sign Up</a></p>
+              <p>Not a member? <Link to="/register"><a className="signUpLink">Sign Up</a></Link></p>
             </div>
             <div className="col-4 col-5-sm right loginButton">
               <Button type="invert" ><ChevronRight /></Button>
