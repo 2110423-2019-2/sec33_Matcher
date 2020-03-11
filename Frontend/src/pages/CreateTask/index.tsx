@@ -47,9 +47,9 @@ export default () => {
       <FormControl variant="filled" fullWidth>
         <InputLabel>Task type</InputLabel>
         <Select onChange={handleChange('text')}>
-          <MenuItem>Type 1</MenuItem>
-          <MenuItem>Type 2</MenuItem>
-          <MenuItem>Type 3</MenuItem>
+          <MenuItem value={'type1'}>Type 1</MenuItem>
+          <MenuItem value={'type2'}>Type 2</MenuItem>
+          <MenuItem value={'type3'}>Type 3</MenuItem>
         </Select>
       </FormControl>
       </div>
