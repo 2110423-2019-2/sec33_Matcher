@@ -24,9 +24,9 @@ const App: React.FC = () => {
             component={ComponentList}
             roles={["admin"]}
           />
-          <Route path="/index" component={Home} />
           <Route path="/signin" component={BodySignIn} />
           <Route path="/register" component={Register} />
+          <Route path="/" component={Home} />
         </Switch>
       </AuthContextProvider>
     </Router>

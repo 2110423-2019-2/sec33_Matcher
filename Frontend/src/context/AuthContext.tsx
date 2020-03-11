@@ -1,9 +1,9 @@
 import React, { createContext } from "react";
 
 const initialState = {
-  username: "Can",
-  isLogin: true,
-  role: "photographer"
+  username: "User",
+  isLogin: false,
+  role: "customer"
 };
 
 export const authReducer = (
