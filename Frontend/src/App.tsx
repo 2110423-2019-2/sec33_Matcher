@@ -1,5 +1,5 @@
 import React, { useReducer } from "react";
-import { BodySignIn , Register, Home} from "./pages";
+import { BodySignIn , Register, Home, CreateTask } from "./pages";
 import "./App.css";
 import { NavBar, ComponentList, PrivateRoute } from "./components";
 import "./index.scss";

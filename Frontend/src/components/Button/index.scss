@@ -17,6 +17,10 @@
   &.invert {
     color: $color-white;
   }
+
+  &.fullWidth {
+    width: 100%;
+  }
 }
 
 .button:hover {
