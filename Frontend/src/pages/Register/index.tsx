@@ -4,6 +4,7 @@ import Checkbox, { CheckboxProps } from '@material-ui/core/Checkbox';
 import { AppleLogin, FacebookLogin, GmailLogin, ChevronRight, RegisterBackground, ChooseImage } from '../../assets';
 import { NavBar, Footer, Input, Button } from '../../components';
 import isEmail from 'validator/lib/isEmail';
+import { Link } from 'react-router-dom';
 
 export default () => {
     const [userInfo, setUserInfo] = useState({
@@ -27,10 +28,15 @@ export default () => {
             ...errorText,
             email: isEmail(userInfo.email) ? '' : 'Please input a proper email.',
             password: userInfo.password.length < 8 ? 'Password must no shorter than 8 character.' : '',
-            passwordConfirm: userInfo.password == userInfo.passwordConfirm? '' : 'Password confirmation must match the password entered.',
-
+            passwordConfirm:
+                userInfo.password == userInfo.passwordConfirm
+                    ? ''
+                    : 'Password confirmation must match the password entered.',
         });
-        if (Boolean(errorText.password) == Boolean(errorText.email) == Boolean(errorText.passwordConfirm) == false) {
+        if (
+            ((Boolean(errorText.password) == Boolean(errorText.email)) == Boolean(errorText.passwordConfirm)) ==
+            false
+        ) {
             return true;
         }
         return false;
@@ -150,9 +156,9 @@ export default () => {
                         <div className="col-8 col-7-sm">
                             <p>
                                 Already a member?{' '}
-                                <a href="/#" className="signInLink">
-                                    Sign In
-                                </a>
+                                <Link to="/signin">
+                                    <a className="signInLink">Sign In</a>
+                                </Link>
                             </p>
                         </div>
                         <div className="col-4 col-5-sm right">

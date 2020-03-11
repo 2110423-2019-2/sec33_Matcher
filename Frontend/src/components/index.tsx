@@ -1,19 +1,21 @@
-import NavBar from './NavBar'
-import UserBar from './UserBar'
-import ComponentList from './ComponentList';
-import Button from './Button';
-import VerticalCard from './VerticalCard';
-import TaskCard from './TaskCard';
-import Footer from './Footer';
-import Input from './Input';
+import NavBar from "./NavBar";
+import UserBar from "./UserBar";
+import ComponentList from "./ComponentList";
+import Button from "./Button";
+import VerticalCard from "./VerticalCard";
+import TaskCard from "./TaskCard";
+import Input from "./Input";
+import PrivateRoute from "./PrivateRoute";
+import Footer from "./Footer";
 
 export {
-    NavBar,
-    UserBar,
-    ComponentList,
-    Button,
-    VerticalCard,
-    TaskCard,
-    Footer,
-    Input,
-}
+  NavBar,
+  UserBar,
+  ComponentList,
+  Button,
+  VerticalCard,
+  TaskCard,
+  Input,
+  PrivateRoute,
+  Footer
+};
