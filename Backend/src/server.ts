@@ -28,6 +28,7 @@ export default class FastphotoApp {
             },
         );
         mongoose.set('useCreateIndex', true);
+        mongoose.set('useFindAndModify', false);
 
         passport.serializeUser(async (user: IUser, done) => {
             return done(null, user.email);
@@ -66,6 +67,10 @@ export default class FastphotoApp {
         app.post('/register', asyncHandler(UserController.createUser));
 
         app.post('/login', passport.authenticate('local'), AuthController.login);
+
+        app.get('/profile', ensureLoggedIn(), asyncHandler(UserController.getProfile));
+
+        app.post('/profile', ensureLoggedIn(), asyncHandler(UserController.updateProfile));
 
         app.get('/whoami', ensureLoggedIn(), AuthController.whoami);
 
