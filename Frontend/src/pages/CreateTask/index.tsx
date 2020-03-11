@@ -2,6 +2,8 @@ import React, { useContext, useState } from "react";
 import "./index.scss";
 import { Input, Button } from "../../components";
 import { ReactComponent as Chevron } from "../../assets/icons/chevron-right.svg";
+import { Link, useHistory } from 'react-router-dom';
+import { createTask } from '../../api/task';
 
 import { Select } from "@material-ui/core";
 import InputLabel from '@material-ui/core/InputLabel';
@@ -16,6 +18,7 @@ export default () => {
     tasktype: '',
     price: '',
 });
+  const history = useHistory();
 
   const handleChange = (field: string) => (e: any) => {
     setTaskInfo({
@@ -26,7 +29,8 @@ export default () => {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    console.log(taskInfo)
+    createTask(taskInfo)
+    .then(() => history.push('/createtask'))
 };  
   
   return (
