@@ -18,7 +18,6 @@ const App: React.FC = () => {
       <AuthContextProvider value={{ auth, authDispatcher }}>
         <NavBar />
         <Switch>
-          {/* <Route path="/signup" component={SignUp} /> */}
           <PrivateRoute
             path="/protected"
             component={ComponentList}

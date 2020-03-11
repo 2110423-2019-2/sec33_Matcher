@@ -7,11 +7,13 @@ import { ReactComponent as ChevronRight } from "../../assets/icons/chevron-right
 import { Input, Button } from "../../components/";
 import isEmail from 'validator/lib/isEmail';
 import "./index.scss";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import { login } from '../../api/user';
 
 export default () => {
   const [userCred, setUserCred] = useState({ email: '', password: '' });
   const [errorText, setErrorText] = useState<boolean | string>(false);
+  const history = useHistory();
 
   const validate = () => {
     if (!isEmail(userCred.email)) return false;
@@ -28,13 +30,17 @@ export default () => {
   const handleSubmit = (e: any) => {
     e.preventDefault()
     if (validate()) {
-      console.log(userCred)
       setErrorText(false);
+      login(userCred)
+        .then(() => history.push('/'))
+        .catch(() => {
+          setErrorText('Email or password is invalid, please try again.');
+        })
     } else {
       setErrorText('Email is invalid');
     }
   }
-  
+
   return (
     <div className="row">
       <div className="col-6 hidden-sm">
@@ -42,35 +48,32 @@ export default () => {
       </div>
       <div className="col-1" />
       <div className="col-4">
-        <form onSubmit={handleSubmit}>
-          <div className="row">
-            <div className="col-12">
-              <h1 className="signInHeader">SIGN IN</h1>
-              <div className="loginFormSection">
-                <Input 
-                  label="Email" 
-                  variant="filled" 
-                  onChange={handleChange('email')} 
-                  error={Boolean(errorText)}
-                  helperText={errorText}  
-                  fullWidth
-                />
-              </div>
-              <div className="loginFormSection">
-                <Input label="Password" variant="filled" onChange={handleChange('password')} type="password" fullWidth/>
-              </div>
+        <div className="row">
+          <div className="col-12">
+            <h1 className="signInHeader">SIGN IN</h1>
+            <div className="loginFormSection">
+              <Input
+                label="Email"
+                variant="filled"
+                onChange={handleChange('email')}
+                error={Boolean(errorText)}
+                helperText={errorText}
+                fullWidth
+              />
+            </div>
+            <div className="loginFormSection">
+              <Input label="Password" variant="filled" onChange={handleChange('password')} type="password" fullWidth />
             </div>
           </div>
-          <div className="row">
-            <div className="col-8 col-7-sm">
-              <p>Not a member? <Link to="/register"><a className="signUpLink">Sign Up</a></Link></p>
-            </div>
-            <div className="col-4 col-5-sm right loginButton">
-              <Button type="invert" ><ChevronRight /></Button>
-              
-            </div>
+        </div>
+        <div className="row">
+          <div className="col-8 col-7-sm">
+            <p>Not a member? <Link to="/register"><span className="signUpLink">Sign Up</span></Link></p>
           </div>
-        </form>
+          <div className="col-4 col-5-sm right loginButton">
+            <Button type="invert" onClick={handleSubmit} ><ChevronRight /></Button>
+          </div>
+        </div>
         <div className="row center">
           <div className="col-5 col-5-sm"><hr /></div>
           <div className="col-2 col-2-sm center">Or</div>

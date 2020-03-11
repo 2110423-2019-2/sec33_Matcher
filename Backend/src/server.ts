@@ -9,6 +9,7 @@ import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { IUser, User } from './models';
 import session from 'express-session';
+import cors from 'cors';
 
 dotenv.config();
 
@@ -42,6 +43,7 @@ export default class FastphotoApp {
         /* Start using middleware */
         app.use(bodyParser.json());
         app.use(bodyParser.urlencoded({ extended: true }));
+        app.use(cors()); // TODO: edit to whitelist
         app.use(
             session({
                 secret: process.env.SESSION_SECRET,

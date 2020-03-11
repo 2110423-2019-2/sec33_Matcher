@@ -5,9 +5,10 @@ interface ButtonProps {
     children?: React.ReactNode
     type?: "filled" | "outlined" | "invert"
     className?: string
+    onClick?: any
 }
 
-export default ({ children, type = 'filled', className = '' }: ButtonProps) => 
-    <div className={`button ${type} ${className}`}>
+export default ({ children, type = 'filled', className = '', onClick = () => {} }: ButtonProps) => 
+    <div className={`button ${type} ${className}`} onClick={onClick}>
         { children }
     </div>
