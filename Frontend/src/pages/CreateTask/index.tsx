@@ -2,7 +2,12 @@ import React, { useContext, useState } from "react";
 import "./index.scss";
 import { Input, Button } from "../../components";
 import { ReactComponent as Chevron } from "../../assets/icons/chevron-right.svg";
+
 import { Select } from "@material-ui/core";
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
 
 export default () => {
   const [userCred, setUserCred] = useState({ text: '' });
@@ -39,7 +44,14 @@ export default () => {
         <Input variant="filled" onChange={handleChange('text')} label="Cover image" fullWidth />
       </div>
       <div className="col-6">
-        <Select variant="filled" onChange={handleChange('text')} label="Task type" fullWidth />
+      <FormControl variant="filled" fullWidth>
+        <InputLabel>Task type</InputLabel>
+        <Select onChange={handleChange('text')}>
+          <MenuItem>Type 1</MenuItem>
+          <MenuItem>Type 2</MenuItem>
+          <MenuItem>Type 3</MenuItem>
+        </Select>
+      </FormControl>
       </div>
     </div>
     <div className="row createTaskTitle">
