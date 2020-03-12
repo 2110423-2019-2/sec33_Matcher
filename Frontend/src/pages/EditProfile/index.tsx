@@ -4,18 +4,46 @@ import { Input, Button } from "../../components";
 import { ReactComponent as Chevron } from "../../assets/icons/chevron-right.svg";
 import { Link, useHistory } from 'react-router-dom';
 import { AuthContext } from "../../context/AuthContext";
+import isEmail from 'validator/lib/isEmail';
 
 export default () => {
 
   const { auth } = useContext(AuthContext);
   
   const [userInfo, setUserInfo] = useState({
-    name: '',
-    surname: '',
+    firstname: '',
+    lastname: '',
     password: '',
-    re_password: '',
+    passwordConfirm: '',
     email: '',
 });
+const [errorText, setErrorText] = useState({
+  firstname: '',
+  lastname: '',
+  password: '',
+  passwordConfirm: '',
+  email: '',
+});
+
+const validate = () => {
+  setErrorText({
+      ...errorText,
+      email: isEmail(userInfo.email) ? '' : 'Please input a proper email.',
+      password: userInfo.password.length < 8 ? 'Password must no shorter than 8 character.' : '',
+      passwordConfirm:
+          userInfo.password == userInfo.passwordConfirm
+              ? ''
+              : 'Password confirmation must match the password entered.',
+  });
+  if (
+      ((Boolean(errorText.password) == Boolean(errorText.email)) == Boolean(errorText.passwordConfirm)) ==
+      false
+  ) {
+      return true;
+  }
+  return false;
+};
+
   // const history = useHistory();
 
   const handleChange = (field: string) => (e: any) => {
@@ -27,7 +55,9 @@ export default () => {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    console.log('done!')
+    if (validate()) {
+      console.log('success!');
+  }
 };  
 
   return (
@@ -45,23 +75,47 @@ export default () => {
     <form onSubmit={handleSubmit}>
     <div className="row editProfileTitle">
       <div className="col-6">
-        <Input variant="filled" onChange={handleChange('name')} label="Name" defaultValue={auth.username} fullWidth />
+        <Input variant="filled" onChange={handleChange('firstname')} type="text" label="Name" defaultValue={auth.username} fullWidth />
       </div>
       <div className="col-6">
-        <Input variant="filled" onChange={handleChange('surname')} label="Surname" defaultValue={auth.username} fullWidth />
-      </div>
-    </div>
-    <div className="row editProfileTitle">
-      <div className="col-6">
-        <Input variant="filled" onChange={handleChange('password')} type='password' label="Password" fullWidth />
-      </div>
-      <div className="col-6">
-        <Input variant="filled" onChange={handleChange('re_password')} type='password' label="Re-enter password" fullWidth />
+        <Input variant="filled" onChange={handleChange('lastname')} type="text" label="Surname" defaultValue={auth.username} fullWidth />
       </div>
     </div>
     <div className="row editProfileTitle">
       <div className="col-6">
-        <Input variant="filled" onChange={handleChange('email')} label="Email" defaultValue={auth.username} fullWidth />
+        <Input 
+        variant="filled" 
+        onChange={handleChange('password')} 
+        type='password' 
+        label="Password" 
+        error={Boolean(errorText.password)} 
+        helperText={errorText.password} 
+        fullWidth 
+        />
+      </div>
+      <div className="col-6">
+        <Input 
+        variant="filled" 
+        onChange={handleChange('passwordConfirm')} 
+        type='password' 
+        label="Re-enter password"
+        error={Boolean(errorText.passwordConfirm)}
+        helperText={errorText.passwordConfirm}        
+        fullWidth 
+        />
+      </div>
+    </div>
+    <div className="row editProfileTitle">
+      <div className="col-6">
+        <Input 
+        variant="filled" 
+        onChange={handleChange('email')} 
+        label="Email" 
+        defaultValue={auth.username} 
+        error={Boolean(errorText.email)}
+        helperText={errorText.email}        
+        fullWidth 
+        />
       </div>
       <div className="col-6">
         <Button type="invert" fullWidth>Save Changes<Chevron style={{ strokeWidth: 1 }} />
