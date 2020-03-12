@@ -34,7 +34,7 @@ export default () => {
     <div className="editProfilePage">
     <div className="row editProfileTitle">
       <div className="col-3">
-          <h4 className="editProfileHeader">Create Task</h4>
+          <h4 className="editProfileHeader">Edit Profile</h4>
       </div>
     </div>
     <div className="row messageProfile">
