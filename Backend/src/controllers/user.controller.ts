@@ -52,6 +52,6 @@ export default class UserController {
     }
 
     static async hello(req: any, res: any): Promise<void> {
-        res.send('Hello World! ' + Role.CUSTOMER);
+        res.send('Hello World!');
     }
 }
