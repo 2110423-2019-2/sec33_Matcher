@@ -11,31 +11,36 @@ export const dummyTasks = [
     username: "Poom",
     location: "Siam Paragon",
     price: 20,
-    img: "https://picsum.photos/200/300"
+    img: "https://picsum.photos/200/300",
+    photoStyle: 'wedding'
   },
   {
     username: "Poom",
     location: "Siam Paragon",
     price: 20,
-    img: "https://picsum.photos/200/300"
+    img: "https://picsum.photos/200/300",
+    photoStyle: 'wedding'
   },
   {
     username: "Poom",
     location: "Siam Paragon",
     price: 20,
-    img: "https://picsum.photos/200/300"
+    img: "https://picsum.photos/200/300",
+    photoStyle: 'wedding'
   },
   {
     username: "Poom",
     location: "Siam Paragon",
     price: 20,
-    img: "https://picsum.photos/200/300"
+    img: "https://picsum.photos/200/300",
+    photoStyle: 'wedding'
   },
   {
     username: "Poom",
     location: "Siam Paragon",
     price: 20,
-    img: "https://picsum.photos/200/300"
+    img: "https://picsum.photos/200/300",
+    photoStyle: 'Weddin'
   }
 ];
 

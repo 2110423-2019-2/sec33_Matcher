@@ -26,6 +26,7 @@ const App: React.FC = () => {
           <Route path="/register" component={Register} />
           <Route path="/create" component={CreateTask} />
           <Route path="/task" component={Tasks} />
+          <Route path="/comp" component={ComponentList} />
           <Route path="/" component={Home} />
         </Switch>
       </AuthContextProvider>

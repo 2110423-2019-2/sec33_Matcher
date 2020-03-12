@@ -31,11 +31,7 @@ export default (props: any) => {
           </Link>
         )}
       </div>
-      {auth.isLogin ? (
-          <hr className="slider" />
-        ) : (
-          <hr className="sliderB" />
-        )}
+          <hr className={`${auth.isLogin ? "slider":"sliderB"}`} />
       
     </div>
   );
