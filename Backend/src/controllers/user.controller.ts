@@ -22,7 +22,7 @@ export default class UserController {
         if (!fieldCheck(req.body, fields)) throw new HttpErrors.BadRequest();
 
         // Precondition : Role should be either "photographer" or "customer"
-        if (req.body.role != Role.PHOTOGRAPHER && req.body.role != Role.CUSTOMER) throw new HttpErrors.BadRequest();
+        if (req.body.role !== Role.PHOTOGRAPHER && req.body.role !== Role.CUSTOMER) throw new HttpErrors.BadRequest();
 
         // Precondition : Should reject bad email
         if (!validator.isEmail(req.body.email)) throw new HttpErrors.BadRequest();
