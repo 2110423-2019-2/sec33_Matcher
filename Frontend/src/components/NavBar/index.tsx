@@ -6,11 +6,11 @@ import { Link } from "react-router-dom";
 import { whoami } from "../../api/user";
 
 export default (props: any) => {
-  const { auth, authDispatcher } = useContext(AuthContext);
+  const { auth, authDispatch } = useContext(AuthContext);
 
   useEffect(() => {
     whoami()
-      .then(profile => authDispatcher({ type: 'FETCH_AUTH_STATUS', payload: profile }))
+      .then(profile => authDispatch({ type: 'FETCH_AUTH_STATUS', payload: profile }))
       .catch(() => console.log('Unauthenticated'))
   }, [])
 
@@ -24,7 +24,7 @@ export default (props: any) => {
       <h6 className="type navBarItem">Photo Types</h6>
       <div className="NavBarUser">
         {auth.isLogin ? (
-          <UserBar username={auth.username} />
+          <UserBar username={auth.firstname} />
         ) : (
           <Link to='/signin'>
             <Button type="outlined">Sign In</Button>
