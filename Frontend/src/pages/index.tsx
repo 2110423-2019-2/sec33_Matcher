@@ -5,6 +5,6 @@ import Home from './Home'
 export {
     BodySignIn,
     Register,
-    CreateTask
+    CreateTask,
     Home
 }

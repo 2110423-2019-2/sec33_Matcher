@@ -3,7 +3,7 @@ import "./index.scss";
 import { Input, Button } from "../../components";
 import { ReactComponent as Chevron } from "../../assets/icons/chevron-right.svg";
 import { Link, useHistory } from 'react-router-dom';
-import { createTask } from '../../api/task';
+// import { createTask } from '../../api/task';
 
 import { Select } from "@material-ui/core";
 import InputLabel from '@material-ui/core/InputLabel';
@@ -29,8 +29,9 @@ export default () => {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    createTask(taskInfo)
-    .then(() => history.push('/createtask'))
+    // createTask(taskInfo)
+    // .then(() => history.push('/createtask'))
+    history.push('/createtask');
 };  
   
   return (

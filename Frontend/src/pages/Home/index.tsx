@@ -4,12 +4,13 @@ import { Button, VerticalCard, TaskCard } from "../../components/index";
 import { ReactComponent as Chevron } from '../../assets/icons/chevron-right.svg';
 import camera from '../../assets/camera.svg';
 import social from '../../assets/icons/social icon.svg';
-import graduation from '../../assets/vcard/graduation.svg'
-import wedding from '../../assets/vcard/wedding.svg'
-import event from '../../assets/vcard/event.svg'
-import product from '../../assets/vcard/product.svg'
-import place from '../../assets/vcard/place.svg'
-import cafe from '../../assets/vcard/cafe.svg'
+import graduation from '../../assets/vcard/graduation.svg';
+import wedding from '../../assets/vcard/wedding.svg';
+import event from '../../assets/vcard/event.svg';
+import product from '../../assets/vcard/product.svg';
+import place from '../../assets/vcard/place.svg';
+import cafe from '../../assets/vcard/cafe.svg';
+import { Link } from 'react-router-dom';
 
 const categoryCards = [
   {
@@ -64,7 +65,7 @@ export default () => {
 
         <div className="home-button-line">
           <Button type="filled">Find jobs</Button>
-          <Button type="outlined" className="createTaskBtn">Create task</Button>
+          <Link to="/create"><Button type="outlined" className="createTaskBtn">Create task</Button></Link>
         </div>
       </div>
 
