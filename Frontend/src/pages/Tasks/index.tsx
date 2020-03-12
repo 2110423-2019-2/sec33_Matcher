@@ -13,12 +13,18 @@ export default () => {
         // )
         setTasks(dummyTasks);
     }, []);
-    const filteredTasks = tasks.filter(task => task.photoStyle === taskFilter.filter);
+    const filteredTasks = tasks.filter(task => task.photoStyle === taskFilter.filter || taskFilter.filter === '');
 
     const onclick = (category: string) => (e: any) => {
-        setTaskFilter({
-            filter: category,
-        });
+        if (taskFilter.filter === category) {
+            setTaskFilter({
+                filter: '',
+            });
+        } else {
+            setTaskFilter({
+                filter: category,
+            });
+        }
     };
 
     return (
