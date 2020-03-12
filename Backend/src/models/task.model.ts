@@ -11,6 +11,8 @@ const TaskSchema = new Schema({
     price: { type: Number, required: [true, 'the minimum price is required'] },
     image: { type: String },
     createTime: { type: Date, required: [true, 'the created time is required'] },
+    status: { type: String, required: [true] },
+    acceptedBy: { type: Schema.Types.ObjectId, ref: 'User' },
 });
 
 export interface ITask extends Document {
@@ -23,6 +25,8 @@ export interface ITask extends Document {
     price: number;
     image: string;
     createTime: Date;
+    status: string;
+    acceptedBy: IUser['_id'];
 }
 
 export default mongoose.model<ITask>('Task', TaskSchema);

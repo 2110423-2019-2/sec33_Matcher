@@ -1,6 +1,6 @@
 import { Task } from '../models';
-import { containAll, matchAny, inRange } from '../utils/utils';
-import { Role, photoStyles } from '../const';
+import { containAll, inRange } from '../utils/utils';
+import { Role, photoStyles, TaskStatus } from '../const';
 import HttpErrors from 'http-errors';
 
 export default class TaskController {
@@ -10,8 +10,8 @@ export default class TaskController {
     private static checkCreateTask(req: any): boolean {
         if (!containAll(req.body, TaskController.requiredFields)) return false;
         if (!inRange(req.body.title.length, 1, 20)) return false;
-        if (!matchAny<string>(req.user.role, this.availableOwnerRoles)) return false;
-        if (!matchAny<string>(req.body.photoStyle, photoStyles)) return false;
+        if (!TaskController.availableOwnerRoles.includes(req.user.role)) return false;
+        if (!photoStyles.includes(req.body.photoStyle)) return false;
         if (req.body.price < 0) return false;
 
         return true;
@@ -30,6 +30,7 @@ export default class TaskController {
             price: req.body.price,
             image: req.body.image,
             createTime: new Date(),
+            status: TaskStatus.AVAILABLE,
         });
 
         await task.save();

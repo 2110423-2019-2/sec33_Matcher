@@ -1,6 +1,5 @@
 import chai = require('chai');
 import chaiHttp = require('chai-http');
-import mongoose from 'mongoose';
 import { describe } from 'mocha';
 
 chai.use(chaiHttp);

@@ -23,3 +23,10 @@ export const photoStyles: Array<string> = [
     PhotoStyles.RESTAURANT,
     PhotoStyles.EVENT,
 ];
+
+export enum TaskStatus {
+    AVAILABLE = 'AVAILABLE',
+    ACCEPTED = 'ACCEPTED',
+    REQ_FIN = 'REQ_FIN',
+    FINISHED = 'FINISHED',
+}
