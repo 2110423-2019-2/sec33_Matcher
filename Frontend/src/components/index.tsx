@@ -7,6 +7,7 @@ import TaskCard from "./TaskCard";
 import Input from "./Input";
 import PrivateRoute from "./PrivateRoute";
 import Footer from "./Footer";
+import PhotoType from "./PhotoType"
 
 export {
   NavBar,
@@ -17,5 +18,6 @@ export {
   TaskCard,
   Input,
   PrivateRoute,
-  Footer
+  Footer,
+  PhotoType
 };

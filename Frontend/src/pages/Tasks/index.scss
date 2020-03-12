@@ -22,4 +22,9 @@
 
 .pButton {
   cursor: pointer;
+  transition: 0.1s ease-in-out;
+}
+
+.pButton:hover {
+  color: $color-secondary;
 }

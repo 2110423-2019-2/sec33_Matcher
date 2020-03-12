@@ -1,7 +1,7 @@
 import React, { useReducer } from "react";
 import { BodySignIn , Register, Home, CreateTask, Tasks } from "./pages";
 import "./App.css";
-import { NavBar, ComponentList, PrivateRoute } from "./components";
+import { NavBar, ComponentList, PrivateRoute, PhotoType } from "./components";
 import "./index.scss";
 import {
   authReducer,
@@ -27,7 +27,9 @@ const App: React.FC = () => {
           <Route path="/create" component={CreateTask} />
           <Route path="/task" component={Tasks} />
           <Route path="/comp" component={ComponentList} />
+          <Route path="/type" component={PhotoType} />
           <Route path="/" component={Home} />
+
         </Switch>
       </AuthContextProvider>
     </Router>
