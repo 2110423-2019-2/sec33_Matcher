@@ -10,7 +10,6 @@ import {
 } from "./context/AuthContext";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-
 const App: React.FC = () => {
   const [auth, authDispatcher] = useReducer(authReducer, defaultAuth);
   return (
@@ -25,6 +24,7 @@ const App: React.FC = () => {
           />
           <Route path="/signin" component={BodySignIn} />
           <Route path="/register" component={Register} />
+          <Route path="/create" component={CreateTask} />
           <Route path="/" component={Home} />
         </Switch>
       </AuthContextProvider>
