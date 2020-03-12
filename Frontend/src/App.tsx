@@ -14,7 +14,7 @@ const App: React.FC = () => {
   return (
     <AuthContextProvider value={{ auth, authDispatcher }}>
       <div>
-        <NavBar username="John Doe" />
+        <NavBar username={"John Doe"} isLogin={true} />
         {/* <Footer/> */}
         {/* <ComponentList /> */}
         <EditProfile />
