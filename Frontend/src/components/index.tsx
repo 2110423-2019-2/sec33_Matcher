@@ -5,6 +5,7 @@ import Button from "./Button";
 import VerticalCard from "./VerticalCard";
 import TaskCard from "./TaskCard";
 import Input from "./Input";
+import PrivateRoute from "./PrivateRoute";
 import Footer from "./Footer";
 
 export {
@@ -15,5 +16,6 @@ export {
   VerticalCard,
   TaskCard,
   Input,
+  PrivateRoute,
   Footer
 };
