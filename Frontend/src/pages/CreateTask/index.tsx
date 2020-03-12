@@ -1,9 +1,8 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import "./index.scss";
 import { Input, Button } from "../../components";
 import { ReactComponent as Chevron } from "../../assets/icons/chevron-right.svg";
-import { Link, useHistory } from 'react-router-dom';
-import { createTask } from '../../api/task';
+import { useHistory } from 'react-router-dom';
 
 import { Select } from "@material-ui/core";
 import InputLabel from '@material-ui/core/InputLabel';
@@ -29,14 +28,15 @@ export default () => {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    createTask(taskInfo)
-    .then(() => history.push('/createtask'))
+    history.push('/')
+    // upsertTask(taskInfo)
+    // .then(() => history.push('/'))
 };  
   
   return (
     <div className="createTaskPage">
     <div className="row createTaskTitle">
-      <div className="col-3">
+      <div className="col-8">
           <h4 className="createTaskHeader">Create Task</h4>
       </div>
     </div>

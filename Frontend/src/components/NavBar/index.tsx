@@ -8,7 +8,7 @@ export default (props: any) => {
   const { auth } = useContext(AuthContext);
   return (
     <div className="navBar">
-      <Link to='/index'>
+      <Link to='/'>
         <h3 className="logo">matcher</h3>
         <h6 className="navHome navBarItem">Home</h6>
       </Link>
