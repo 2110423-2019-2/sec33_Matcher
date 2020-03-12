@@ -1,15 +1,17 @@
 import { Task } from '../models';
 import { containAll, matchAny, inRange } from '../utils/utils';
+import { Role, photoStyles } from '../const';
 import HttpErrors from 'http-errors';
 
 export default class TaskController {
-    private static fields: Array<string> = ['title', 'location', 'availableTime', 'photoStyle', 'price'];
-    private static photoStyles: Array<string> = ['Not Specified'];
+    private static requiredFields: Array<string> = ['title', 'location', 'availableTime', 'photoStyle', 'price'];
+    private static availableOwnerRoles: Array<string> = [Role.CUSTOMER, Role.ADMIN];
 
     private static checkCreateTask(req: any): boolean {
-        if (!containAll(req.body, TaskController.fields)) return false;
+        if (!containAll(req.body, TaskController.requiredFields)) return false;
         if (!inRange(req.body.title.length, 1, 20)) return false;
-        if (!matchAny<string>(req.body.photoStyle, TaskController.photoStyles)) return false;
+        if (!matchAny<string>(req.user.role, this.availableOwnerRoles)) return false;
+        if (!matchAny<string>(req.body.photoStyle, photoStyles)) return false;
         if (req.body.price < 0) return false;
 
         return true;

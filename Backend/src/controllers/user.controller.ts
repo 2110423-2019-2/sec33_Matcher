@@ -2,6 +2,7 @@ import { User } from '../models';
 import { generateHash } from '../utils/userHandlers';
 import HttpErrors from 'http-errors';
 import validator from 'validator';
+import { Role } from '../const';
 
 export default class UserController {
     static async createUser(req: any, res: any): Promise<void> {
@@ -21,7 +22,7 @@ export default class UserController {
         if (!fieldCheck(req.body, fields)) throw new HttpErrors.BadRequest();
 
         // Precondition : Role should be either "photographer" or "customer"
-        if (req.body.role != 'photographer' && req.body.role != 'customer') throw new HttpErrors.BadRequest();
+        if (req.body.role != Role.PHOTOGRAPHER && req.body.role != Role.CUSTOMER) throw new HttpErrors.BadRequest();
 
         // Precondition : Should reject bad email
         if (!validator.isEmail(req.body.email)) throw new HttpErrors.BadRequest();
@@ -51,6 +52,6 @@ export default class UserController {
     }
 
     static async hello(req: any, res: any): Promise<void> {
-        res.send('Hello World!');
+        res.send('Hello World! ' + Role.CUSTOMER);
     }
 }
