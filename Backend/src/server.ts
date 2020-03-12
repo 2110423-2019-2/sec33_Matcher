@@ -2,7 +2,7 @@ import express, { Application } from 'express';
 import * as dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
-import { UserController, AuthController, TaskController } from './controllers';
+import { UserController, AuthController } from './controllers';
 import { errorHandler, asyncHandler } from './utils/handlers';
 import { ensureLoggedIn } from './utils/userHandlers';
 import passport from 'passport';

@@ -1,6 +1,7 @@
 import chai = require('chai');
 import chaiHttp = require('chai-http');
 import { describe } from 'mocha';
+import mongoose from 'mongoose';
 
 chai.use(chaiHttp);
 const { expect } = chai;
@@ -33,7 +34,7 @@ const dummyCustomerLoginPayload = {
 };
 
 describe('CreateTask', () => {
-    describe('POST /createtask', () => {
+    describe('POST /task', () => {
         beforeEach(() => {
             sinon.stub(Task.prototype, 'save');
             (TaskPrototype.save as sinon.SinonStub).callsFake(function(this: any) {
@@ -55,48 +56,48 @@ describe('CreateTask', () => {
             it('Should be authorized before createTask', async () => {
                 const unAuthorizedRes = await chai
                     .request(app)
-                    .post('/createtask')
+                    .post('/task')
                     .send({ ...goodTaskPayload });
                 expect(unAuthorizedRes).to.have.status(401);
             });
         });
         describe('Authorized create task', () => {
-            it('Should contains all required fields', async () => {
-                const agent = chai.request.agent(app);
+            const agent = chai.request.agent(app);
+            beforeEach(async () => {
                 await agent.post('/login').send(dummyCustomerLoginPayload);
+            });
 
-                const noTitleRes = await agent.post('/createtask').send({ ...goodTaskPayload, title: undefined });
+            it('Should contains all required fields', async () => {
+                const noTitleRes = await agent.post('/task').send({ ...goodTaskPayload, title: undefined });
                 expect(noTitleRes).to.have.status(400);
 
-                const noLocationRes = await agent.post('/createtask').send({ ...goodTaskPayload, location: undefined });
+                const noLocationRes = await agent.post('/task').send({ ...goodTaskPayload, location: undefined });
                 expect(noLocationRes).to.have.status(400);
 
                 const noAvailableTimeRes = await agent
-                    .post('/createtask')
+                    .post('/task')
                     .send({ ...goodTaskPayload, availableTime: undefined });
                 expect(noAvailableTimeRes).to.have.status(400);
 
-                const noPhotoStyleRes = await agent
-                    .post('/createtask')
-                    .send({ ...goodTaskPayload, photoStyle: undefined });
+                const noPhotoStyleRes = await agent.post('/task').send({ ...goodTaskPayload, photoStyle: undefined });
                 expect(noPhotoStyleRes).to.have.status(400);
 
-                const noPriceRes = await agent.post('/createtask').send({ ...goodTaskPayload, price: undefined });
+                const noPriceRes = await agent.post('/task').send({ ...goodTaskPayload, price: undefined });
                 expect(noPriceRes).to.have.status(400);
 
-                const goodRes = await agent.post('/createtask').send({ ...goodTaskPayload });
+                const goodRes = await agent.post('/task').send({ ...goodTaskPayload });
                 expect(goodRes).to.have.status(200);
             });
             it('Task should be created by "customer" or "admin"', async () => {
                 const agent = chai.request.agent(app);
 
                 await agent.post('/login').send(dummyCustomerLoginPayload);
-                const goodRes1 = await agent.post('/createtask').send({ ...goodTaskPayload });
+                const goodRes1 = await agent.post('/task').send({ ...goodTaskPayload });
                 expect(goodRes1).to.have.status(200);
                 // await agent.get('/logout');
 
                 await agent.post('/login').send(dummyPhotographerLoginPayload);
-                const badRes1 = await agent.post('/createtask').send({ ...goodTaskPayload });
+                const badRes1 = await agent.post('/task').send({ ...goodTaskPayload });
                 expect(badRes1).to.have.status(400);
                 // await agent.get('/logout');
             });
@@ -104,22 +105,20 @@ describe('CreateTask', () => {
                 const agent = chai.request.agent(app);
                 await agent.post('/login').send(dummyPhotographerLoginPayload);
 
-                const badRes1 = await agent.post('/createtask').send({ ...goodTaskPayload, price: -1.2 });
+                const badRes1 = await agent.post('/task').send({ ...goodTaskPayload, price: -1.2 });
                 expect(badRes1).to.have.status(400);
 
-                const priceZeroRes = await agent.post('/createtask').send({ ...goodTaskPayload, price: 0 });
+                const priceZeroRes = await agent.post('/task').send({ ...goodTaskPayload, price: 0 });
                 expect(priceZeroRes).to.have.status(400);
             });
             it('Title length should be between 1-20 inclusive', async () => {
                 const agent = chai.request.agent(app);
                 await agent.post('/login').send(dummyPhotographerLoginPayload);
 
-                const badRes1 = await agent.post('/createtask').send({ ...goodTaskPayload, title: '' });
+                const badRes1 = await agent.post('/task').send({ ...goodTaskPayload, title: '' });
                 expect(badRes1).to.have.status(400);
 
-                const badRes2 = await agent
-                    .post('/createtask')
-                    .send({ ...goodTaskPayload, title: '111111111111111111111' });
+                const badRes2 = await agent.post('/task').send({ ...goodTaskPayload, title: '111111111111111111111' });
                 expect(badRes2).to.have.status(400);
             });
         });
