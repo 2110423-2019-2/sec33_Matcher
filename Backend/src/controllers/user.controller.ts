@@ -2,7 +2,7 @@ import { User } from '../models';
 import { generateHash } from '../utils/userHandlers';
 import HttpErrors from 'http-errors';
 import validator from 'validator';
-import { Role } from '../const';
+import { Role, PhotoStyles } from '../const';
 
 export default class UserController {
     static async createUser(req: any, res: any): Promise<void> {
@@ -52,6 +52,6 @@ export default class UserController {
     }
 
     static async hello(req: any, res: any): Promise<void> {
-        res.send('Hello World!');
+        res.send('Hello World!' + typeof PhotoStyles.WEDDING);
     }
 }
