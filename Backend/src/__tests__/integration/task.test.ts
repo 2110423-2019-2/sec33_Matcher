@@ -10,7 +10,7 @@ import FastphotoApp from '../../server';
 import * as sinon from 'sinon';
 import { Task } from '../../models';
 import { PhotoStyles } from '../../const';
-// const TaskPrototype: mongoose.Document = Task.prototype;
+const TaskPrototype: mongoose.Document = Task.prototype;
 
 const app = new FastphotoApp().application;
 
@@ -36,21 +36,20 @@ const dummyCustomerLoginPayload = {
 describe('CreateTask', () => {
     describe('POST /createtask', () => {
         beforeEach(() => {
-            // sinon.stub(Task.prototype, 'save');
-            // (TaskPrototype.save as sinon.SinonStub).callsFake(function(this: any) {
-            //     const currentRecord = this;
-            //     return Promise.resolve(currentRecord);
-            // });
+            sinon.stub(Task.prototype, 'save');
+            (TaskPrototype.save as sinon.SinonStub).callsFake(function(this: any) {
+                const currentRecord = this;
+                return Promise.resolve(currentRecord);
+            });
             sinon
                 .mock(Task)
-                .expects('findByIdAndUpdate')
+                .expects('exists')
                 .atLeast(0)
-                .atMost(20)
-                .resolves(goodTaskPayload);
+                .resolves(false);
         });
 
         afterEach(() => {
-            // (TaskPrototype.save as sinon.SinonStub).restore();
+            (TaskPrototype.save as sinon.SinonStub).restore();
             sinon.restore();
         });
         describe('Unauthorized create task', () => {
@@ -95,19 +94,22 @@ describe('CreateTask', () => {
                 await agent.post('/login').send(dummyCustomerLoginPayload);
                 const goodRes1 = await agent.post('/createtask').send({ ...goodTaskPayload });
                 expect(goodRes1).to.have.status(200);
-                await agent.get('/logout');
+                // await agent.get('/logout');
 
                 await agent.post('/login').send(dummyPhotographerLoginPayload);
                 const badRes1 = await agent.post('/createtask').send({ ...goodTaskPayload });
                 expect(badRes1).to.have.status(400);
-                await agent.get('/logout');
+                // await agent.get('/logout');
             });
-            it('Price should be positive number', async () => {
+            it('Price should be positive number or zero', async () => {
                 const agent = chai.request.agent(app);
                 await agent.post('/login').send(dummyPhotographerLoginPayload);
 
-                const badRes = await agent.post('/createtask').send({ ...goodTaskPayload, price: -1.2 });
-                expect(badRes).to.have.status(400);
+                const badRes1 = await agent.post('/createtask').send({ ...goodTaskPayload, price: -1.2 });
+                expect(badRes1).to.have.status(400);
+
+                const priceZeroRes = await agent.post('/createtask').send({ ...goodTaskPayload, price: 0 });
+                expect(priceZeroRes).to.have.status(400);
             });
             it('Title length should be between 1-20 inclusive', async () => {
                 const agent = chai.request.agent(app);
