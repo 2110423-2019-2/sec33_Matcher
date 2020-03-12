@@ -14,7 +14,7 @@ const App: React.FC = () => {
   const [auth, authDispatcher] = useReducer(authReducer, defaultAuth);
   return (
     <Router>
-      <AuthContextProvider value={{ auth, authDispatcher }}>
+      <AuthContextProvider>
         <NavBar />
         <Switch>
           <PrivateRoute

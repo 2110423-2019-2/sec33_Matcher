@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { whoami } from '../../api/user';
 
 export default (props: any) => {
+
     const { auth, authDispatcher } = useContext(AuthContext);
 
     useEffect(() => {
