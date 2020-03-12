@@ -9,6 +9,7 @@ import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { IUser, User } from './models';
 import session from 'express-session';
+import { taskRoute } from './routes';
 
 dotenv.config();
 
@@ -72,7 +73,8 @@ export default class FastphotoApp {
 
         app.get('/logout', AuthController.logout);
 
-        app.post('/createtask', ensureLoggedIn(), asyncHandler(TaskController.createTask));
+        // app.post('/createtask', ensureLoggedIn(), asyncHandler(TaskController.createTask));
+        app.use('/task', taskRoute);
 
         /* Middleware for error handling */
         app.use(errorHandler);
