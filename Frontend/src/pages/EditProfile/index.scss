@@ -5,10 +5,16 @@
   padding-bottom: 25vh;
 }
 
-.messageProfile {
-  color: $color-primary;
-}
 .editProfileTitle {
   display: flex;
   align-items: center;
+  padding: .5vw 0vh;
+}
+
+.editProfileHeader{
+  color: $color-primary;
+}
+
+.messageProfile {
+  height: 5vw;
 }
