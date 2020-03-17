@@ -4,7 +4,7 @@ const initialState = {
   username: "Can",
   firstname: "firstname",
   lastname: "lastname",
-  email: "email",
+  email: "Can_email@gmail.com",
   isLogin: true
 };
 

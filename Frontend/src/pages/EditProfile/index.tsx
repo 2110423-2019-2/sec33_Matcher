@@ -11,11 +11,11 @@ export default () => {
   const { auth } = useContext(AuthContext);
   
   const [userInfo, setUserInfo] = useState({
-    firstname: '',
-    lastname: '',
+    firstname: auth.firstname,
+    lastname: auth.lastname,
     password: '',
     passwordConfirm: '',
-    email: '',
+    email: auth.email,
 });
 const [errorText, setErrorText] = useState({
   firstname: '',
@@ -56,7 +56,7 @@ const validate = () => {
   const handleSubmit = (e: any) => {
     e.preventDefault();
     if (validate()) {
-      console.log('success!');
+      console.log(userInfo);
   }
 };  
 
