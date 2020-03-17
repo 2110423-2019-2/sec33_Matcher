@@ -78,7 +78,7 @@ const validate = () => {
         <Input variant="filled" onChange={handleChange('firstname')} type="text" label="Name" defaultValue={auth.username} fullWidth />
       </div>
       <div className="col-6">
-        <Input variant="filled" onChange={handleChange('lastname')} type="text" label="Surname" defaultValue={auth.username} fullWidth />
+        <Input variant="filled" onChange={handleChange('lastname')} type="text" label="Lastname" defaultValue={auth.username} fullWidth />
       </div>
     </div>
     <div className="row editProfileTitle">
