@@ -2,6 +2,9 @@ import React, { createContext } from "react";
 
 const initialState = {
   username: "Can",
+  firstname: "firstname",
+  lastname: "lastname",
+  email: "email",
   isLogin: true
 };
 

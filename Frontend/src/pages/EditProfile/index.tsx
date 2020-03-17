@@ -75,10 +75,10 @@ const validate = () => {
     <form onSubmit={handleSubmit}>
     <div className="row editProfileTitle">
       <div className="col-6">
-        <Input variant="filled" onChange={handleChange('firstname')} type="text" label="Name" defaultValue={auth.username} fullWidth />
+        <Input variant="filled" onChange={handleChange('firstname')} type="text" label="Name" defaultValue={auth.firstname} fullWidth />
       </div>
       <div className="col-6">
-        <Input variant="filled" onChange={handleChange('lastname')} type="text" label="Lastname" defaultValue={auth.username} fullWidth />
+        <Input variant="filled" onChange={handleChange('lastname')} type="text" label="Lastname" defaultValue={auth.lastname} fullWidth />
       </div>
     </div>
     <div className="row editProfileTitle">
@@ -111,7 +111,7 @@ const validate = () => {
         variant="filled" 
         onChange={handleChange('email')} 
         label="Email" 
-        defaultValue={auth.username} 
+        defaultValue={auth.email} 
         error={Boolean(errorText.email)}
         helperText={errorText.email}        
         fullWidth 
