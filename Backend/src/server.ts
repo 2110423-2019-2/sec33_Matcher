@@ -9,6 +9,7 @@ import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { IUser, User } from './models';
 import session from 'express-session';
+import { taskRoute } from './routes';
 import { load as loadYAML } from 'yamljs';
 import * as swaggerUI from 'swagger-ui-express';
 import cors from 'cors';
@@ -27,7 +28,7 @@ export default class FastphotoApp {
             process.env.DB_CONNECTION_URI || `mongodb://${process.env.DB_HOST}:27017/${process.env.DB_NAME}`,
             { useNewUrlParser: true, useUnifiedTopology: true },
             err => {
-                if (err) console.log('MongoDB Error');
+                if (err) console.log('MongoDB Error ' + err);
             },
         );
         mongoose.set('useCreateIndex', true);
@@ -76,6 +77,7 @@ export default class FastphotoApp {
         }
         /* End of middlewares */
 
+        // User Routing
         app.get('/', asyncHandler(UserController.hello));
 
         app.post('/register', asyncHandler(UserController.createUser));
@@ -89,6 +91,9 @@ export default class FastphotoApp {
         app.get('/whoami', ensureLoggedIn(), AuthController.whoami);
 
         app.get('/logout', AuthController.logout);
+
+        // app.post('/createtask', ensureLoggedIn(), asyncHandler(TaskController.createTask));
+        app.use('/task', taskRoute);
 
         /* Middleware for error handling */
         app.use(errorHandler);
