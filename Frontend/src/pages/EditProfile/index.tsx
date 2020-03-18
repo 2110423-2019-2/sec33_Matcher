@@ -5,6 +5,7 @@ import { ReactComponent as Chevron } from "../../assets/icons/chevron-right.svg"
 import { Link, useHistory } from 'react-router-dom';
 import { AuthContext } from "../../context/AuthContext";
 import isEmail from 'validator/lib/isEmail';
+import { editProfile } from '../../api/user';
 
 export default () => {
 
@@ -24,6 +25,8 @@ const [errorText, setErrorText] = useState({
   passwordConfirm: '',
   email: '',
 });
+
+const history = useHistory();
 
 const validate = () => {
   setErrorText({
@@ -55,7 +58,11 @@ const validate = () => {
   const handleSubmit = (e: any) => {
     e.preventDefault();
     if (validate()) {
-      console.log(userInfo);
+        editProfile(userInfo)
+        .then(() => history.push('/'))
+        .catch(() => {
+            setErrorText({ ...errorText, email: 'Error' });
+        })
   }
 };  
 
