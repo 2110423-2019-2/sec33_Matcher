@@ -1,26 +1,38 @@
 import React, { useReducer } from "react";
-import { NavBar, ComponentList } from "./components";
-import { EditProfile } from "./pages";
+import { BodySignIn , Register, Home, CreateTask, Tasks, EditProfile } from "./pages";
+import "./App.css";
+import { NavBar, ComponentList, PrivateRoute, PhotoType } from "./components";
 import "./index.scss";
 import {
   authReducer,
   defaultAuth,
   AuthContextProvider
 } from "./context/AuthContext";
-import Footer from "./components/Footer/Footer";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 const App: React.FC = () => {
   const [auth, authDispatcher] = useReducer(authReducer, defaultAuth);
   return (
-    <AuthContextProvider value={{ auth, authDispatcher }}>
-      <div>
-        <NavBar username={"John Doe"} isLogin={true} />
-        {/* <Footer/> */}
-        {/* <ComponentList /> */}
-        <EditProfile />
-        <Footer />
-      </div>
-    </AuthContextProvider>
+    <Router>
+      <AuthContextProvider>
+        <NavBar />
+        <Switch>
+          {/* <PrivateRoute
+            path="/protected"
+            component={ComponentList}
+            roles={["admin"]}
+          />
+          <Route path="/signin" component={BodySignIn} />
+          <Route path="/register" component={Register} />
+          <Route path="/create" component={CreateTask} />
+          <Route path="/task" component={Tasks} />
+          <Route path="/comp" component={ComponentList} />
+          <Route path="/type" component={PhotoType} />
+          <Route path="/" component={Home} /> */}
+          <EditProfile />
+        </Switch>
+      </AuthContextProvider>
+    </Router>
   );
 };
 

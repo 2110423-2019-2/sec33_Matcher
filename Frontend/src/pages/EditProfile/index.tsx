@@ -28,6 +28,8 @@ const [errorText, setErrorText] = useState({
 const validate = () => {
   setErrorText({
       ...errorText,
+      firstname: userInfo.firstname.length == 0 ? 'Firstname cannot be empty.' : '',
+      lastname: userInfo.lastname.length == 0 ? 'Lastname cannot be empty.' : '',
       email: isEmail(userInfo.email) ? '' : 'Please input a proper email.',
       password: userInfo.password.length < 8 ? 'Password must no shorter than 8 character.' : '',
       passwordConfirm:
@@ -35,16 +37,13 @@ const validate = () => {
               ? ''
               : 'Password confirmation must match the password entered.',
   });
-  if (
-      ((Boolean(errorText.password) == Boolean(errorText.email)) == Boolean(errorText.passwordConfirm)) ==
-      false
-  ) {
-      return true;
-  }
-  return false;
+  if (userInfo.password.length < 8) return false;
+  if (userInfo.firstname.length == 0) return false;
+  if (userInfo.lastname.length == 0) return false;
+  if (!isEmail(userInfo.email)) return false;
+  if (userInfo.password !== userInfo.passwordConfirm) return false;  
+  return true;
 };
-
-  // const history = useHistory();
 
   const handleChange = (field: string) => (e: any) => {
     setUserInfo({
@@ -72,13 +71,27 @@ const validate = () => {
         <p>You can edit your profile here. Click 'Save changes' after that.</p>
       </div>
     </div>
-    <form onSubmit={handleSubmit}>
+    <form>
     <div className="row editProfileTitle">
       <div className="col-6">
-        <Input variant="filled" onChange={handleChange('firstname')} type="text" label="Name" defaultValue={auth.firstname} fullWidth />
+        <Input 
+        variant="filled" 
+        error={Boolean(errorText.firstname)}
+        helperText={errorText.firstname} 
+        onChange={handleChange('firstname')} 
+        type="text" label="Name" 
+        defaultValue={auth.firstname} 
+        fullWidth />
       </div>
       <div className="col-6">
-        <Input variant="filled" onChange={handleChange('lastname')} type="text" label="Lastname" defaultValue={auth.lastname} fullWidth />
+        <Input 
+        variant="filled" 
+        error={Boolean(errorText.lastname)}
+        helperText={errorText.lastname} 
+        onChange={handleChange('lastname')} 
+        type="text" label="Lastname" 
+        defaultValue={auth.lastname} 
+        fullWidth />
       </div>
     </div>
     <div className="row editProfileTitle">
@@ -118,11 +131,10 @@ const validate = () => {
         />
       </div>
       <div className="col-6">
-        <Button type="invert" fullWidth>Save Changes<Chevron style={{ strokeWidth: 1 }} />
-        </Button>
+        <Button type="invert" onClick={handleSubmit} fullWidth>Save Changes<Chevron style={{ strokeWidth: 1 }} /></Button>
       </div>
     </div>
     </form>
   </div>
   );
-}; 
+};

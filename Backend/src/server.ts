@@ -9,10 +9,23 @@ import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { IUser, User } from './models';
 import session from 'express-session';
+import cors from 'cors';
 
 dotenv.config();
 
 const port = process.env.PORT || 8080;
+
+let whitelist = ['http://localhost:3000']
+let corsOptions = {
+  origin: (origin: string, callback: any) => {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  },
+  credentials: true
+}
 
 export default class FastphotoApp {
     application: Application;
@@ -28,6 +41,7 @@ export default class FastphotoApp {
             },
         );
         mongoose.set('useCreateIndex', true);
+        mongoose.set('useFindAndModify', false);
 
         passport.serializeUser(async (user: IUser, done) => {
             return done(null, user.email);
@@ -41,6 +55,7 @@ export default class FastphotoApp {
         /* Start using middleware */
         app.use(bodyParser.json());
         app.use(bodyParser.urlencoded({ extended: true }));
+        app.use(cors(corsOptions));
         app.use(
             session({
                 secret: process.env.SESSION_SECRET,
@@ -66,6 +81,10 @@ export default class FastphotoApp {
         app.post('/register', asyncHandler(UserController.createUser));
 
         app.post('/login', passport.authenticate('local'), AuthController.login);
+
+        app.get('/profile', ensureLoggedIn(), asyncHandler(UserController.getProfile));
+
+        app.post('/profile', ensureLoggedIn(), asyncHandler(UserController.updateProfile));
 
         app.get('/whoami', ensureLoggedIn(), AuthController.whoami);
 
