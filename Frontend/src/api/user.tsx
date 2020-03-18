@@ -22,7 +22,7 @@ interface EditProfilePayload {
 }
 
 export const editProfile = async ({ email, password, firstname, lastname }: EditProfilePayload) => 
-    await axios.post(apiEndpointOf('/editProfile'), { email, password, firstname, lastname });
+    await axios.post(apiEndpointOf('/edit'), { email, password, firstname, lastname });
 
 export const register = async ({ email, password, firstname, lastname, role }: RegisterPayload) => 
     await axios.post(apiEndpointOf('/register'), { email, password, firstname, lastname, role });

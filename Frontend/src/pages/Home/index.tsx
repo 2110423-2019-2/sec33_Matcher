@@ -6,8 +6,6 @@ import camera from '../../assets/camera.svg';
 import social from '../../assets/icons/social icon.svg';
 import { Link } from 'react-router-dom';
 
-
-
 export default () => {
   return (
     <div className="home">

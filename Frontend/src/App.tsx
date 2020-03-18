@@ -17,7 +17,7 @@ const App: React.FC = () => {
       <AuthContextProvider>
         <NavBar />
         <Switch>
-          {/* <PrivateRoute
+          <PrivateRoute
             path="/protected"
             component={ComponentList}
             roles={["admin"]}
@@ -28,8 +28,8 @@ const App: React.FC = () => {
           <Route path="/task" component={Tasks} />
           <Route path="/comp" component={ComponentList} />
           <Route path="/type" component={PhotoType} />
-          <Route path="/" component={Home} /> */}
-          <EditProfile />
+          <Route path="/edit" component={EditProfile} />
+          <Route path="/" component={Home} />
         </Switch>
       </AuthContextProvider>
     </Router>
