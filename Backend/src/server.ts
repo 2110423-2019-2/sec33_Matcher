@@ -9,6 +9,9 @@ import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { IUser, User } from './models';
 import session from 'express-session';
+import { taskRoute } from './routes';
+import { load as loadYAML } from 'yamljs';
+import * as swaggerUI from 'swagger-ui-express';
 import cors from 'cors';
 
 dotenv.config();
@@ -37,7 +40,7 @@ export default class FastphotoApp {
             process.env.DB_CONNECTION_URI || `mongodb://${process.env.DB_HOST}:27017/${process.env.DB_NAME}`,
             { useNewUrlParser: true, useUnifiedTopology: true },
             err => {
-                if (err) console.log('MongoDB Error');
+                if (err) console.log('MongoDB Error ' + err);
             },
         );
         mongoose.set('useCreateIndex', true);
@@ -53,9 +56,13 @@ export default class FastphotoApp {
         });
 
         /* Start using middleware */
+
+        /* Setup body parser */
         app.use(bodyParser.json());
         app.use(bodyParser.urlencoded({ extended: true }));
-        app.use(cors(corsOptions));
+        app.use(cors()); // TODO: edit to whitelist
+
+        /* Setup session and passport */
         app.use(
             session({
                 secret: process.env.SESSION_SECRET,
@@ -74,8 +81,15 @@ export default class FastphotoApp {
                 AuthController.loginLocal,
             ),
         );
+
+        /* Setup swagger ui document */
+        if (process.env.NODE_ENV !== 'production') {
+            const swaggerDocument = loadYAML('./swagger.yaml');
+            app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
+        }
         /* End of middlewares */
 
+        // User Routing
         app.get('/', asyncHandler(UserController.hello));
 
         app.post('/register', asyncHandler(UserController.createUser));
@@ -89,6 +103,9 @@ export default class FastphotoApp {
         app.get('/whoami', ensureLoggedIn(), AuthController.whoami);
 
         app.get('/logout', AuthController.logout);
+
+        // app.post('/createtask', ensureLoggedIn(), asyncHandler(TaskController.createTask));
+        app.use('/task', taskRoute);
 
         /* Middleware for error handling */
         app.use(errorHandler);
