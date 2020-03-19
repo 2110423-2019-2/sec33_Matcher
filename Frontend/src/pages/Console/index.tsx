@@ -1,19 +1,18 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { NavBar, Footer, Section, TaskCard } from '../../components';
+import { PrivateRoute, UserTasks } from '../../components';
 import { AuthContext } from '../../context/AuthContext';
 import './index.scss';
 import { CONSOLE_CHOICES, dummyTasks } from '../../const';
-export default () => {
+import { Link, Switch, useLocation, withRouter } from 'react-router-dom';
+import { CreateTask } from '..';
+
+export default withRouter((props: any) => {
     const { auth } = useContext(AuthContext);
-    const [currentPage, setCurrentPage] = useState("Your tasks");
-    const [pendingTasks, setPendingTasks] = useState(dummyTasks);
-    const [matchedTasks, setMatchedTasks] = useState(dummyTasks);
-    const [pastTasks, setPastTasks] = useState(dummyTasks);
+    const [current, setCurrent] = useState('');
+    const [isChange, setIsChange] = useState(false)
     useEffect(() => {
-        // TODO getPendingTasks Here
-        // TODO getMatchedTasks Here
-        // TODO getPastTasks Here
-    }, [])
+        setCurrent(props.location.pathname);
+    }, [isChange])
     return (
         <div className="consolePage">
             <div className="row consoleTitle">
@@ -22,25 +21,34 @@ export default () => {
                 </div>
             </div>
             <div className="row consoleChoices">
-                {CONSOLE_CHOICES.map(choice => {
-                    return (
-                        <div className="col-2">
-                            <p className={`${currentPage === choice ? "selected" : ""}`}>{choice}</p>
-                        </div>
-                    )
-                })}
+                <div className="col-2">
+                    <Link to='/console/editprofile'>
+                        <p className={`${current.toString() === '/console/editprofile' ? 'selected' : ''}`} onClick={() => setIsChange(!isChange)}>Edit profile</p>
+                    </Link>
+                </div>
+                <div className="col-2">
+                    <Link to='/console/tasks'>
+                        <p className={`${current.toString() === '/console/tasks' ? 'selected' : ''}`} onClick={() => setIsChange(!isChange)}>Your tasks</p>
+                    </Link>
+                </div>
+                {auth.role === 'customer' ?
+                    <div className="col-2">
+                        <Link to='/console/createtask'>
+                            <p className={`${current.toString() === '/console/createtask' ? 'selected' : ''}`} onClick={() => setIsChange(!isChange)}>Create task</p>
+                        </Link>
+                    </div> : null}
+                <div className="col-2">
+                    <p>Delete Account</p>
+                </div>
+                <div className="col-2">
+                    <p>Sign out</p>
+                </div>
             </div>
-            <div className="sectionContainer">
-                <Section title="Pending Task">
-                    {pendingTasks.map(task => <TaskCard name={task.username} location={task.location} profilePic={task.img} price={task.price} thumbnail={task.img} />)}
-                </Section>
-                <Section title="Matched Task">
-                    {/* <TaskCard></TaskCard> */}
-                </Section>
-                <Section title="Past Task">
-                    {/* <TaskCard></TaskCard> */}
-                </Section>
-            </div>
+            <Switch>
+                {/* <PrivateRoute path="/console/editprofile" components={EditProfile}/ role={["customer", "photographer"]}> */}
+                <PrivateRoute path='/console/tasks' component={UserTasks} roles={["customer", "photographer"]} />
+                <PrivateRoute path='/console/createtask' component={CreateTask} roles={["customer"]} />
+            </Switch>
         </div>
     )
-}
+})
