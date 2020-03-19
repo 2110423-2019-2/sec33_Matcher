@@ -44,5 +44,5 @@ export const dummyTasks = [
   }
 ];
 
-export const apiEndpoint = 'https://localhost:8080';
+export const apiEndpoint = 'http://localhost:8080';
 export const apiEndpointOf = (path: string) => `${apiEndpoint}${path}`; 
