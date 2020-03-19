@@ -1,15 +1,28 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { PrivateRoute, UserTasks } from '../../components';
+import { PrivateRoute, UserTasks, Button } from '../../components';
 import { AuthContext } from '../../context/AuthContext';
 import './index.scss';
 import { CONSOLE_CHOICES, dummyTasks } from '../../const';
-import { Link, Switch, useLocation, withRouter } from 'react-router-dom';
+import { Link, Switch, withRouter } from 'react-router-dom';
 import { CreateTask } from '..';
+import { DialogContent, DialogContentText, DialogActions, Dialog, DialogTitle } from '@material-ui/core';
 
 export default withRouter((props: any) => {
-    const { auth } = useContext(AuthContext);
+    const { auth, authDispatch } = useContext(AuthContext);
     const [current, setCurrent] = useState('');
     const [isChange, setIsChange] = useState(false)
+    const [open, setOpen] = useState(false);
+    const deleteAccount = () => {
+        console.log('deleted');
+        // TODO call delete account api and signout
+        props.history.push('/home');
+    }
+    const signOut = () => {
+        console.log('sign out');
+        // TODO call sign out api here
+        authDispatch({ type: 'SIGNOUT' })
+        props.history.push('/home');
+    }
     useEffect(() => {
         setCurrent(props.location.pathname);
     }, [isChange])
@@ -38,11 +51,27 @@ export default withRouter((props: any) => {
                         </Link>
                     </div> : null}
                 <div className="col-2">
-                    <p>Delete Account</p>
+                    <p onClick={() => setOpen(true)} className="choice">Delete Account</p>
                 </div>
                 <div className="col-2">
-                    <p>Sign out</p>
+                    <p onClick={signOut} className="choice">Sign out</p>
                 </div>
+                <Dialog open={open} onClose={() => setOpen(false)} fullWidth={true} className="dialog">
+                    <DialogTitle>
+                        <h3 className="dialogTitle">
+                            Delete the account?
+                        </h3>
+                    </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            <p className="dialogContent">This account will be permanently deleted.</p>
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={deleteAccount}>Delete account</Button>
+                        <Button type="outlined" onClick={() => setOpen(false)}>Back</Button>
+                    </DialogActions>
+                </Dialog>
             </div>
             <Switch>
                 {/* <PrivateRoute path="/console/editprofile" components={EditProfile}/ role={["customer", "photographer"]}> */}
