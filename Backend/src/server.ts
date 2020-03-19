@@ -60,7 +60,7 @@ export default class FastphotoApp {
         /* Setup body parser */
         app.use(bodyParser.json());
         app.use(bodyParser.urlencoded({ extended: true }));
-        app.use(cors()); // TODO: edit to whitelist
+        app.use(cors(corsOptions)); // TODO: edit to whitelist
 
         /* Setup session and passport */
         app.use(
