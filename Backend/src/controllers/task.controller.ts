@@ -1,4 +1,4 @@
-import { Task } from '../models';
+import { Task, User } from '../models';
 import { containAll, inRange } from '../utils/utils';
 import { Role, photoStyles, TaskStatus } from '../const';
 import HttpErrors from 'http-errors';
@@ -35,5 +35,19 @@ export default class TaskController {
 
         await task.save();
         res.json({ status: 'success' });
+    }
+
+    static async getMatchedTasks(req: any, res: any): Promise<void> {
+        const user = await User.findOne({ _id: req.user._id })
+        if (user.role === Role.CUSTOMER) {
+            const matchedTasks = await Task.find({ owner: req.user._id, status: TaskStatus.ACCEPTED });
+            res.json(matchedTasks);
+        } else if (user.role === Role.PHOTOGRAPHER) {
+            const matchedTasks = await Task.find({ acceptedBy: req.user._id, status: TaskStatus.ACCEPTED });
+            res.json(matchedTasks);
+        } else {
+            // TODO add getMatchedTasks for admin
+            throw new HttpErrors.NotImplemented();
+        }
     }
 }
