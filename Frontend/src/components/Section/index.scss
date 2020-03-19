@@ -1,0 +1,21 @@
+@import '../colors.scss';
+
+
+
+.section {
+    margin: 3.56vh 0;
+}
+.sectionTitle{
+    color: $color-secondary;
+}
+.sectionLine {
+    border: 1px solid #B7B7B7;
+    margin-top: 1.78vh;
+}
+.sectionContent {
+    margin-top: 4.44vh;
+}
+.sectionNoTaskContent{
+    color: #C4C4C4;
+    text-align: center;
+}

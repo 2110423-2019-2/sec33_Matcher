@@ -1,0 +1,24 @@
+@import '../colors.scss';
+
+
+.consolePage{
+    padding: 5vh 10vw;
+}
+
+.consoleTitle {
+    display: flex;
+    align-items: center;
+}
+.consoleHeader{
+    color: $color-primary;
+}
+.consoleChoices{
+    margin-top: 5vh;
+    .selected {
+        color: $color-ternary;
+    }
+}
+.sectionContainer {
+    margin-top: 5vh;
+    margin-left: 1.5vw;
+}

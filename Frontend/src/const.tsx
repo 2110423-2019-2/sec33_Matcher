@@ -45,4 +45,5 @@ export const dummyTasks = [
 ];
 
 export const apiEndpoint = 'https://localhost:8080';
-export const apiEndpointOf = (path: string) => `${apiEndpoint}${path}`; 
+export const apiEndpointOf = (path: string) => `${apiEndpoint}${path}`;
+export const CONSOLE_CHOICES = ["Edit profile", "Your tasks", "Delete Account", "Sign out"];

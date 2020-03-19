@@ -7,11 +7,11 @@ import { whoami } from '../../api/user';
 
 export default (props: any) => {
 
-    const { auth, authDispatcher } = useContext(AuthContext);
+    const { auth, authDispatch } = useContext(AuthContext);
 
     useEffect(() => {
         whoami()
-            .then(profile => authDispatcher({ type: 'FETCH_AUTH_STATUS', payload: profile }))
+            .then(profile => authDispatch({ type: 'FETCH_AUTH_STATUS', payload: profile }))
             .catch(() => console.log('Unauthenticated'));
     }, []);
 
@@ -31,10 +31,10 @@ export default (props: any) => {
                 {auth.isLogin ? (
                     <UserBar username={auth.username} />
                 ) : (
-                    <Link to="/signin">
-                        <Button type="outlined">Sign In</Button>
-                    </Link>
-                )}
+                        <Link to="/signin">
+                            <Button type="outlined">Sign In</Button>
+                        </Link>
+                    )}
             </div>
             <hr className={`${auth.isLogin ? 'slider' : 'sliderB'}`} />
         </div>
