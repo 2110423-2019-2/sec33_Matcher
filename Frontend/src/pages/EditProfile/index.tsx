@@ -16,14 +16,14 @@ export default () => {
     lastname: auth.lastname,
     password: '',
     passwordConfirm: '',
-    email: auth.email,
+    // email: auth.email,
 });
 const [errorText, setErrorText] = useState({
   firstname: '',
   lastname: '',
   password: '',
   passwordConfirm: '',
-  email: '',
+  // email: '',
 });
 
 const history = useHistory();
@@ -33,7 +33,7 @@ const validate = () => {
       ...errorText,
       firstname: userInfo.firstname.length == 0 ? 'Firstname cannot be empty.' : '',
       lastname: userInfo.lastname.length == 0 ? 'Lastname cannot be empty.' : '',
-      email: isEmail(userInfo.email) ? '' : 'Please input a proper email.',
+      // email: isEmail(userInfo.email) ? '' : 'Please input a proper email.',
       password: userInfo.password.length < 8 ? 'Password must no shorter than 8 character.' : '',
       passwordConfirm:
           userInfo.password == userInfo.passwordConfirm
@@ -43,7 +43,7 @@ const validate = () => {
   if (userInfo.password.length < 8) return false;
   if (userInfo.firstname.length == 0) return false;
   if (userInfo.lastname.length == 0) return false;
-  if (!isEmail(userInfo.email)) return false;
+  // if (!isEmail(userInfo.email)) return false;
   if (userInfo.password !== userInfo.passwordConfirm) return false;  
   return true;
 };
@@ -61,7 +61,7 @@ const validate = () => {
         editProfile(userInfo)
         .then(() => history.push('/'))
         .catch(() => {
-            setErrorText({ ...errorText, email: 'Error' });
+            setErrorText({ ...errorText, password: 'Error' });
         })
   }
 };  
@@ -129,11 +129,12 @@ const validate = () => {
       <div className="col-6">
         <Input 
         variant="filled" 
-        onChange={handleChange('email')} 
+        // onChange={handleChange('email')} 
         label="Email" 
         defaultValue={auth.email} 
-        error={Boolean(errorText.email)}
-        helperText={errorText.email}        
+        // error={Boolean(errorText.email)}
+        // helperText={errorText.email}   
+        disabled={true}     
         fullWidth 
         />
       </div>

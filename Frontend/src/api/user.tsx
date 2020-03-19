@@ -15,14 +15,13 @@ interface RegisterPayload {
 }
 
 interface EditProfilePayload {
-    email: string,
     password: string,
     firstname: string,
     lastname: string,
 }
 
-export const editProfile = async ({ email, password, firstname, lastname, }: EditProfilePayload) => 
-    await axios.post(apiEndpointOf('/profile'), { email, password, firstname, lastname, });
+export const editProfile = async ({ password, firstname, lastname, }: EditProfilePayload) => 
+    await axios.post(apiEndpointOf('/profile'), { password, firstname, lastname}, { withCredentials: true });
 
 export const register = async ({ email, password, firstname, lastname, role }: RegisterPayload) => 
     await axios.post(apiEndpointOf('/register'), { email, password, firstname, lastname, role });
