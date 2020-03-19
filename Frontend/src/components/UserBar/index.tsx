@@ -24,8 +24,8 @@ export default ({ username }: UserProps) => {
       ></img>
       <p className="dropButton">{username}</p>
       <div className="dropdown-content">
-        <Link to='/edit'><p>Profile</p></Link>
-        <p>Your Tasks</p>
+        <Link to='/edit'><a>Profile</a></Link>
+        <a>Your Tasks</a>
         <a href='/#' onClick={() => { 
           logout()
             .then(() => history.push('/')) 

@@ -29,7 +29,7 @@ export default (props: any) => {
             </Link>
             <div className="NavBarUser">
                 {auth.isLogin ? (
-                    <UserBar username={auth.username} />
+                    <UserBar username={auth.firstname} />
                 ) : (
                     <Link to="/signin">
                         <Button type="outlined">Sign In</Button>
