@@ -40,3 +40,6 @@ Please prettify your code before commit changes.
 ```
 npm run format
 ```
+
+## API Documentation
+Goto `/api-docs` to see and try our APIs.
