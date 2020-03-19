@@ -36,4 +36,39 @@ export default class TaskController {
         await task.save();
         res.json({ status: 'success' });
     }
+
+    private static checkDeleteTask(req: any): boolean {
+        //input must be valid
+        
+        //task must exist
+        if(!Task.exists({_id: req.task._id})){
+            console.log('Requested task does not exists');
+            return false;
+        }
+        
+        //user must have permission to delete task
+        //case 1: is admin
+        if(req.user.role == 'admin'){
+            return true;
+        }//case 2: is user and the owner of the task
+        else if(req.user.role == 'user'){
+            if(Task.findById(req.task._id) == null){
+                return false;
+            }
+        }
+        else{
+            return false;
+        }
+
+        return true;
+    }
+
+    static async deleteTask(req: any, res: any): Promise<void> {
+        //precondition
+        if(!TaskController.checkDeleteTask(req)) throw new HttpErrors.BadRequest();
+        await Task.findOneAndDelete({_id:req.task._id});
+        res.json({ status: 'success' });
+    }
+
+    
 }
