@@ -20,7 +20,7 @@ export default withRouter((props: any) => {
     const signOut = () => {
         console.log('sign out');
         // TODO call sign out api here
-        authDispatch({ type: 'SIGNOUT' })
+        authDispatch({ type: 'SIGN_OUT' })
         props.history.push('/home');
     }
     useEffect(() => {
