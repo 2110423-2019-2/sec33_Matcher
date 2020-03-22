@@ -25,8 +25,14 @@ export default (props: any) => {
                     isLogin: true
                 });
             })
-            .catch(() => console.log('Unauthenticated'));
-    }, []);
+            .catch(() => {
+                console.log('Unauthenticated');
+                setUserBar({
+                    ...userBar,
+                    isLogin: false
+                });
+            });
+    }, [auth, authDispatch]);
 
     return (
         <div className="navBar">
@@ -53,7 +59,13 @@ export default (props: any) => {
                             <a
                                 href="/#"
                                 onClick={() => {
-                                    logout().then(() => history.push('/'));
+                                    logout().then(() => {
+                                        setUserBar({
+                                            ...userBar,
+                                            isLogin: false
+                                        });
+                                        history.push('/');
+                                    });
                                 }}
                             >
                                 Sign out

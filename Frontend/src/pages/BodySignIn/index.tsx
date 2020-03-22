@@ -1,19 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { ReactComponent as LoginBackground } from "../../assets/organize-photo.svg";
 import { ReactComponent as AppleLogin } from "../../assets/AppleLogin.svg";
 import { ReactComponent as FacebookLogin } from "../../assets/FacebookLogin.svg";
 import { ReactComponent as GmailLogin } from "../../assets/GmailLogin.svg";
 import { ReactComponent as ChevronRight } from "../../assets/icons/chevron-right.svg"
 import { Input, Button } from "../../components/";
+import { AuthContext } from '../../context/AuthContext';
 import isEmail from 'validator/lib/isEmail';
 import "./index.scss";
 import { Link, useHistory } from "react-router-dom";
-import { login } from '../../api/user';
+import { login, whoami } from '../../api/user';
 
 export default () => {
   const [userCred, setUserCred] = useState({ email: '', password: '' });
   const [errorText, setErrorText] = useState<boolean | string>(false);
   const history = useHistory();
+  const { auth, authDispatch } = useContext(AuthContext);
 
   const validate = () => {
     if (!isEmail(userCred.email)) return false;
@@ -32,7 +34,16 @@ export default () => {
     if (validate()) {
       setErrorText(false);
       login(userCred)
-        .then(() => history.push('/'))
+        .then(() => {
+          whoami()
+            .then(profile => {
+                authDispatch({ type: 'FETCH_AUTH_STATUS', payload: profile });
+                history.push('/');
+            })
+            .catch(() => {
+                console.log('Unauthenticated');
+            });
+        })
         .catch(() => {
           setErrorText('Email or password is invalid, please try again.');
         })
