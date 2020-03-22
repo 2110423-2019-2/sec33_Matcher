@@ -21,8 +21,8 @@ export default (props: any) => {
                 authDispatch({ type: 'FETCH_AUTH_STATUS', payload: profile });
                 setUserBar({
                     ...userBar,
-                    name: auth.firstname,
-                    isLogin: auth.isLogin
+                    name: profile.firstname,
+                    isLogin: true
                 });
             })
             .catch(() => console.log('Unauthenticated'));
