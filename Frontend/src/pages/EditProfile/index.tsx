@@ -2,9 +2,8 @@ import React, { useContext, useState } from "react";
 import "./index.scss";
 import { Input, Button } from "../../components";
 import { ReactComponent as Chevron } from "../../assets/icons/chevron-right.svg";
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { AuthContext } from "../../context/AuthContext";
-import isEmail from 'validator/lib/isEmail';
 import { editProfile } from '../../api/user';
 
 export default () => {
@@ -31,18 +30,18 @@ const history = useHistory();
 const validate = () => {
   setErrorText({
       ...errorText,
-      firstname: userInfo.firstname.length == 0 ? 'Firstname cannot be empty.' : '',
-      lastname: userInfo.lastname.length == 0 ? 'Lastname cannot be empty.' : '',
+      firstname: userInfo.firstname.length === 0 ? 'Firstname cannot be empty.' : '',
+      lastname: userInfo.lastname.length === 0 ? 'Lastname cannot be empty.' : '',
       // email: isEmail(userInfo.email) ? '' : 'Please input a proper email.',
       password: userInfo.password.length < 8 ? 'Password must no shorter than 8 character.' : '',
       passwordConfirm:
-          userInfo.password == userInfo.passwordConfirm
+          userInfo.password === userInfo.passwordConfirm
               ? ''
               : 'Password confirmation must match the password entered.',
   });
   if (userInfo.password.length < 8) return false;
-  if (userInfo.firstname.length == 0) return false;
-  if (userInfo.lastname.length == 0) return false;
+  if (userInfo.firstname.length === 0) return false;
+  if (userInfo.lastname.length === 0) return false;
   // if (!isEmail(userInfo.email)) return false;
   if (userInfo.password !== userInfo.passwordConfirm) return false;  
   return true;
