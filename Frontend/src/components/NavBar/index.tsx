@@ -8,25 +8,25 @@ import { whoami, logout } from '../../api/user';
 const awesome = '/images/awesome.png';
 
 export default (props: any) => {
-
     const { auth, authDispatch } = useContext(AuthContext);
     const [userBar, setUserBar] = useState({
         name: auth.firstname,
-        isLogin: auth.isLogin
+        isLogin: auth.isLogin,
     });
     const history = useHistory();
 
-
     useEffect(() => {
         whoami()
-            .then(profile => authDispatch({ type: 'FETCH_AUTH_STATUS', payload: profile }))
-            .catch(() => console.log('Unauthenticated'));     
+            .then(profile => {
+                authDispatch({ type: 'FETCH_AUTH_STATUS', payload: profile });
+                setUserBar({
+                    ...userBar,
+                    name: auth.firstname,
+                    isLogin: auth.isLogin
+                });
+            })
+            .catch(() => console.log('Unauthenticated'));
     }, []);
-    setUserBar({
-        ...userBar,
-        name: auth.firstname,
-        isLogin: auth.isLogin,
-    });
 
     return (
         <div className="navBar">
@@ -43,30 +43,30 @@ export default (props: any) => {
             <div className="NavBarUser">
                 {userBar.isLogin ? (
                     <div className="dropdown">
-                    <img
-                      className="navBarProfilePic"
-                      src={awesome}
-                      alt="awesome"
-                      width="18"
-                      height="18"
-                    ></img>
-                    <p className="dropButton">{userBar.name}</p>
-                    <div className="dropdown-content">
-                      <Link to='/edit'><a>Profile</a></Link>
-                      <a>Your Tasks</a>
-                      <a href='/#' onClick={() => { 
-                        logout()
-                          .then(() => history.push('/')) 
-                      }}>Sign out</a>
+                        <img className="navBarProfilePic" src={awesome} alt="awesome" width="18" height="18"></img>
+                        <p className="dropButton">{userBar.name}</p>
+                        <div className="dropdown-content">
+                            <Link to="/edit">
+                                <a>Profile</a>
+                            </Link>
+                            <a>Your Tasks</a>
+                            <a
+                                href="/#"
+                                onClick={() => {
+                                    logout().then(() => history.push('/'));
+                                }}
+                            >
+                                Sign out
+                            </a>
+                        </div>
                     </div>
-                  </div>
                 ) : (
                     <Link to="/signin">
                         <Button type="outlined">Sign In</Button>
                     </Link>
                 )}
             </div>
-            <hr className={`${auth.isLogin ? 'slider' : 'sliderB'}`} />
+            <hr className={`${userBar.isLogin ? 'slider' : 'sliderB'}`} />
         </div>
     );
 };
