@@ -1,19 +1,38 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import './index.scss';
-import { UserBar, Button } from '../';
+import { Button } from '../';
 import { AuthContext } from '../../context/AuthContext';
-import { Link } from 'react-router-dom';
-import { whoami } from '../../api/user';
+import { Link, useHistory } from 'react-router-dom';
+import { whoami, logout } from '../../api/user';
+
+const awesome = '/images/awesome.png';
 
 export default (props: any) => {
-
-    const { auth, authDispatcher } = useContext(AuthContext);
+    const { auth, authDispatch } = useContext(AuthContext);
+    const [userBar, setUserBar] = useState({
+        name: auth.firstname,
+        isLogin: auth.isLogin,
+    });
+    const history = useHistory();
 
     useEffect(() => {
         whoami()
-            .then(profile => authDispatcher({ type: 'FETCH_AUTH_STATUS', payload: profile }))
-            .catch(() => console.log('Unauthenticated'));
-    }, []);
+            .then(profile => {
+                authDispatch({ type: 'FETCH_AUTH_STATUS', payload: profile });
+                setUserBar({
+                    ...userBar,
+                    name: profile.firstname,
+                    isLogin: true
+                });
+            })
+            .catch(() => {
+                console.log('Unauthenticated');
+                setUserBar({
+                    ...userBar,
+                    isLogin: false
+                });
+            });
+    }, [auth, authDispatch]);
 
     return (
         <div className="navBar">
@@ -28,15 +47,38 @@ export default (props: any) => {
                 <h6 className="navBarItem">Photo Types</h6>
             </Link>
             <div className="NavBarUser">
-                {auth.isLogin ? (
-                    <UserBar username={auth.username} />
+                {userBar.isLogin ? (
+                    <div className="dropdown">
+                        <img className="navBarProfilePic" src={awesome} alt="awesome" width="18" height="18"></img>
+                        <p className="dropButton">{userBar.name}</p>
+                        <div className="dropdown-content">
+                            <Link to="/edit">
+                                <a>Profile</a>
+                            </Link>
+                            <a>Your Tasks</a>
+                            <a
+                                href="/#"
+                                onClick={() => {
+                                    logout().then(() => {
+                                        setUserBar({
+                                            ...userBar,
+                                            isLogin: false
+                                        });
+                                        history.push('/');
+                                    });
+                                }}
+                            >
+                                Sign out
+                            </a>
+                        </div>
+                    </div>
                 ) : (
                     <Link to="/signin">
                         <Button type="outlined">Sign In</Button>
                     </Link>
                 )}
             </div>
-            <hr className={`${auth.isLogin ? 'slider' : 'sliderB'}`} />
+            <hr className={`${userBar.isLogin ? 'slider' : 'sliderB'}`} />
         </div>
     );
 };

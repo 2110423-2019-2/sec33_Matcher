@@ -2,6 +2,8 @@ import React, { createContext, useReducer } from "react";
 
 const initialState = {
   firstname: "User",
+  lastname: "Lastname",
+  email: "user@gmail.com",
   isLogin: false,
   role: "customer"
 };
@@ -16,6 +18,8 @@ export const authReducer = (
     case "FETCH_AUTH_STATUS": return { 
       ...state, 
       firstname: payload.firstname,
+      lastname: payload.lastname,
+      email: payload.email,
       isLogin: true,
       role: payload.role
     }

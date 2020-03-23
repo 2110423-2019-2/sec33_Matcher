@@ -1,5 +1,5 @@
 import React, { useReducer } from "react";
-import { BodySignIn , Register, Home, CreateTask, Tasks } from "./pages";
+import { BodySignIn , Register, Home, CreateTask, Tasks, EditProfile } from "./pages";
 import "./App.css";
 import { NavBar, ComponentList, PrivateRoute, PhotoType } from "./components";
 import "./index.scss";
@@ -28,8 +28,8 @@ const App: React.FC = () => {
           <Route path="/task" component={Tasks} />
           <Route path="/comp" component={ComponentList} />
           <Route path="/type" component={PhotoType} />
+          <Route path="/edit" component={EditProfile} />
           <Route path="/" component={Home} />
-
         </Switch>
       </AuthContextProvider>
     </Router>

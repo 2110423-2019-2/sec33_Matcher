@@ -1,0 +1,20 @@
+@import "../colors.scss";
+
+.editProfilePage {
+  padding: 0 15vw;
+  padding-bottom: 25vh;
+}
+
+.editProfileTitle {
+  display: flex;
+  align-items: center;
+  padding: .5vw 0vh;
+}
+
+.editProfileHeader{
+  color: $color-primary;
+}
+
+.messageProfile {
+  height: 5vw;
+}
