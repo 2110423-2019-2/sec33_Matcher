@@ -2,8 +2,8 @@ import React, { useContext, useState } from "react";
 import "./index.scss";
 import { Input, Button } from "../../components";
 import { ReactComponent as Chevron } from "../../assets/icons/chevron-right.svg";
-import { Link, useHistory } from 'react-router-dom';
-// import { createTask } from '../../api/task';
+import { useHistory } from 'react-router-dom';
+import { upsertTask } from '../../api/task';
 
 import { Select } from "@material-ui/core";
 import InputLabel from '@material-ui/core/InputLabel';
@@ -18,6 +18,28 @@ export default () => {
     tasktype: '',
     price: '',
 });
+  const [errorText, setErrorText] = useState({
+  taskname: '',
+  location: '',
+  image: '',
+  price: '',
+});
+
+const validate = () => {
+  setErrorText({
+      ...errorText,
+      taskname: taskInfo.taskname.length === 0 ? 'Taskname cannot be empty.' : '',
+      location: taskInfo.location.length === 0 ? 'Location cannot be empty.' : '',
+      image: taskInfo.image.length === 0 ? 'Image cannot be empty.' : '',
+      price: taskInfo.price.length === 0 ? 'Price cannot be empty.' : '',      
+  });
+  if (taskInfo.taskname.length === 0) return false;
+  if (taskInfo.location.length === 0) return false;
+  if (taskInfo.image.length === 0) return false; 
+  if (taskInfo.price.length === 0) return false;  
+  return true;
+};
+
   const history = useHistory();
 
   const handleChange = (field: string) => (e: any) => {
@@ -29,9 +51,10 @@ export default () => {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    // createTask(taskInfo)
-    // .then(() => history.push('/createtask'))
-    history.push('/createtask');
+    if(validate()){
+      upsertTask(taskInfo.taskname, taskInfo);
+      history.push('/');
+    }
 };  
   
   return (
@@ -46,36 +69,73 @@ export default () => {
         <p>You can create your task here. Click 'Launch task' after that.</p>
       </div>
     </div>
-    <form onSubmit={handleSubmit}>
+    <form>
     <div className="row createTaskTitle">
       <div className="col-6">
-        <Input variant="filled" onChange={handleChange('taskname')} label="Task name" fullWidth />
+        <Input 
+        variant="filled" 
+        error={Boolean(errorText.taskname)}
+        helperText={errorText.taskname}        
+        onChange={handleChange('taskname')} 
+        label="Task name" 
+        fullWidth 
+        />
       </div>
       <div className="col-6">
-        <Input variant="filled" onChange={handleChange('location')} label="Location" fullWidth />
+        <Input 
+        variant="filled" 
+        error={Boolean(errorText.location)}
+        helperText={errorText.location}         
+        onChange={handleChange('location')} 
+        label="Location" 
+        fullWidth 
+        />
       </div>
     </div>
     <div className="row createTaskTitle">
       <div className="col-6">
-        <Input variant="filled" onChange={handleChange('image')} label="Cover image" fullWidth />
+        <Input 
+        variant="filled" 
+        error={Boolean(errorText.image)}
+        helperText={errorText.image}         
+        onChange={handleChange('image')} 
+        label="Cover image" 
+        fullWidth 
+        />
       </div>
       <div className="col-6">
       <FormControl variant="filled" fullWidth>
         <InputLabel>Task type</InputLabel>
-        <Select onChange={handleChange('tasktype')}>
-          <MenuItem value={'type1'}>Type 1</MenuItem>
-          <MenuItem value={'type2'}>Type 2</MenuItem>
-          <MenuItem value={'type3'}>Type 3</MenuItem>
+        <Select 
+        onClick={handleChange('tasktype')}
+        defaultValue='0'        
+        >
+          <MenuItem value={'0'}>Type 1</MenuItem>
+          <MenuItem value={'1'}>Type 2</MenuItem>
+          <MenuItem value={'2'}>Type 3</MenuItem>
         </Select>
       </FormControl>
       </div>
     </div>
     <div className="row createTaskTitle">
       <div className="col-6">
-        <Input variant="filled" onChange={handleChange('price')} label="Price rate per hour" fullWidth />
+        <Input 
+        variant="filled" 
+        error={Boolean(errorText.price)}
+        helperText={errorText.price}        
+        onChange={handleChange('price')} 
+        label="Price rate per hour" 
+        fullWidth 
+        />
       </div>
       <div className="col-6 createTaskTitle">
-        <Button type="invert" fullWidth>Launch Task<Chevron style={{ strokeWidth: 1 }} />
+        <Button 
+        type="invert" 
+        onClick={handleSubmit} 
+        fullWidth
+        >Launch Task<Chevron 
+        style={{ strokeWidth: 1 }} 
+        />
         </Button>
       </div>
     </div>
