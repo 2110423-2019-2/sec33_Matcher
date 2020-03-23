@@ -15,7 +15,7 @@ export default () => {
   const [userCred, setUserCred] = useState({ email: '', password: '' });
   const [errorText, setErrorText] = useState<boolean | string>(false);
   const history = useHistory();
-  const { auth, authDispatch } = useContext(AuthContext);
+  const { authDispatch } = useContext(AuthContext);
 
   const validate = () => {
     if (!isEmail(userCred.email)) return false;

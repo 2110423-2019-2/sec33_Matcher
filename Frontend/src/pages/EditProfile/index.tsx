@@ -4,11 +4,11 @@ import { Input, Button } from "../../components";
 import { ReactComponent as Chevron } from "../../assets/icons/chevron-right.svg";
 import { useHistory } from 'react-router-dom';
 import { AuthContext } from "../../context/AuthContext";
-import { editProfile } from '../../api/user';
+import { editProfile, whoami } from '../../api/user';
 
 export default () => {
 
-  const { auth } = useContext(AuthContext);
+  const { auth, authDispatch } = useContext(AuthContext);
   
   const [userInfo, setUserInfo] = useState({
     firstname: auth.firstname,
@@ -58,7 +58,16 @@ const validate = () => {
     e.preventDefault();
     if (validate()) {
         editProfile(userInfo)
-        .then(() => history.push('/'))
+        .then(() => {
+          whoami()
+            .then(profile => {
+                authDispatch({ type: 'FETCH_AUTH_STATUS', payload: profile });
+                history.push('/');
+            })
+            .catch(() => {
+                console.log('Unauthenticated');
+            });
+        })
         .catch(() => {
             setErrorText({ ...errorText, password: 'Error' });
         })
