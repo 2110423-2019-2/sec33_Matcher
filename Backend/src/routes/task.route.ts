@@ -6,4 +6,5 @@ import { ensureLoggedIn } from '../utils/userHandlers';
 export const router = express.Router({ strict: true });
 
 router.post('/', ensureLoggedIn(), asyncHandler(TaskController.createTask));
-// TODO add api for task here
+
+router.post('/update/:taskId', ensureLoggedIn(), asyncHandler(TaskController.updateTask));

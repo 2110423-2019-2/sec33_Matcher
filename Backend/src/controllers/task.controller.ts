@@ -41,7 +41,12 @@ export default class TaskController {
     }
 
     private static checkUpdateTask(req: any): boolean {
-        return TaskController.checkCreateTask(req);
+        if (!containAll(req.body, TaskController.requiredFields)) return false;
+        if (!inRange(req.body.title.length, 1, 20)) return false;
+        if (!photoStyles.includes(req.body.photoStyle)) return false;
+        if (req.body.price < 0) return false;
+
+        return true;
     }
     static async updateTask(req: any, res: any): Promise<void> {
         if (!TaskController.checkUpdateTask(req)) throw new HttpErrors.BadRequest();
@@ -49,6 +54,6 @@ export default class TaskController {
         const fields = TaskController.requiredFields.concat(TaskController.optionalFields);
         const newFields = pick(req.body, fields);
 
-        await Task.findOneAndUpdate({ _id: new Types.ObjectId(req.body.taskid), owner: req.user._id, status:TaskStatus.AVAILABLE }, newFields);
+        await Task.findOneAndUpdate({ _id: new Types.ObjectId(req.params.taskId), owner: req.user._id, status:TaskStatus.AVAILABLE }, newFields);
     }
 }
