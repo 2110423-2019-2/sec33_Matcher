@@ -55,5 +55,6 @@ export default class TaskController {
         const newFields = pick(req.body, fields);
 
         await Task.findOneAndUpdate({ _id: new Types.ObjectId(req.params.taskId), owner: req.user._id, status:TaskStatus.AVAILABLE }, newFields);
+        res.json({ status: 'success' });
     }
 }
