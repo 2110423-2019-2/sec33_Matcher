@@ -40,7 +40,20 @@ export default class TaskController {
         res.json({ status: 'success' });
     }
 
-    private static checkUpdateTask(req: any): boolean {
+    private static async checkUpdateTask(req: any): Promise<boolean> {
+        const id = new Types.ObjectId(req.params.taskId);
+        const task = await Task.findById(id);
+
+        if (!task) {
+            return false;
+        } else {
+            if (req.user.role === Role.CUSTOMER) {
+                if (task.owner !== req.user._id) return false;
+            } else if (req.user.role !== Role.ADMIN) {
+                return false;
+            }
+        }
+
         if (!containAll(req.body, TaskController.requiredFields)) return false;
         if (!inRange(req.body.title.length, 1, 20)) return false;
         if (!photoStyles.includes(req.body.photoStyle)) return false;
@@ -48,13 +61,14 @@ export default class TaskController {
 
         return true;
     }
+    
     static async updateTask(req: any, res: any): Promise<void> {
-        if (!TaskController.checkUpdateTask(req)) throw new HttpErrors.BadRequest();
-        
+        if (!(await TaskController.checkUpdateTask(req))) throw new HttpErrors.BadRequest();
+
         const fields = TaskController.requiredFields.concat(TaskController.optionalFields);
         const newFields = pick(req.body, fields);
 
-        await Task.findOneAndUpdate({ _id: new Types.ObjectId(req.params.taskId), owner: req.user._id, status:TaskStatus.AVAILABLE }, newFields);
+        await Task.findOneAndUpdate({ _id: new Types.ObjectId(req.params.taskId) }, newFields);
         res.json({ status: 'success' });
     }
 }
