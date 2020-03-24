@@ -52,7 +52,7 @@ const validate = () => {
   const handleSubmit = (e: any) => {
     e.preventDefault();
     if(validate()){
-      upsertTask(taskInfo.taskname, taskInfo);
+      upsertTask('', taskInfo);
       history.push('/');
     }
 };  
@@ -83,7 +83,7 @@ const validate = () => {
       </div>
       <div className="col-6">
         <Input 
-        variant="filled" 
+        variant="filled"
         error={Boolean(errorText.location)}
         helperText={errorText.location}         
         onChange={handleChange('location')} 
@@ -108,11 +108,14 @@ const validate = () => {
         <InputLabel>Task type</InputLabel>
         <Select 
         onClick={handleChange('tasktype')}
-        defaultValue='0'        
+        defaultValue='Product'        
         >
-          <MenuItem value={'0'}>Type 1</MenuItem>
-          <MenuItem value={'1'}>Type 2</MenuItem>
-          <MenuItem value={'2'}>Type 3</MenuItem>
+          <MenuItem value={'Product'}>Product</MenuItem>
+          <MenuItem value={'Place'}>Place</MenuItem>
+          <MenuItem value={'Cafe & Restaurant'}>Cafe & Restaurant</MenuItem>
+          <MenuItem value={'Graduation'}>Graduation</MenuItem>
+          <MenuItem value={'Wedding'}>Wedding</MenuItem>
+          <MenuItem value={'Event'}>Event</MenuItem>
         </Select>
       </FormControl>
       </div>
