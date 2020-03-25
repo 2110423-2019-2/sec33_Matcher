@@ -7,14 +7,14 @@ import { Link, Switch, withRouter } from 'react-router-dom';
 import { CreateTask } from '..';
 import { DialogContent, DialogContentText, DialogActions, Dialog, DialogTitle } from '@material-ui/core';
 
-export default withRouter((props: any) => {
+export default (props: any) => {
     const { auth, authDispatch } = useContext(AuthContext);
-    const [current, setCurrent] = useState('');
-    const [isChange, setIsChange] = useState(false)
+    const [currentPage, setCurrentPage] = useState<number>(0);
     const [open, setOpen] = useState(false);
+    const pages = [<div />, <UserTasks />, <CreateTask />]
     const deleteAccount = () => {
         console.log('deleted');
-        // TODO call delete account api and signout
+        // TODO call delete account api
         props.history.push('/home');
     }
     const signOut = () => {
@@ -23,9 +23,6 @@ export default withRouter((props: any) => {
         authDispatch({ type: 'SIGN_OUT' })
         props.history.push('/home');
     }
-    useEffect(() => {
-        setCurrent(props.location.pathname);
-    }, [isChange])
     return (
         <div className="consolePage">
             <div className="row consoleTitle">
@@ -36,18 +33,18 @@ export default withRouter((props: any) => {
             <div className="row consoleChoices">
                 <div className="col-2">
                     <Link to='/console/editprofile'>
-                        <p className={`${current.toString() === '/console/editprofile' ? 'selected' : ''}`} onClick={() => setIsChange(!isChange)}>Edit profile</p>
+                        <p className={`${currentPage === 0 ? 'selected' : ''}`} onClick={() => setCurrentPage(0)}>Edit profile</p>
                     </Link>
                 </div>
                 <div className="col-2">
                     <Link to='/console/tasks'>
-                        <p className={`${current.toString() === '/console/tasks' ? 'selected' : ''}`} onClick={() => setIsChange(!isChange)}>Your tasks</p>
+                        <p className={`${currentPage === 1 ? 'selected' : ''}`} onClick={() => setCurrentPage(1)}>Your tasks</p>
                     </Link>
                 </div>
                 {auth.role === 'customer' ?
                     <div className="col-2">
                         <Link to='/console/createtask'>
-                            <p className={`${current.toString() === '/console/createtask' ? 'selected' : ''}`} onClick={() => setIsChange(!isChange)}>Create task</p>
+                            <p className={`${currentPage === 2 ? 'selected' : ''}`} onClick={() => setCurrentPage(2)}>Create task</p>
                         </Link>
                     </div> : null}
                 <div className="col-2">
@@ -73,11 +70,7 @@ export default withRouter((props: any) => {
                     </DialogActions>
                 </Dialog>
             </div>
-            <Switch>
-                {/* <PrivateRoute path="/console/editprofile" components={EditProfile}/ role={["customer", "photographer"]}> */}
-                <PrivateRoute path='/console/tasks' component={UserTasks} roles={["customer", "photographer"]} />
-                <PrivateRoute path='/console/createtask' component={CreateTask} roles={["customer"]} />
-            </Switch>
+            <div>{pages[currentPage]}</div>
         </div>
     )
-})
+}
