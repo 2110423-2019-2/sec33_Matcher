@@ -37,7 +37,7 @@ export default class TaskController {
         res.json({ status: 'success' });
     }
 
-    static async getMatchedTasks(req: any, res: any): Promise<void> {
+    static async getMatchedTasks(req: any, res: any): Promise<any> {
         const user = await User.findOne({ _id: req.user._id })
         if (user.role === Role.CUSTOMER) {
             const matchedTasks = await Task.find({ owner: req.user._id, status: TaskStatus.ACCEPTED });
