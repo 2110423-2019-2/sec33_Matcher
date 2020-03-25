@@ -20,7 +20,7 @@ const port = process.env.PORT || 8080;
 
 const whitelist = ['http://localhost:3000'];
 const corsOptions = {
-    origin: (origin: string, callback: any) => {
+    origin: (origin: string, callback: any): any => {
         if (whitelist.indexOf(origin) !== -1) {
             callback(null, true);
         } else {
