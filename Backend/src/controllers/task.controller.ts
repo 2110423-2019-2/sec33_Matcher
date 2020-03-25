@@ -37,7 +37,6 @@ export default class TaskController {
         res.json({ status: 'success' });
     }
 
-
     static async getMatchedTasks(req: any, res: any): Promise<any> {
         const user = await User.findOne({ _id: req.user._id })
         if (user.role === Role.CUSTOMER) {
@@ -51,6 +50,23 @@ export default class TaskController {
             throw new HttpErrors.NotImplemented();
         }
     }
+
+    static async getAvailableTasks(req: any, res: any): Promise<any> {
+        try {
+            const user = await User.findOne({ __id: req.user._id });
+            if (user.role === Role.CUSTOMER) {
+                const tasks = await Task.find({ status: TaskStatus.AVAILABLE, owner: req.user._id });
+                res.json(tasks);
+            } else {
+                const tasks = await Task.find({ status: TaskStatus.AVAILABLE });
+                res.json(tasks);
+            }
+        } catch (err) {
+            console.log(err);
+            throw new HttpErrors.BadRequest();
+        }
+    }
+  
     static async rateTask(req: any, res: any): Promise<void> {
         const task = await Task.findById(req.body.taskId);
         if (!task) throw new HttpErrors.NotFound();
