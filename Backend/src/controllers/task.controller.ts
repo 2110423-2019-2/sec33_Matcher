@@ -36,4 +36,16 @@ export default class TaskController {
         await task.save();
         res.json({ status: 'success' });
     }
+
+    static async rateTask(req: any, res: any): Promise<void> {
+        const task = await Task.findById(req.body.taskId);
+        if (!task) throw new HttpErrors.NotFound();
+        if (!req.user._id.equals(task.owner)) throw new HttpErrors.Unauthorized();
+        if (task.status !== TaskStatus.FINISHED) throw new HttpErrors.BadRequest('Task unfinished');
+        task.ratingScore = req.body.rating;
+        task.comment = req.body.comment;
+
+        await task.save();
+        res.json({ status: 'success' });
+    }
 }
