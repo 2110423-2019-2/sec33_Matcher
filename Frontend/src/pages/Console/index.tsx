@@ -1,17 +1,16 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { PrivateRoute, UserTasks, Button } from '../../components';
+import { UserTasks, Button } from '../../components';
 import { AuthContext } from '../../context/AuthContext';
 import './index.scss';
-import { CONSOLE_CHOICES, dummyTasks } from '../../const';
-import { Link, Switch, withRouter } from 'react-router-dom';
-import { CreateTask } from '..';
+import { Link, withRouter } from 'react-router-dom';
+import { CreateTask, EditProfile } from '..';
 import { DialogContent, DialogContentText, DialogActions, Dialog, DialogTitle } from '@material-ui/core';
 
-export default (props: any) => {
+export default withRouter((props: any) => {
     const { auth, authDispatch } = useContext(AuthContext);
     const [currentPage, setCurrentPage] = useState<number>(0);
     const [open, setOpen] = useState(false);
-    const pages = [<div />, <UserTasks />, <CreateTask />]
+    const pages = [<EditProfile />, <UserTasks />, <CreateTask />]
     const deleteAccount = () => {
         console.log('deleted');
         // TODO call delete account api
@@ -73,4 +72,4 @@ export default (props: any) => {
             <div>{pages[currentPage]}</div>
         </div>
     )
-}
+})
