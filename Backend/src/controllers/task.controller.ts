@@ -37,6 +37,20 @@ export default class TaskController {
         res.json({ status: 'success' });
     }
 
+    static async getMatchedTasks(req: any, res: any): Promise<any> {
+        const user = await User.findOne({ _id: req.user._id })
+        if (user.role === Role.CUSTOMER) {
+            const matchedTasks = await Task.find({ owner: req.user._id, status: TaskStatus.ACCEPTED });
+            res.json(matchedTasks);
+        } else if (user.role === Role.PHOTOGRAPHER) {
+            const matchedTasks = await Task.find({ acceptedBy: req.user._id, status: TaskStatus.ACCEPTED });
+            res.json(matchedTasks);
+        } else {
+            // TODO add getMatchedTasks for admin
+            throw new HttpErrors.NotImplemented();
+        }
+    }
+
     static async getAvailableTasks(req: any, res: any): Promise<any> {
         try {
             const user = await User.findOne({ __id: req.user._id });
