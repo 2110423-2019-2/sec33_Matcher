@@ -64,4 +64,32 @@ export default class TaskController {
         }
         res.json(finishedTasks)
     }
+
+    static async getAvailableTasks(req: any, res: any): Promise<any> {
+        try {
+            const user = await User.findOne({ __id: req.user._id });
+            if (user.role === Role.CUSTOMER) {
+                const tasks = await Task.find({ status: TaskStatus.AVAILABLE, owner: req.user._id });
+                res.json(tasks);
+            } else {
+                const tasks = await Task.find({ status: TaskStatus.AVAILABLE });
+                res.json(tasks);
+            }
+        } catch (err) {
+            console.log(err);
+            throw new HttpErrors.BadRequest();
+        }
+    }
+  
+    static async rateTask(req: any, res: any): Promise<void> {
+        const task = await Task.findById(req.body.taskId);
+        if (!task) throw new HttpErrors.NotFound();
+        if (!req.user._id.equals(task.owner)) throw new HttpErrors.Unauthorized();
+        if (task.status !== TaskStatus.FINISHED) throw new HttpErrors.BadRequest('Task unfinished');
+        task.ratingScore = req.body.rating;
+        task.comment = req.body.comment;
+
+        await task.save();
+        res.json({ status: 'success' });
+    }
 }
