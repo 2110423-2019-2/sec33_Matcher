@@ -18,17 +18,17 @@ dotenv.config();
 
 const port = process.env.PORT || 8080;
 
-let whitelist = ['http://localhost:3000']
-let corsOptions = {
-  origin: (origin: string, callback: any) => {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true)
-    } else {
-      callback(new Error('Not allowed by CORS'))
-    }
-  },
-  credentials: true
-}
+const whitelist = ['http://localhost:3000'];
+const corsOptions = {
+    origin: (origin: string, callback: any) => {
+        if (whitelist.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true,
+};
 
 export default class FastphotoApp {
     application: Application;
