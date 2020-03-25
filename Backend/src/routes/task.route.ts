@@ -7,4 +7,5 @@ export const router = express.Router({ strict: true });
 
 router.post('/', ensureLoggedIn(), asyncHandler(TaskController.createTask));
 router.get('/matched', ensureLoggedIn(), asyncHandler(TaskController.getMatchedTasks));
+router.get('/finished', ensureLoggedIn(), asyncHandler(TaskController.getFinishedTasks));
 // TODO add api for task here
