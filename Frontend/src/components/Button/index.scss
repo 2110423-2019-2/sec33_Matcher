@@ -5,9 +5,11 @@
   font-size: 18px;
   background-color: $color-ternary;
   min-width: 100px;
+  max-width: 145px;
   display: inline-flex;
   border: 2.5px solid $color-ternary;
   cursor: pointer;
+  justify-content: center;
 
   &.outlined {
     border-color: $color-primary;
