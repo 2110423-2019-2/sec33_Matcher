@@ -12,6 +12,8 @@ interface UserCardProps {
 interface TaskCardProps extends UserCardProps {
     price?: number;
     thumbnail?: string;
+    button?: string;
+    onClick?: Function;
 }
 
 const UserCard = ({
@@ -19,20 +21,20 @@ const UserCard = ({
     location = 'Job Location',
     profilePic = '/images/profile-placeholder.png',
 }: UserCardProps) => (
-    <div className="row left">
-        <div className="col-3">
-            <div className="imageCropper">
-                <img src={profilePic} className="rounded" alt="profile" />
+        <div className="row left">
+            <div className="col-3">
+                <div className="imageCropper">
+                    <img src={profilePic} className="rounded" alt="profile" />
+                </div>
+            </div>
+            <div className="col-8">
+                <div className="row taskHeaderText">{name}</div>
+                <div className="row taskHeaderText location">
+                    <MapPin /> {location}
+                </div>
             </div>
         </div>
-        <div className="col-8">
-            <div className="row taskHeaderText">{name}</div>
-            <div className="row taskHeaderText location">
-                <MapPin /> {location}
-            </div>
-        </div>
-    </div>
-);
+    );
 
 export default ({
     name,
@@ -40,23 +42,25 @@ export default ({
     profilePic,
     price = 0,
     thumbnail = '/images/horizontal-placeholder.png',
+    button = 'Get',
+    onClick = () => { }
 }: TaskCardProps) => (
-    <div style={{ display: 'inline-flex' }}>
-        <div className="taskCardContainer">
-            <UserCard name={name} location={location} profilePic={profilePic} />
-            <div className="row">
-                <img src={thumbnail} className="taskPic" alt="task" />
-            </div>
-            <div className="row">
-                <div className="col-6 left">
-                    <p className="taskPriceTag">
-                        ฿ <span className="price">{price}</span> / hr
-                    </p>
+        <div style={{ display: 'inline-flex' }}>
+            <div className="taskCardContainer">
+                <UserCard name={name} location={location} profilePic={profilePic} />
+                <div className="row">
+                    <img src={thumbnail} className="taskPic" alt="task" />
                 </div>
-                <div className="col-6">
-                    <Button>Get</Button>
+                <div className="row">
+                    <div className="col-6 left">
+                        <p className="taskPriceTag">
+                            ฿ <span className="price">{price}</span> / hr
+                    </p>
+                    </div>
+                    <div className="col-6">
+                        <Button onClick={onClick}>{button}</Button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-);
+    );
