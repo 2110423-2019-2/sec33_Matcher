@@ -37,7 +37,7 @@ export default class TaskController {
         res.json({ status: 'success' });
     }
 
-    static async getAvailableTasks(req: any, res: any): Promise<void> {
+    static async getAvailableTasks(req: any, res: any): Promise<any> {
         try {
             const user = await User.findOne({ __id: req.user._id });
             if (user.role === Role.CUSTOMER) {
