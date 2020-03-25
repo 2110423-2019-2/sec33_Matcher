@@ -1,7 +1,8 @@
 import React from 'react';
 import './index.scss';
 import { logout } from '../../api/user'
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+
 
 const awesome = '/images/awesome.png';
 
@@ -23,8 +24,8 @@ export default ({ username }: UserProps) => {
       ></img>
       <p className="dropButton">{username}</p>
       <div className="dropdown-content">
-        <p>Profile</p>
-        <p>Your Tasks</p>
+        <Link to='/edit'><a>Profile</a></Link>
+        <a>Your Tasks</a>
         <a href='/#' onClick={() => { 
           logout()
             .then(() => history.push('/')) 

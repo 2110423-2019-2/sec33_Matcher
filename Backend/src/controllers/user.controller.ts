@@ -2,6 +2,7 @@ import { User } from '../models';
 import { generateHash } from '../utils/userHandlers';
 import HttpErrors from 'http-errors';
 import validator from 'validator';
+import { Role, PhotoStyles } from '../const';
 import pick from 'object.pick';
 import passport from 'passport';
 
@@ -75,7 +76,7 @@ export default class UserController {
 
         if (fields.includes('role')) {
             // Precondition : Role should be either "photographer" or "customer"
-            if (body.role != 'photographer' && body.role != 'customer') return false;
+            if (body.role !== Role.PHOTOGRAPHER && body.role !== Role.CUSTOMER) return false;
         }
 
         if (fields.includes('email')) {
@@ -98,7 +99,6 @@ export default class UserController {
             // Precondition : Password length must be between 8 and 20 characters
             if (!inRange(body.password.length, 8, 20)) return false;
         }
-        // Preconditions end
         return true;
     }
 }
