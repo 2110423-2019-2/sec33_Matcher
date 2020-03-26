@@ -11,4 +11,5 @@ router.get('/matched', ensureLoggedIn(), asyncHandler(TaskController.getMatchedT
 router.get('/finished', ensureLoggedIn(), asyncHandler(TaskController.getFinishedTasks));
 router.get('/available', ensureLoggedIn(), asyncHandler(TaskController.getAvailableTasks));
 router.post('/rate', ensureLoggedIn(), asyncHandler(TaskController.rateTask));
+router.get('/accept/:id', ensureLoggedIn(), asyncHandler(TaskController.acceptTask));
 router.get('/finish/:id', ensureLoggedIn(), asyncHandler(TaskController.finishTask));
