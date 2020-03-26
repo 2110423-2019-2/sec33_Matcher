@@ -104,6 +104,8 @@ export default class FastphotoApp {
 
         app.get('/logout', AuthController.logout);
 
+        app.get('/user/:id', asyncHandler(UserController.getUserProfile));
+
         // app.post('/createtask', ensureLoggedIn(), asyncHandler(TaskController.createTask));
         app.use('/task', taskRoute);
 

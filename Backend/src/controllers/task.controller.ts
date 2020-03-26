@@ -128,7 +128,7 @@ export default class TaskController {
         await task.save();
         res.json({ status: 'success' });
     }
-  
+
     static async acceptTask(req: any, res: any): Promise<void> {
         try {
             const user = await User.findById(req.user._id);
