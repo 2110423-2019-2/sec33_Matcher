@@ -8,6 +8,8 @@ import Input from "./Input";
 import PrivateRoute from "./PrivateRoute";
 import Footer from "./Footer";
 import PhotoType from "./PhotoType"
+import Section from './Section';
+import UserTasks from './UserTasks';
 
 export {
   NavBar,
@@ -19,5 +21,7 @@ export {
   Input,
   PrivateRoute,
   Footer,
-  PhotoType
+  PhotoType,
+  Section,
+  UserTasks
 };

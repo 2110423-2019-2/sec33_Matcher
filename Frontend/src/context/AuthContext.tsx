@@ -15,13 +15,17 @@ export const authReducer = (
   const { type, payload } = action;
 
   switch (type) {
-    case "FETCH_AUTH_STATUS": return { 
-      ...state, 
+    case "FETCH_AUTH_STATUS": return {
+      ...state,
       firstname: payload.firstname,
       lastname: payload.lastname,
       email: payload.email,
       isLogin: true,
       role: payload.role
+    }
+    case "SIGN_OUT": return {
+      ...initialState,
+      isLogin: false // TODO remove when initialState.isLogin is false
     }
   }
   return initialState;
@@ -36,10 +40,10 @@ export const AuthContext = createContext<{
 });
 
 export const AuthContextProvider = ({ children }: any) => {
-  const [ auth, authDispatch ] = useReducer(authReducer, initialState)
+  const [auth, authDispatch] = useReducer(authReducer, initialState)
 
   return <AuthContext.Provider value={{ auth, authDispatch }}>
-    { children }
+    {children}
   </AuthContext.Provider>
 };
 export const defaultAuth = initialState;

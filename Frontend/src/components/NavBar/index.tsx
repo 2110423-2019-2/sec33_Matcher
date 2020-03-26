@@ -73,10 +73,10 @@ export default (props: any) => {
                         </div>
                     </div>
                 ) : (
-                    <Link to="/signin">
-                        <Button type="outlined">Sign In</Button>
-                    </Link>
-                )}
+                        <Link to="/signin">
+                            <Button type="outlined">Sign In</Button>
+                        </Link>
+                    )}
             </div>
             <hr className={`${userBar.isLogin ? 'slider' : 'sliderB'}`} />
         </div>
