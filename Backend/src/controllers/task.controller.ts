@@ -61,7 +61,7 @@ export default class TaskController {
 
         return true;
     }
-    
+
     static async updateTask(req: any, res: any): Promise<void> {
         if (!(await TaskController.checkUpdateTask(req))) throw new HttpErrors.BadRequest();
 
@@ -71,9 +71,9 @@ export default class TaskController {
         await Task.findOneAndUpdate({ _id: new Types.ObjectId(req.params.taskId) }, newFields);
         res.json({ status: 'success' });
     }
-    
+
     static async getMatchedTasks(req: any, res: any): Promise<any> {
-        const user = await User.findOne({ _id: req.user._id })
+        const user = await User.findOne({ _id: req.user._id });
         if (user.role === Role.CUSTOMER) {
             const matchedTasks = await Task.find({ owner: req.user._id, status: TaskStatus.ACCEPTED });
             res.json(matchedTasks);
@@ -86,7 +86,7 @@ export default class TaskController {
         }
     }
     static async getFinishedTasks(req: any, res: any): Promise<any> {
-        const user = await User.findById(req.user._id)
+        const user = await User.findById(req.user._id);
         let finishedTasks: Array<ITask>;
         if (user.role === Role.CUSTOMER) {
             finishedTasks = await Task.find({ owner: req.user._id, status: TaskStatus.FINISHED });
@@ -97,7 +97,7 @@ export default class TaskController {
         } else {
             throw new HttpErrors.Unauthorized();
         }
-        res.json(finishedTasks)
+        res.json(finishedTasks);
     }
 
     static async getAvailableTasks(req: any, res: any): Promise<any> {
@@ -115,7 +115,7 @@ export default class TaskController {
             throw new HttpErrors.BadRequest();
         }
     }
-  
+
     static async rateTask(req: any, res: any): Promise<void> {
         const task = await Task.findById(req.body.taskId);
         if (!task) throw new HttpErrors.NotFound();
