@@ -14,13 +14,13 @@ export default withRouter((props: any) => {
     const deleteAccount = () => {
         console.log('deleted');
         // TODO call delete account api
-        props.history.push('/home');
+        props.history.push('/');
     }
     const signOut = () => {
         console.log('sign out');
         // TODO call sign out api here
         authDispatch({ type: 'SIGN_OUT' })
-        props.history.push('/home');
+        props.history.push('/');
     }
     return (
         <div className="consolePage">
