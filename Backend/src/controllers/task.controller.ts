@@ -127,4 +127,34 @@ export default class TaskController {
         await task.save();
         res.json({ status: 'success' });
     }
+    static async finishTask(req: any, res: any): Promise<void> {
+        try {
+            const user = await User.findById(req.user._id);
+            const task = await Task.findById(req.params.id);
+            if (!task) throw new HttpErrors.NotFound();
+            if (user.role === Role.CUSTOMER) {
+                // customer will set status to finished
+                if (!req.user._id.equals(task.owner)) throw new HttpErrors.Unauthorized();
+                if (task.status !== TaskStatus.REQ_FIN) throw new HttpErrors.BadRequest();
+                task.status = TaskStatus.FINISHED;
+
+                await task.save();
+                res.json({ status: 'success' });
+            } else if (user.role === Role.PHOTOGRAPHER) {
+                if (!req.user._id.equals(task.acceptedBy)) throw new HttpErrors.Unauthorized();
+                if (task.status === TaskStatus.ACCEPTED) throw new HttpErrors.BadRequest();
+                task.status = TaskStatus.REQ_FIN;
+
+                await task.save();
+                res.json({ status: 'success' });
+            } else if (user.role === Role.ADMIN) {
+                // TODO implement finish task for admin here
+            } else {
+                throw new HttpErrors.Unauthorized();
+            }
+        } catch (err) {
+            console.log(err);
+            throw new HttpErrors.BadRequest();
+        }
+    }
 }
