@@ -85,7 +85,7 @@ export default class TaskController {
             throw new HttpErrors.NotImplemented();
         }
     }
-    
+  
     static async getFinishedTasks(req: any, res: any): Promise<any> {
         const user = await User.findById(req.user._id);
         let finishedTasks: Array<ITask>;
