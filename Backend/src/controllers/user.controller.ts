@@ -1,12 +1,25 @@
-import { User } from '../models';
+import { User, Task } from '../models';
 import { generateHash } from '../utils/userHandlers';
 import HttpErrors from 'http-errors';
 import validator from 'validator';
-import { Role, PhotoStyles } from '../const';
+import { Role } from '../const';
 import pick from 'object.pick';
-import passport from 'passport';
+import { Types } from 'mongoose';
 
 export default class UserController {
+    private static async getUserAvgRating(userId: string): Promise<number> {
+        const avgRating = await Task.aggregate([
+            { '$match': { acceptedBy: Types.ObjectId(userId) } },
+            {
+                '$group': {
+                    _id: null,
+                    total: { '$avg': '$ratingScore' }
+                }
+            }
+        ])
+        return avgRating[0].total;
+    }
+
     static async createUser(req: any, res: any): Promise<void> {
         const fields = ['email', 'password', 'firstname', 'lastname', 'role'];
         //validate input ; pre-condition
@@ -29,6 +42,7 @@ export default class UserController {
     static async hello(req: any, res: any): Promise<void> {
         res.send('Hello World!');
     }
+
     static async getProfile(req: any, res: any): Promise<void> {
         res.json({
             createTime: req.user.createTime,
@@ -38,6 +52,7 @@ export default class UserController {
             role: req.user.role,
         });
     }
+
     static async updateProfile(req: any, res: any): Promise<void> {
         //add fields by requested update and for only legal update field
         const fields = ['email', 'password', 'firstname', 'lastname', 'role', 'createTime'];
@@ -100,5 +115,17 @@ export default class UserController {
             if (!inRange(body.password.length, 8, 20)) return false;
         }
         return true;
+    }
+
+    static async getUserProfile(req: any, res: any) {
+        const userProfile = await User.findById(req.params.id);
+        if (!userProfile) throw new HttpErrors.NotFound();
+        res.json({
+            firstname: userProfile.firstname,
+            lastname: userProfile.lastname,
+            role: userProfile.role,
+            createTime: userProfile.createTime,
+            score: await UserController.getUserAvgRating(req.params.id)
+        });
     }
 }
