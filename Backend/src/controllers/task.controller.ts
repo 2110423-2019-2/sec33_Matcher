@@ -37,36 +37,26 @@ export default class TaskController {
     }
 
     private static async checkDeleteTask(req: any): Promise<boolean> {
-        //task must exist
-        if (!(await Task.exists({ _id: req.body.taskID }))) {
+        const id = req.body.taskId;
+        const task = await Task.findById(id);
+        if (!task) {
             return false;
-        }
-        //task exist
-        //case 1: is admin
-        if (req.user.role === Role.ADMIN) {
+        } else if (req.user.role === Role.ADMIN) {
             return true;
-        } //case 2: is customer and the owner of the task
-        else if (req.user.role === Role.CUSTOMER) {
-            let flag = true;
-            await Task.findById(req.body.taskID, (err, res) => {
-                if (err) throw err;
-                else if (res.owner != req.user._id) {
-                    flag = false;
-                }
-            });
-            if (!flag) {
+        } else if (req.user.role !== Role.CUSTOMER) {
+            return false;
+        } else {
+            if (task.owner.toString() !== req.user._id.toString()) {
                 return false;
             }
-        } else {
-            return false;
+            return true;
         }
-        return true;
     }
 
     static async deleteTask(req: any, res: any): Promise<void> {
         //precondition
         if (!(await TaskController.checkDeleteTask(req))) throw new HttpErrors.BadRequest();
-        await Task.findOneAndDelete({ _id: req.body.taskID }, (err, res) => {
+        await Task.findOneAndDelete({ _id: req.body.taskId }, (err, res) => {
             if (err) throw new HttpErrors.BadRequest();
         });
         res.json({ status: 'success' });
