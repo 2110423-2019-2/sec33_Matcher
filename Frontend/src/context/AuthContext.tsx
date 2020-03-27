@@ -4,7 +4,7 @@ const initialState = {
   firstname: "User",
   lastname: "Lastname",
   email: "user@gmail.com",
-  isLogin: false,
+  isLogin: true,
   role: "customer"
 };
 
