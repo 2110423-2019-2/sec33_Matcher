@@ -132,18 +132,23 @@ export default class TaskController {
     static async acceptTask(req: any, res: any): Promise<void> {
         try {
             const user = await User.findById(req.user._id);
-            if (user.role === Role.CUSTOMER) {
-                throw new HttpErrors.Unauthorized();
-            } else {
-                // admin and photographer can accept task.
-                const task = await Task.findById(req.params.id);
-                if (!task) throw new HttpErrors.NotFound();
-                if (task.status !== TaskStatus.AVAILABLE) throw new HttpErrors.NotFound();
+            const task = await Task.findById(req.params.id);
+            if (!task) throw new HttpErrors.NotFound();
 
-                const acceptedTask = { ...task, acceptedBy: req.user._id, status: TaskStatus.ACCEPTED };
-                task.set(acceptedTask);
-                res.json(await task.save());
-            }
+            if (user.role === Role.CUSTOMER) {
+                if (!req.user._id.equals(task.owner)) throw new HttpErrors.Unauthorized();
+                if (task.status !== TaskStatus.REQ_ACC) throw new HttpErrors.BadRequest();
+            } else if (user.role === Role.PHOTOGRAPHER) {
+                // admin and photographer can accept task.
+                if (task.status !== TaskStatus.AVAILABLE) throw new HttpErrors.Unauthorized();
+                task.acceptedBy = req.user._id;
+                task.status = TaskStatus.ACCEPTED;
+
+                await task.save()
+                res.json({ status: 'success' });
+            } else if (user.role === Role.ADMIN) {
+                // TODO implement method for admin
+            } else throw new HttpErrors.Unauthorized();
         } catch (err) {
             console.log(err);
             throw new HttpErrors.BadRequest();
