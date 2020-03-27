@@ -5,11 +5,9 @@ import { AuthContext } from '../../context/AuthContext';
 import { getAvailableTasks, getMatchedTasks, getFinishedTasks } from '../../api/task';
 import { dummyTasks } from '../../const';
 import { DialogContent, DialogContentText, DialogActions, Dialog, DialogTitle } from '@material-ui/core';
-import { Button } from '../../components';
+import { Input, Button } from '../../components';
 
 import Rating from '@material-ui/lab/Rating';
-import Box from '@material-ui/core/Box';
-
 interface ITask {
     username: string,
     location: string,
@@ -39,8 +37,22 @@ export default () => {
             console.log(err)
         );
     }
+    
+    // comment
+    const [rateInfo, setRateInfo] = useState({
+        comment: '',
+      });
+    const handleChange = (field: string) => (e: any) => {
+        setRateInfo({
+        ...rateInfo,
+        [field]: e.target.value
+        })
+    }  
 
+    // rating
     const [value, setValue] = React.useState<number | null>(2);
+
+      
 
     useEffect(() => {
         fetchTasks();
@@ -57,6 +69,7 @@ export default () => {
             {dummyTasks.length === 0 ? null : dummyTasks.map(task => <TaskCard onClick={() => setOpen(true)} name={task.username} location={task.location} profilePic={task.img} price={task.price} thumbnail={task.img} button={auth.role === 'customer' ? 'Review' : 'Pending' } />)}
             </Section>
 
+            {/* dialog */}
             <Dialog open={open} onClose={() => setOpen(false)} fullWidth={true} className="dialog">
                     <DialogContent>
                         <DialogContentText>
@@ -70,7 +83,11 @@ export default () => {
                                     setValue(newValue);
                                 }}
                             />
+                            
                         </DialogContentText>
+                        <div className="col-6">
+                            <Input variant="filled" onChange={handleChange('comment')} label="Type your comment" fullWidth />
+                        </div>
                     </DialogContent>
                     <DialogActions>
                         <Button type="outlined" onClick={() => setOpen(false)}>Done</Button>
