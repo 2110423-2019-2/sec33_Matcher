@@ -44,13 +44,32 @@ export default class UserController {
     }
 
     static async getProfile(req: any, res: any): Promise<void> {
-        res.json({
-            createTime: req.user.createTime,
-            email: req.user.email,
-            firstname: req.user.firstname,
-            lastname: req.user.lastname,
-            role: req.user.role,
-        });
+        if(typeof(req.params.userId) === 'undefined'){
+            res.json({
+                createTime: req.user.createTime,
+                email: req.user.email,
+                firstname: req.user.firstname,
+                lastname: req.user.lastname,
+                role: req.user.role,
+            });
+        }
+        else{
+            if(req.params.userId.toString().length !== 24){
+                throw new HttpErrors.BadRequest();
+            }
+            const id = new Types.ObjectId(req.params.userId);
+            const user = await User.findById({_id: id});
+            if(user === null){
+                throw new HttpErrors.BadRequest();
+            }
+            res.json({
+                createTime: user.createTime,
+                email: user.email,
+                firstname: user.firstname,
+                lastname: user.lastname,
+                role: user.role,
+            });
+        }        
     }
 
     static async updateProfile(req: any, res: any): Promise<void> {
