@@ -75,6 +75,31 @@ export default class UserController {
         res.json({ status: 'success' });
     }
 
+    static async deleteProfile(req: any, res: any){
+        if(!await UserController.checkDelete(req)) throw new HttpErrors.BadRequest();
+        await User.findByIdAndDelete({_id: new Types.ObjectId(req.params.userId)});
+        res.json({ status: 'success' });
+    }
+
+    static async checkDelete(req: any): Promise<boolean>{
+        const id = new Types.ObjectId(req.params.userId);
+        const userProfile = await User.findById(id);
+        if (!userProfile){
+            return false;
+        }
+        else if(req.user.role === Role.ADMIN){
+            return true;
+        }
+        else{
+            if(req.user._id.toString() !== id.toString()){
+                console.log(req.user._id, id);
+                return false;
+            }
+            return true;
+        }
+    }
+
+
     static async validateInput(body: any, fields: string[]): Promise<boolean> {
         // Preconditions begin
         const inRange = (x: number, lowerBound: number, upperBound: number): boolean => {
@@ -128,4 +153,5 @@ export default class UserController {
             score: await UserController.getUserAvgRating(req.params.id)
         });
     }
+
 }
