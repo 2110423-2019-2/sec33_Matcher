@@ -6,6 +6,7 @@ import { ensureLoggedIn } from '../utils/userHandlers';
 export const router = express.Router({ strict: true });
 
 router.post('/', ensureLoggedIn(), asyncHandler(TaskController.createTask));
+router.delete('/delete/:taskId', ensureLoggedIn(), asyncHandler(TaskController.deleteTask));
 router.post('/update/:taskId', ensureLoggedIn(), asyncHandler(TaskController.updateTask));
 router.get('/matched', ensureLoggedIn(), asyncHandler(TaskController.getMatchedTasks));
 router.get('/finished', ensureLoggedIn(), asyncHandler(TaskController.getFinishedTasks));

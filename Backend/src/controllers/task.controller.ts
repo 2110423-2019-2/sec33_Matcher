@@ -22,7 +22,6 @@ export default class TaskController {
 
     static async createTask(req: any, res: any): Promise<void> {
         if (!TaskController.checkCreateTask(req)) throw new HttpErrors.BadRequest();
-
         const task = new Task({
             title: req.body.title,
             description: req.body.description,
@@ -37,6 +36,32 @@ export default class TaskController {
         });
 
         await task.save();
+        res.json({ status: 'success' });
+    }
+
+    private static async checkDeleteTask(req: any): Promise<boolean> {
+        const id = req.body.taskId;
+        const task = await Task.findById(id);
+        if (!task) {
+            return false;
+        } else if (req.user.role === Role.ADMIN) {
+            return true;
+        } else if (req.user.role !== Role.CUSTOMER) {
+            return false;
+        } else {
+            if (task.owner.toString() !== req.user._id.toString()) {
+                return false;
+            }
+            return true;
+        }
+    }
+
+    static async deleteTask(req: any, res: any): Promise<void> {
+        //precondition
+        if (!(await TaskController.checkDeleteTask(req))) throw new HttpErrors.BadRequest();
+        await Task.findOneAndDelete({ _id: req.body.taskId }, (err, res) => {
+            if (err) throw new HttpErrors.BadRequest();
+        });
         res.json({ status: 'success' });
     }
 
