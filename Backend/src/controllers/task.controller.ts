@@ -40,7 +40,7 @@ export default class TaskController {
     }
 
     private static async checkDeleteTask(req: any): Promise<boolean> {
-        const id = req.body.taskId;
+        const id = new Types.ObjectId(req.params.taskId);
         const task = await Task.findById(id);
         if (!task) {
             return false;
@@ -59,7 +59,7 @@ export default class TaskController {
     static async deleteTask(req: any, res: any): Promise<void> {
         //precondition
         if (!(await TaskController.checkDeleteTask(req))) throw new HttpErrors.BadRequest();
-        await Task.findOneAndDelete({ _id: req.body.taskId }, (err, res) => {
+        await Task.findOneAndDelete({ _id: new Types.ObjectId(req.params.taskId) }, (err, res) => {
             if (err) throw new HttpErrors.BadRequest();
         });
         res.json({ status: 'success' });
