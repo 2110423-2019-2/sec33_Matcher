@@ -11,6 +11,8 @@
   width: 100vw;
   font-family: "Montserrat";
   align-self: center;
+  bottom: 0;
+  position: fixed;
 }
 .contact {
   display: flex;

@@ -1,6 +1,6 @@
 import React from "react";
 import "./index.scss";
-import { Button, VerticalCard, TaskCard } from "../../components/index";
+import { Button, VerticalCard, TaskCard, PhotoType } from "../../components/index";
 import { ReactComponent as Chevron } from '../../assets/icons/chevron-right.svg';
 import camera from '../../assets/camera.svg';
 import social from '../../assets/icons/social icon.svg';
@@ -64,13 +64,18 @@ export default () => {
         <br></br>
 
         <div className="home-button-line">
+<<<<<<< HEAD
           <Button type="filled">Find jobs</Button>
           <Link to="/create"><Button type="outlined" className="createTaskBtn">Create task</Button></Link>
+=======
+          <Link to='/task'><Button type="filled">Find jobs</Button></Link>
+          <Button type="outlined" className="createTaskBtn">Create task</Button>
+>>>>>>> origin/dev_frontend
         </div>
       </div>
 
       <div className="seeBlock">
-        <h5>see all task</h5>
+        <Link to='/task'><h5>see all task</h5></Link>
       </div>
 
       <div className="matcherBlock">
@@ -87,7 +92,7 @@ export default () => {
             <h5>Jobs near by you</h5>
           </div>
           <div className="col-6 right subHeader seeall">
-            <h5>see all <Chevron /></h5>
+          <Link to='/task'><h5>see all <Chevron /></h5></Link>
           </div>
         </div>
 
@@ -100,27 +105,7 @@ export default () => {
           <TaskCard thumbnail="https://picsum.photos/200/300" name="John Doe" location="Siam Paragon" price={300} />
         </div>
 
-        <div className="photoTypes subHeader">
-          <h5>Photo types</h5>
-          <div className="row center">
-            {
-              categoryCards.slice(0, 3).map(({ src, alt, text }, index) => (
-                <div className="col-4" style={{ marginTop: 50 * (2 - index) }} >
-                  <VerticalCard src={src} alt={alt} text={text} />
-                </div>
-              ))
-            }
-          </div>
-          <div className="row center">
-            {
-              categoryCards.slice(3, 6).map(({ src, alt, text }, index) => (
-                <div className="col-4" style={{ marginTop: 50 * (2 - index) }}>
-                  <VerticalCard src={src} alt={alt} text={text} />
-                </div>
-              ))
-            }
-          </div>
-        </div>
+        <PhotoType/>
       </div>
     </div>
 

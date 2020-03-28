@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import './index.scss';
-import Checkbox, { CheckboxProps } from '@material-ui/core/Checkbox';
+import Checkbox from '@material-ui/core/Checkbox';
 import { AppleLogin, FacebookLogin, GmailLogin, ChevronRight, RegisterBackground, ChooseImage } from '../../assets';
-import { NavBar, Footer, Input, Button } from '../../components';
+import { Input, Button } from '../../components';
 import isEmail from 'validator/lib/isEmail';
 import { Link, useHistory } from 'react-router-dom';
 import { register } from '../../api/user';
@@ -31,7 +31,7 @@ export default () => {
             email: isEmail(userInfo.email) ? '' : 'Please input a proper email.',
             password: userInfo.password.length < 8 ? 'Password must no shorter than 8 character.' : '',
             passwordConfirm:
-                userInfo.password == userInfo.passwordConfirm
+                userInfo.password === userInfo.passwordConfirm
                     ? ''
                     : 'Password confirmation must match the password entered.',
         });

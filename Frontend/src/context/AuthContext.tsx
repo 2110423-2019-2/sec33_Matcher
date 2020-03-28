@@ -1,7 +1,9 @@
-import React, { createContext } from "react";
+import React, { createContext, useReducer } from "react";
 
 const initialState = {
-  username: "User",
+  firstname: "User",
+  lastname: "Lastname",
+  email: "user@gmail.com",
   isLogin: false,
   role: "customer"
 };
@@ -11,21 +13,37 @@ export const authReducer = (
   action: { type: string; payload: any }
 ) => {
   const { type, payload } = action;
-  switch (
-    type
-    // TODO
-  ) {
+
+  switch (type) {
+    case "FETCH_AUTH_STATUS": return {
+      ...state,
+      firstname: payload.firstname,
+      lastname: payload.lastname,
+      email: payload.email,
+      isLogin: true,
+      role: payload.role
+    }
+    case "SIGN_OUT": return {
+      ...initialState,
+      isLogin: false // TODO remove when initialState.isLogin is false
+    }
   }
   return initialState;
 };
 
 export const AuthContext = createContext<{
   auth: any;
-  authDispatcher: Function;
+  authDispatch: Function;
 }>({
   auth: initialState,
-  authDispatcher: () => 0
+  authDispatch: () => 0
 });
 
-export const AuthContextProvider = AuthContext.Provider;
+export const AuthContextProvider = ({ children }: any) => {
+  const [auth, authDispatch] = useReducer(authReducer, initialState)
+
+  return <AuthContext.Provider value={{ auth, authDispatch }}>
+    {children}
+  </AuthContext.Provider>
+};
 export const defaultAuth = initialState;
