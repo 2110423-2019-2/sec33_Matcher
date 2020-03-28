@@ -64,13 +64,8 @@ export default () => {
         <br></br>
 
         <div className="home-button-line">
-<<<<<<< HEAD
-          <Button type="filled">Find jobs</Button>
-          <Link to="/create"><Button type="outlined" className="createTaskBtn">Create task</Button></Link>
-=======
           <Link to='/task'><Button type="filled">Find jobs</Button></Link>
           <Button type="outlined" className="createTaskBtn">Create task</Button>
->>>>>>> origin/dev_frontend
         </div>
       </div>
 

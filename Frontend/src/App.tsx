@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React from "react";
 import { BodySignIn, Register, Home, CreateTask, Tasks, Console } from "./pages";
 import "./App.css";
 import { NavBar, ComponentList, PrivateRoute, PhotoType, Footer } from "./components";
@@ -11,10 +11,9 @@ import {
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 const App: React.FC = () => {
-  const [auth, authDispatcher] = useReducer(authReducer, defaultAuth);
   return (
     <Router>
-      <AuthContextProvider value={{ auth, authDispatcher }}>
+      <AuthContextProvider>
         <NavBar />
 
         <Switch>
@@ -37,3 +36,5 @@ const App: React.FC = () => {
     </Router>
   );
 };
+
+export default App;
