@@ -52,6 +52,10 @@ export default () => {
     // rating
     const [value, setValue] = React.useState<number | null>(2);
 
+    //photographer profile pic
+    const awesome = '/images/awesome.png';
+
+
       
 
     useEffect(() => {
@@ -73,22 +77,28 @@ export default () => {
             <Dialog open={open} onClose={() => setOpen(false)} fullWidth={true} className="dialog">
                     <DialogContent>
                         <DialogContentText>
-                            <p className="dialogContent">Review photographer's job</p>
-                            <br></br>
-                            <Rating
-                                name="simple-controlled"
-                                size="large"
-                                value={value}
-                                onChange={(event, newValue) => {
-                                    setValue(newValue);
-                                }}
-                            />
+                            <div className = "ratingStar">
+                                <p className="dialogContent">Review photographer's job</p>
+                                <br></br>
+                                <Rating
+                                    name="simple-controlled"
+                                    size="large"
+                                    value={value}
+                                    onChange={(event, newValue) => {
+                                        setValue(newValue);
+                                    }}
+                                />
+                            </div>
                             
+                            <div className = "ratingProfilePic">
+                                <img className="navBarProfilePic" src={awesome} alt="awesome" width="80" height="80"></img>
+                            </div>
                         </DialogContentText>
-                        <div className="col-6">
+                        <div className="comment">
                             <Input variant="filled" onChange={handleChange('comment')} label="Type your comment" fullWidth />
                         </div>
                     </DialogContent>
+                    
                     <DialogActions>
                         <Button type="outlined" onClick={() => setOpen(false)}>Done</Button>
                     </DialogActions>
