@@ -18,17 +18,17 @@ dotenv.config();
 
 const port = process.env.PORT || 8080;
 
-let whitelist = ['http://localhost:3000']
-let corsOptions = {
-  origin: (origin: string, callback: any) => {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true)
-    } else {
-      callback(new Error('Not allowed by CORS'))
-    }
-  },
-  credentials: true
-}
+const whitelist = ['http://localhost:3000'];
+const corsOptions = {
+    origin: (origin: string, callback: any): any => {
+        if (whitelist.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true,
+};
 
 export default class FastphotoApp {
     application: Application;
@@ -60,7 +60,7 @@ export default class FastphotoApp {
         /* Setup body parser */
         app.use(bodyParser.json());
         app.use(bodyParser.urlencoded({ extended: true }));
-        app.use(cors(corsOptions)); // TODO: edit to whitelist
+        app.use(cors(corsOptions));
 
         /* Setup session and passport */
         app.use(
@@ -103,6 +103,8 @@ export default class FastphotoApp {
         app.get('/whoami', ensureLoggedIn(), AuthController.whoami);
 
         app.get('/logout', AuthController.logout);
+
+        app.get('/user/:id', asyncHandler(UserController.getUserProfile));
 
         // app.post('/createtask', ensureLoggedIn(), asyncHandler(TaskController.createTask));
         app.use('/task', taskRoute);
