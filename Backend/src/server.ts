@@ -106,6 +106,7 @@ export default class FastphotoApp {
 
         app.get('/user/:id', asyncHandler(UserController.getUserProfile));
 
+        app.get('/notify/:userId', asyncHandler(UserController.notifyUserByEmail));
         // app.post('/createtask', ensureLoggedIn(), asyncHandler(TaskController.createTask));
         app.use('/task', taskRoute);
 

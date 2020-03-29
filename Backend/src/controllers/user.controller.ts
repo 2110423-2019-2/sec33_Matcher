@@ -5,6 +5,7 @@ import validator from 'validator';
 import { Role } from '../const';
 import pick from 'object.pick';
 import { Types } from 'mongoose';
+import nodemailer from 'nodemailer';
 
 export default class UserController {
     private static async getUserAvgRating(userId: string): Promise<number> {
@@ -127,5 +128,34 @@ export default class UserController {
             createTime: userProfile.createTime,
             score: await UserController.getUserAvgRating(req.params.id)
         });
+    }
+
+    static async notifyUserByEmail(req: any, res: any){
+        const id = new Types.ObjectId(req.params.userId);
+        const user = await User.findById({ _id: id });
+        if(!user){
+            throw new HttpErrors.BadRequest();
+        }
+        else if(user.role !== Role.CUSTOMER){
+            throw new HttpErrors.BadRequest();
+        }
+        const smtp = {
+            host: 'smtp.mailtrap.io',
+            port: 2525,
+            auth: {
+                user: '55ab6b1f60ab44',
+                pass: 'e005cf73b0626a'
+            }
+        };
+        const mail = {
+            from: 'no-reply@sec33matcher.io',
+            to: 'anan_m@me.com',
+            subject: "Your task got a match!",
+            html: `<p>Congrats! your task got a new match from a photographer!</p>`
+        };
+        var smtpTransport = nodemailer.createTransport(smtp);
+        smtpTransport.sendMail(mail);
+        smtpTransport.close();
+        res.json({ status: 'success' });
     }
 }
