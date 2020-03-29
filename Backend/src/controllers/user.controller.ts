@@ -149,7 +149,7 @@ export default class UserController {
         };
         const mail = {
             from: 'no-reply@sec33matcher.io',
-            to: 'anan_m@me.com',
+            to: user.email,
             subject: "Your task got a match!",
             html: `<p>Congrats! your task got a new match from a photographer!</p>`
         };
