@@ -38,19 +38,16 @@ export default () => {
         );
     }
     
-    // comment
-    const [rateInfo, setRateInfo] = useState({
-        comment: '',
-      });
-    const handleChange = (field: string) => (e: any) => {
-        setRateInfo({
-        ...rateInfo,
-        [field]: e.target.value
-        })
+    const [rating, setRating] = React.useState<number | null>(2);
+    const [comment, setComment] = useState('');
+    const handleChange = (e: any) => {
+        setComment(e.target.value);
     }  
 
-    // rating
-    const [value, setValue] = React.useState<number | null>(2);
+    const handleSubmit = (e:any) => {
+        setOpen(false);
+    }
+
 
     //photographer profile pic
     const awesome = '/images/awesome.png';
@@ -83,9 +80,9 @@ export default () => {
                                 <Rating
                                     name="simple-controlled"
                                     size="large"
-                                    value={value}
+                                    value={rating}
                                     onChange={(event, newValue) => {
-                                        setValue(newValue);
+                                        setRating(newValue);
                                     }}
                                 />
                             </div>
@@ -95,12 +92,12 @@ export default () => {
                             </div>
                         </DialogContentText>
                         <div className="comment">
-                            <Input variant="filled" onChange={handleChange('comment')} label="Type your comment" fullWidth />
+                            <Input variant="filled" onChange={handleChange} label="Type your comment" fullWidth />
                         </div>
                     </DialogContent>
                     
                     <DialogActions>
-                        <Button type="outlined" onClick={() => setOpen(false)}>Done</Button>
+                        <Button type="outlined" onClick={handleSubmit}>Done</Button>
                     </DialogActions>
             </Dialog>
             
