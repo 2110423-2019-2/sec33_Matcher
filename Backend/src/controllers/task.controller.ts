@@ -40,7 +40,7 @@ export default class TaskController {
     }
 
     private static async checkDeleteTask(req: any): Promise<boolean> {
-        const id = req.body.taskId;
+        const id = new Types.ObjectId(req.params.taskId);
         const task = await Task.findById(id);
         if (!task) {
             return false;
@@ -59,9 +59,7 @@ export default class TaskController {
     static async deleteTask(req: any, res: any): Promise<void> {
         //precondition
         if (!(await TaskController.checkDeleteTask(req))) throw new HttpErrors.BadRequest();
-        await Task.findOneAndDelete({ _id: req.body.taskId }, (err, res) => {
-            if (err) throw new HttpErrors.BadRequest();
-        });
+        await Task.findOneAndDelete({ _id: Types.ObjectId(req.params.taskId) });
         res.json({ status: 'success' });
     }
 
@@ -110,7 +108,7 @@ export default class TaskController {
             throw new HttpErrors.NotImplemented();
         }
     }
-  
+
     static async getFinishedTasks(req: any, res: any): Promise<any> {
         const user = await User.findById(req.user._id);
         let finishedTasks: Array<ITask>;
@@ -169,7 +167,7 @@ export default class TaskController {
                 task.acceptedBy = req.user._id;
                 task.status = TaskStatus.ACCEPTED;
 
-                await task.save()
+                await task.save();
                 res.json({ status: 'success' });
             } else if (user.role === Role.ADMIN) {
                 // TODO implement method for admin
@@ -179,7 +177,7 @@ export default class TaskController {
             throw new HttpErrors.BadRequest();
         }
     }
-  
+
     static async finishTask(req: any, res: any): Promise<void> {
         try {
             const user = await User.findById(req.user._id);
