@@ -69,7 +69,6 @@ const validate = () => {
         <p>You can create your task here. Click 'Launch task' after that.</p>
       </div>
     </div>
-    <form>
     <div className="row createTaskTitle">
       <div className="col-6">
         <Input 
@@ -141,6 +140,7 @@ const validate = () => {
         />
         </Button>
       </div>
+    </div>
     </div>
   );
 };  
