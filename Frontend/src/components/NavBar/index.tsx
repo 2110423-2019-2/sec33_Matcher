@@ -32,7 +32,7 @@ export default (props: any) => {
                     isLogin: false
                 });
             });
-    }, [auth, authDispatch]);
+    }, []);
 
     return (
         <div className="navBar">
