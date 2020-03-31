@@ -6,8 +6,8 @@ import { Types } from 'mongoose';
 import pick from 'object.pick';
 
 export default class TaskController {
-    private static requiredFields: Array<string> = ['title', 'location', 'availableTime', 'photoStyle', 'price'];
-    private static optionalFields: Array<string> = ['description', 'image'];
+    private static requiredFields: Array<string> = ['title', 'location', 'photoStyle', 'price'];
+    private static optionalFields: Array<string> = ['image'];
     private static availableOwnerRoles: Array<string> = [Role.CUSTOMER, Role.ADMIN];
 
     private static checkCreateTask(req: any): boolean {
@@ -24,10 +24,8 @@ export default class TaskController {
         if (!TaskController.checkCreateTask(req)) throw new HttpErrors.BadRequest();
         const task = new Task({
             title: req.body.title,
-            description: req.body.description,
             location: req.body.location,
             owner: req.user._id,
-            availableTime: req.body.availableTime,
             photoStyle: req.body.photoStyle,
             price: req.body.price,
             image: req.body.image,
