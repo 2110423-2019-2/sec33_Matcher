@@ -2,6 +2,7 @@ import axios from 'axios';
 import { apiEndpointOf } from '../const';
 
 
+export const matchTask = async (id: string) => (await axios.get(apiEndpointOf(`/task/accept/${id}`), { withCredentials: true })).data;
 export const getAllTasks = async () => (await axios.get(apiEndpointOf('/tasks'))).data;
 export const getTaskById = async (id: string) => (await axios.get(apiEndpointOf(`/task/${id}`))).data;
 export const getAvailableTasks = async () => (await axios.get(apiEndpointOf('/task/available'), { withCredentials: true })).data;

@@ -2,16 +2,19 @@ import React, { useEffect, useState } from 'react';
 import './index.scss';
 import { PHOTO_CATEGORIES, dummyTasks } from '../../const';
 import { TaskCard } from '../../components';
-import { getAllTasks } from '../../api/task';
+import { getAvailableTasks, matchTask } from '../../api/task';
 export default () => {
     const [tasks, setTasks] = useState<Array<any>>([]);
     const [taskFilter, setTaskFilter] = useState({
         filter: '',
     });
     useEffect(() => {
-        // getAllTasks().then(tasks => { setTasks(tasks) }
-        // )
-        setTasks(dummyTasks);
+        getAvailableTasks().then(tasks => {
+            console.log(tasks)
+            setTasks(tasks);
+        }).catch(err =>
+            console.log(err)
+        );
     }, []);
     const filteredTasks = tasks.filter(task => task.photoStyle === taskFilter.filter || taskFilter.filter === '');
 
@@ -26,6 +29,10 @@ export default () => {
             });
         }
     };
+
+    const onAccept = (id:string) => (e:any) => {
+        matchTask(id);
+    }
 
     return (
         <div className="taskPage">
@@ -54,7 +61,8 @@ export default () => {
                     return (
                         <div className="col">
                             <TaskCard
-                                name={task.username}
+                                onClick={onAccept(task._id)}
+                                name={task.title}
                                 location={task.location}
                                 profilePic={task.img}
                                 price={task.price}

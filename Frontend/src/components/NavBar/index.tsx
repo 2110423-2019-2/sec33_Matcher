@@ -34,6 +34,14 @@ export default (props: any) => {
             });
     }, []);
 
+    useEffect(() => {
+        setUserBar({
+            ...userBar,
+            name: auth.firstname,
+            isLogin: auth.isLogin
+        });
+    }, [auth]);
+
     return (
         <div className="navBar">
             <Link to="/">

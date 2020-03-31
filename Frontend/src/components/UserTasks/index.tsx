@@ -6,7 +6,7 @@ import { getAvailableTasks, getMatchedTasks, getFinishedTasks } from '../../api/
 import { dummyTasks } from '../../const';
 import { whoami } from '../../api/user';
 interface ITask {
-    username: string,
+    title: string,
     location: string,
     img: string,
     price: number
@@ -42,13 +42,13 @@ export default () => {
     return (
         <div className="sectionContainer">
             <Section title={`${auth.role === 'customer' ? 'Available' : 'Pending'} Task`}>
-                {availableTasks.length === 0 ? null : availableTasks.map(task => <TaskCard name={task.username} location={task.location} profilePic={task.img} price={task.price} thumbnail={task.img} button={auth.role === 'customer' ? 'Edit' : 'Pending'} />)}
+                {availableTasks.length === 0 ? null : availableTasks.map(task => <TaskCard name={task.title} location={task.location} profilePic={task.img} price={task.price} thumbnail={task.img} button={auth.role === 'customer' ? 'Edit' : 'Pending'} />)}
             </Section>
             <Section title="Matched Task">
-                {matchedTasks.length === 0 ? null : matchedTasks.map(task => <TaskCard name={task.username} location={task.location} profilePic={task.img} price={task.price} thumbnail={task.img} button={auth.role === 'customer' ? 'Edit' : 'Pending'} />)}
+                {matchedTasks.length === 0 ? null : matchedTasks.map(task => <TaskCard name={task.title} location={task.location} profilePic={task.img} price={task.price} thumbnail={task.img} button={auth.role === 'customer' ? 'Edit' : 'Pending'} />)}
             </Section>
             <Section title="Past Task">
-                {finishedTasks.length === 0 ? null : finishedTasks.map(task => <TaskCard name={task.username} location={task.location} profilePic={task.img} price={task.price} thumbnail={task.img} button={auth.role === 'customer' ? 'Edit' : 'Pending'} />)}
+                {finishedTasks.length === 0 ? null : finishedTasks.map(task => <TaskCard name={task.title} location={task.location} profilePic={task.img} price={task.price} thumbnail={task.img} button={auth.role === 'customer' ? 'Edit' : 'Pending'} />)}
             </Section>
         </div>
     )
