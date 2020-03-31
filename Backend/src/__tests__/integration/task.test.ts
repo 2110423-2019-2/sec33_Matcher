@@ -16,9 +16,7 @@ const app = new FastphotoApp().application;
 
 const goodTaskPayload = {
     title: '#saveasjpg',
-    description: 'this task is for saving everything as jpg.',
     location: 'Paragon',
-    availableTime: new Date(),
     photoStyle: PhotoStyles.WEDDING,
     price: 1234.4321,
     image: 'https://picsum.photos/200/300',
@@ -73,11 +71,6 @@ describe('CreateTask', () => {
 
                 const noLocationRes = await agent.post('/task').send({ ...goodTaskPayload, location: undefined });
                 expect(noLocationRes).to.have.status(400);
-
-                const noAvailableTimeRes = await agent
-                    .post('/task')
-                    .send({ ...goodTaskPayload, availableTime: undefined });
-                expect(noAvailableTimeRes).to.have.status(400);
 
                 const noPhotoStyleRes = await agent.post('/task').send({ ...goodTaskPayload, photoStyle: undefined });
                 expect(noPhotoStyleRes).to.have.status(400);
