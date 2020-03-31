@@ -2,17 +2,20 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Section, TaskCard } from '../'
 import './index.scss';
 import { AuthContext } from '../../context/AuthContext';
-import { getAvailableTasks, getMatchedTasks, getFinishedTasks } from '../../api/task';
+import { getAvailableTasks, getMatchedTasks, getFinishedTasks, rateTask } from '../../api/task';
 import { dummyTasks } from '../../const';
 import { DialogContent, DialogContentText, DialogActions, Dialog, DialogTitle } from '@material-ui/core';
 import { Input, Button } from '../../components';
 
 import Rating from '@material-ui/lab/Rating';
 interface ITask {
-    username: string,
+    _id: string,
+    owner: string,
     location: string,
-    img: string,
-    price: number
+    image: string,
+    price: number,
+    ratingScore: number,
+    comment: string
 }
 export default () => {
     const { auth } = useContext(AuthContext);
@@ -38,7 +41,8 @@ export default () => {
         );
     }
     
-    const [rating, setRating] = React.useState<number | null>(2);
+    const [taskID, setTaskID] = useState('');
+    const [rating, setRating] = useState<number | null>(0);
     const [comment, setComment] = useState('');
     const handleChange = (e: any) => {
         setComment(e.target.value);
@@ -46,8 +50,15 @@ export default () => {
 
     const handleSubmit = (e:any) => {
         setOpen(false);
+        rateTask(taskID, rating, comment)
     }
 
+    const openDialog = (id:string, rating: number, comment: string) => (e:any) => {
+        setOpen(true);
+        setTaskID(id);
+        setRating(rating);
+        setComment(comment);
+    }
 
     //photographer profile pic
     const awesome = '/images/awesome.png';
@@ -61,13 +72,13 @@ export default () => {
     return (
         <div className="sectionContainer">
             <Section title={`${auth.role === 'customer' ? 'Available' : 'Pending'} Task`}>
-                {dummyTasks.length === 0 ? null : dummyTasks.map(task => <TaskCard name={task.username} location={task.location} profilePic={task.img} price={task.price} thumbnail={task.img} button={auth.role === 'customer' ? 'Edit' : 'Pending'} />)}
+                {availableTasks.length === 0 ? null : availableTasks.map(task => <TaskCard name={task.owner} location={task.location} profilePic={task.image} price={task.price} thumbnail={task.image} button={auth.role === 'customer' ? 'Edit' : 'Pending'} />)}
             </Section>
             <Section title="Matched Task">
-                {/* {matchedTasks.map(task => <TaskCard name={task.username} location={task.location} profilePic={task.img} price={task.price} thumbnail={task.img} />)} */}
+                {matchedTasks.length === 0 ? null : matchedTasks.map(task => <TaskCard name={task.owner} location={task.location} profilePic={task.image} price={task.price} thumbnail={task.image} />)}
             </Section>
             <Section title="Past Task">
-            {dummyTasks.length === 0 ? null : dummyTasks.map(task => <TaskCard onClick={() => setOpen(true)} name={task.username} location={task.location} profilePic={task.img} price={task.price} thumbnail={task.img} button={auth.role === 'customer' ? 'Review' : 'Pending' } />)}
+                {finishedTasks.length === 0 ? null : finishedTasks.map(task => <TaskCard onClick={() => openDialog(task._id, task.ratingScore, task.comment)} name={task.owner} location={task.location} profilePic={task.image} price={task.price} thumbnail={task.image} button={auth.role === 'customer' ? 'Review' : 'Pending' } />)}
             </Section>
 
             {/* dialog */}
