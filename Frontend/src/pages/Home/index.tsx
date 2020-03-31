@@ -47,7 +47,7 @@ export default () => {
             <h5>Jobs near by you</h5>
           </div>
           <div className="col-6 right subHeader seeall">
-          <Link to='/task'><h5>see all <Chevron /></h5></Link>
+            <Link to='/task'><h5>see all <Chevron /></h5></Link>
           </div>
         </div>
 
@@ -60,7 +60,7 @@ export default () => {
           <TaskCard thumbnail="https://picsum.photos/200/300" name="John Doe" location="Siam Paragon" price={300} />
         </div>
 
-        <PhotoType/>
+        <PhotoType />
       </div>
     </div>
 

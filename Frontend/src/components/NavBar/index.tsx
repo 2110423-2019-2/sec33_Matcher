@@ -52,7 +52,7 @@ export default (props: any) => {
                         <img className="navBarProfilePic" src={awesome} alt="awesome" width="18" height="18"></img>
                         <p className="dropButton">{userBar.name}</p>
                         <div className="dropdown-content">
-                            <Link to="/edit">
+                            <Link to="/console">
                                 <a>Profile</a>
                             </Link>
                             <a>Your Tasks</a>

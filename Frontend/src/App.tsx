@@ -23,6 +23,7 @@ const App: React.FC = () => {
             roles={["admin"]}
           />
           <PrivateRoute path="/console" component={Console} roles={["photographer", "customer"]} />
+          <Route path="/create" component={CreateTask} />
           <Route path="/signin" component={BodySignIn} />
           <Route path="/register" component={Register} />
           <Route path="/create" component={CreateTask} />

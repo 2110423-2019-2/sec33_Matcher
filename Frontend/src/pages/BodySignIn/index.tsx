@@ -37,11 +37,12 @@ export default () => {
         .then(() => {
           whoami()
             .then(profile => {
-                authDispatch({ type: 'FETCH_AUTH_STATUS', payload: profile });
-                history.push('/');
+              console.log(profile)
+              authDispatch({ type: 'FETCH_AUTH_STATUS', payload: profile });
+              history.push('/');
             })
             .catch(() => {
-                console.log('Unauthenticated');
+              console.log('Unauthenticated');
             });
         })
         .catch(() => {
