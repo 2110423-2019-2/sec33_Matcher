@@ -22,7 +22,6 @@ export default class TaskController {
 
     static async createTask(req: any, res: any): Promise<void> {
         if (!TaskController.checkCreateTask(req)) throw new HttpErrors.BadRequest();
-
         const task = new Task({
             title: req.body.title,
             description: req.body.description,
@@ -37,6 +36,30 @@ export default class TaskController {
         });
 
         await task.save();
+        res.json({ status: 'success' });
+    }
+
+    private static async checkDeleteTask(req: any): Promise<boolean> {
+        const id = new Types.ObjectId(req.params.taskId);
+        const task = await Task.findById(id);
+        if (!task) {
+            return false;
+        } else if (req.user.role === Role.ADMIN) {
+            return true;
+        } else if (req.user.role !== Role.CUSTOMER) {
+            return false;
+        } else {
+            if (task.owner.toString() !== req.user._id.toString()) {
+                return false;
+            }
+            return true;
+        }
+    }
+
+    static async deleteTask(req: any, res: any): Promise<void> {
+        //precondition
+        if (!(await TaskController.checkDeleteTask(req))) throw new HttpErrors.BadRequest();
+        await Task.findOneAndDelete({ _id: Types.ObjectId(req.params.taskId) });
         res.json({ status: 'success' });
     }
 
@@ -85,6 +108,7 @@ export default class TaskController {
             throw new HttpErrors.NotImplemented();
         }
     }
+
     static async getFinishedTasks(req: any, res: any): Promise<any> {
         const user = await User.findById(req.user._id);
         let finishedTasks: Array<ITask>;
@@ -126,5 +150,62 @@ export default class TaskController {
 
         await task.save();
         res.json({ status: 'success' });
+    }
+
+    static async acceptTask(req: any, res: any): Promise<void> {
+        try {
+            const user = await User.findById(req.user._id);
+            const task = await Task.findById(req.params.id);
+            if (!task) throw new HttpErrors.NotFound();
+
+            if (user.role === Role.CUSTOMER) {
+                if (!req.user._id.equals(task.owner)) throw new HttpErrors.Unauthorized();
+                if (task.status !== TaskStatus.REQ_ACC) throw new HttpErrors.BadRequest();
+            } else if (user.role === Role.PHOTOGRAPHER) {
+                // admin and photographer can accept task.
+                if (task.status !== TaskStatus.AVAILABLE) throw new HttpErrors.Unauthorized();
+                task.acceptedBy = req.user._id;
+                task.status = TaskStatus.ACCEPTED;
+
+                await task.save();
+                res.json({ status: 'success' });
+            } else if (user.role === Role.ADMIN) {
+                // TODO implement method for admin
+            } else throw new HttpErrors.Unauthorized();
+        } catch (err) {
+            console.log(err);
+            throw new HttpErrors.BadRequest();
+        }
+    }
+
+    static async finishTask(req: any, res: any): Promise<void> {
+        try {
+            const user = await User.findById(req.user._id);
+            const task = await Task.findById(req.params.id);
+            if (!task) throw new HttpErrors.NotFound();
+            if (user.role === Role.CUSTOMER) {
+                // customer will set status to finished
+                if (!req.user._id.equals(task.owner)) throw new HttpErrors.Unauthorized();
+                if (task.status !== TaskStatus.REQ_FIN) throw new HttpErrors.BadRequest();
+                task.status = TaskStatus.FINISHED;
+
+                await task.save();
+                res.json({ status: 'success' });
+            } else if (user.role === Role.PHOTOGRAPHER) {
+                if (!req.user._id.equals(task.acceptedBy)) throw new HttpErrors.Unauthorized();
+                if (task.status === TaskStatus.ACCEPTED) throw new HttpErrors.BadRequest();
+                task.status = TaskStatus.REQ_FIN;
+
+                await task.save();
+                res.json({ status: 'success' });
+            } else if (user.role === Role.ADMIN) {
+                // TODO implement finish task for admin here
+            } else {
+                throw new HttpErrors.Unauthorized();
+            }
+        } catch (err) {
+            console.log(err);
+            throw new HttpErrors.BadRequest();
+        }
     }
 }
