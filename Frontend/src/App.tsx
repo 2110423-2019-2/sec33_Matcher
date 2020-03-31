@@ -1,7 +1,7 @@
 import React from "react";
-import { BodySignIn, Register, Home, CreateTask, Tasks, Console } from "./pages";
+import { BodySignIn, Register, Home, CreateTask, Tasks, Console, PhotoType } from "./pages";
 import "./App.css";
-import { NavBar, ComponentList, PrivateRoute, PhotoType, Footer } from "./components";
+import { NavBar, ComponentList, PrivateRoute, Footer } from "./components";
 import "./index.scss";
 import {
   authReducer,

@@ -53,12 +53,12 @@ export default () => {
   }
 
   return (
-    <div className="row">
+    <div className="row signIn">
       <div className="col-6 hidden-sm">
         <LoginBackground className="loginBackground" />
       </div>
       <div className="col-1" />
-      <div className="col-4">
+      <div className="col-4 signinForm">
         <div className="row">
           <div className="col-12">
             <h1 className="signInHeader">SIGN IN</h1>
