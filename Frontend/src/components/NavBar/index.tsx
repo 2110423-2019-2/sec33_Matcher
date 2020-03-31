@@ -38,14 +38,20 @@ export default (props: any) => {
         <div className="navBar">
             <Link to="/">
                 <h3 className="logo">matcher</h3>
-                <h6 className="navHome navBarItem">Home</h6>
             </Link>
-            <Link className="aTask" to="/task">
-                <h6 className="navBarItem">All Tasks</h6>
-            </Link>
-            <Link className="type" to="/type">
-                <h6 className="navBarItem">Photo Types</h6>
-            </Link>
+
+            <div className="navMenu">
+                <Link to="/">
+                    <h6 className="navBarItem">Home</h6>
+                </Link>
+                <Link className="aTask" to="/task">
+                    <h6 className="navBarItem">All Tasks</h6>
+                </Link>
+                <Link className="type" to="/type">
+                    <h6 className="navBarItem">Photo Types</h6>
+                </Link>
+            </div>
+
             <div className="NavBarUser">
                 {userBar.isLogin ? (
                     <div className="dropdown">

@@ -5,6 +5,7 @@ import EditProfile from "./EditProfile";
 import Home from './Home'
 import Tasks from './Tasks'
 import Console from './Console';
+import PhotoType from './PhotoType';
 export {
     BodySignIn,
     Register,
@@ -12,5 +13,6 @@ export {
     Home,
     Tasks,
     Console,
-    EditProfile
+    EditProfile,
+    PhotoType
 }

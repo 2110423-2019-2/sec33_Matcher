@@ -1,4 +1,6 @@
 import React from "react";
+import SimpleBar from 'simplebar-react';
+import 'simplebar/dist/simplebar.min.css';
 import "./index.scss";
 import { Button, VerticalCard, TaskCard, PhotoType } from "../../components/index";
 import { ReactComponent as Chevron } from '../../assets/icons/chevron-right.svg';
@@ -42,25 +44,29 @@ export default () => {
       <div className="blank"></div>
 
       <div className="pad">
-        <div className="row">
-          <div className="col-6 left subHeader">
+        <div className="jobNearby">
+          <div className="subHeader">
             <h5>Jobs near by you</h5>
           </div>
-          <div className="col-6 right subHeader seeall">
-          <Link to='/task'><h5>see all <Chevron /></h5></Link>
+          <div className="subHeader seeall">
+            <Link to='/task'><h5>see all <Chevron /></h5></Link>
           </div>
         </div>
 
-        <div className="row task">
-          <TaskCard thumbnail="https://picsum.photos/200/300" name="John Doe" location="Siam Paragon" price={300} />
-          <TaskCard thumbnail="https://picsum.photos/200/300" name="John Doe" location="Siam Paragon" price={300} />
-          <TaskCard thumbnail="https://picsum.photos/200/300" name="John Doe" location="Siam Paragon" price={300} />
-          <TaskCard thumbnail="https://picsum.photos/200/300" name="John Doe" location="Siam Paragon" price={300} />
-          <TaskCard thumbnail="https://picsum.photos/200/300" name="John Doe" location="Siam Paragon" price={300} />
-          <TaskCard thumbnail="https://picsum.photos/200/300" name="John Doe" location="Siam Paragon" price={300} />
-        </div>
+        <SimpleBar>
+          <div className="row task">
+            <TaskCard thumbnail="https://picsum.photos/200/300" name="John Doe" location="Siam Paragon" price={300} />
+            <TaskCard thumbnail="https://picsum.photos/200/300" name="John Doe" location="Siam Paragon" price={300} />
+            <TaskCard thumbnail="https://picsum.photos/200/300" name="John Doe" location="Siam Paragon" price={300} />
+            <TaskCard thumbnail="https://picsum.photos/200/300" name="John Doe" location="Siam Paragon" price={300} />
+            <TaskCard thumbnail="https://picsum.photos/200/300" name="John Doe" location="Siam Paragon" price={300} />
+            <TaskCard thumbnail="https://picsum.photos/200/300" name="John Doe" location="Siam Paragon" price={300} />
+          </div>
+        </SimpleBar>
 
-        <PhotoType/>
+        <div className="photo-type">
+          <PhotoType />
+        </div>
       </div>
     </div>
 
