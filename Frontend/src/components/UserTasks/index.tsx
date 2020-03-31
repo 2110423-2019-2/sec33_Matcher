@@ -14,7 +14,7 @@ interface ITask {
     _id: string,
     owner: string,
     location: string,
-    image: string,
+    img: string,
     price: number,
     ratingScore: number,
     comment: string
@@ -56,11 +56,9 @@ export default () => {
         rateTask(taskID, rating, comment)
     }
 
-    const openDialog = (id:string, rating: number, comment: string) => (e:any) => {
+    const openDialog = (id:string) => (e:any) => {
         setOpen(true);
         setTaskID(id);
-        setRating(rating);
-        setComment(comment);
     }
 
     //photographer profile pic
@@ -82,7 +80,7 @@ export default () => {
                 {matchedTasks.length === 0 ? null : matchedTasks.map(task => <TaskCard name={task.title} location={task.location} profilePic={task.img} price={task.price} thumbnail={task.img} button={auth.role === 'customer' ? 'Edit' : 'Pending'} />)}
             </Section>
             <Section title="Past Task">
-                {finishedTasks.length === 0 ? null : finishedTasks.map(task => <TaskCard name={task.title} location={task.location} profilePic={task.img} price={task.price} thumbnail={task.img} button={auth.role === 'customer' ? 'Edit' : 'Pending'} />)}
+                {finishedTasks.length === 0 ? null : finishedTasks.map(task => <TaskCard onClick={openDialog(task._id)} name={task.title} location={task.location} profilePic={task.img} price={task.price} thumbnail={task.img} button={auth.role === 'customer' ? 'Edit' : 'Pending'} />)}
             </Section>
 
             {/* dialog */}
