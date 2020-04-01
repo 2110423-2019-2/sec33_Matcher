@@ -158,25 +158,25 @@ export default class UserController {
         }
         return true;
     }
-    
+
     static async notifyUserByEmail(task: any): Promise<any> {
         const photographer = await User.findById({ _id: task.acceptedBy });
-        const owner = await User.findById({ _id : task.owner });
+        const owner = await User.findById({ _id: task.owner });
         const data = fs.readFileSync(__dirname + '/../template/notify_owner.html', 'utf8');
-        var $ = cheerio.load(data);
+        const $ = cheerio.load(data);
         $('#task-title').text(task.title);
         $('#task-location').text(task.location);
         $('#dummy-text').text(task.description);
-        $('#owner-name').text(owner.firstname+' '+owner.lastname);
-        $('#photographer-name').text([photographer.firstname+' '+photographer.lastname]);
+        $('#owner-name').text(owner.firstname + ' ' + owner.lastname);
+        $('#photographer-name').text([photographer.firstname + ' ' + photographer.lastname]);
         $('#task-status').text(task.status);
         const smtp = {
             host: 'smtp.mailtrap.io',
             port: 2525,
             auth: {
                 user: '55ab6b1f60ab44',
-                pass: 'e005cf73b0626a'
-            }
+                pass: 'e005cf73b0626a',
+            },
         };
         // const smtp = {
         //     host: 'in-v3.mailjet.com',
@@ -189,10 +189,10 @@ export default class UserController {
         const mail = {
             from: 'no-reply@sec33matcher.io',
             to: owner.email,
-            subject: "Your task got a match!",
-            html: $.html()
+            subject: 'Your task got a match!',
+            html: $.html(),
         };
-        var smtpTransport = nodemailer.createTransport(smtp);
+        const smtpTransport = nodemailer.createTransport(smtp);
         smtpTransport.sendMail(mail);
         smtpTransport.close();
     }
