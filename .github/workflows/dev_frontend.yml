@@ -20,11 +20,15 @@ jobs:
       with:
         node-version: ${{ matrix.node_version }}
     - name: Install firebase tools
-      run: cd Frontend && npm install -g firebase-tools
+      run: npm install -g firebase-tools
     - name: Install required packages
       run: yarn install
+      env:
+        PROJECT_PATH: ./Frontend
     - name: Build a React app
       run: yarn build
+      env:
+        PROJECT_PATH: ./Frontend
     - name: Deploy firebase hosting
       run: >-
         firebase use $PROJECT_NAME &&
@@ -32,3 +36,4 @@ jobs:
       env:
         PROJECT_NAME: fast-photo-8e48a
         FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        PROJECT_PATH: ./Frontend
