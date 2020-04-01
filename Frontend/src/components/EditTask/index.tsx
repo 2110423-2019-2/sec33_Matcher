@@ -1,15 +1,29 @@
-import React, { useState } from 'react';
-import './index.scss';
-import { Input, Button } from '../../components';
+import React, { useState, useEffect } from 'react';
+import {
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
+    DialogContentText,
+    FormControl,
+    MenuItem,
+    InputLabel,
+    Select,
+} from '@material-ui/core';
+import { Button, Input } from '..';
 import { ReactComponent as Chevron } from '../../assets/icons/chevron-right.svg';
+import { upsertTask, getTaskById } from '../../api/task';
 import { useHistory } from 'react-router-dom';
-import { upsertTask } from '../../api/task';
-import { Select } from '@material-ui/core';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-
-export default () => {
+import { dummyTasks } from '../../const';
+export default (props: any) => {
+    const [open, setOpen] = useState<boolean>(props.isOpen);
+    const [initTask, setInitTask] = useState({
+        title: '',
+        location: '',
+        image: '',
+        photoStyle: '',
+        price: 0,
+    });
     const [taskInfo, setTaskInfo] = useState({
         taskname: '',
         location: '',
@@ -23,7 +37,22 @@ export default () => {
         image: '',
         price: '',
     });
+    const history = useHistory();
+    useEffect(() => {
+        console.log('eoeoe')
+        console.log(props)
+        // getTaskById(props.taskId).then(task => {
+        //     setInitTask(task);
+        // });
+        setInitTask(dummyTasks[0]);
+    }, []);
 
+    const handleChange = (field: string) => (e: any) => {
+        setTaskInfo({
+            ...taskInfo,
+            [field]: e.target.value,
+        });
+    };
     const validate = () => {
         setErrorText({
             ...errorText,
@@ -38,17 +67,7 @@ export default () => {
         if (taskInfo.price.length === 0) return false;
         return true;
     };
-
-    const history = useHistory();
-
-    const handleChange = (field: string) => (e: any) => {
-        setTaskInfo({
-            ...taskInfo,
-            [field]: e.target.value,
-        });
-    };
-
-    const handleSubmit = (e: any) => {
+    const submit = (e: any) => {
         e.preventDefault();
         if (validate()) {
             console.log(taskInfo);
@@ -59,18 +78,20 @@ export default () => {
                 price: parseFloat(taskInfo.price),
                 photoStyle: taskInfo.tasktype,
             };
-            console.log(task);
-            upsertTask('', task).then(res => {
+            upsertTask(props.taskId, task).then(res => {
                 console.log(res);
+                history.push('/console');
             });
             // history.push('/');
         }
     };
-
     return (
-        <div className="createTaskPage">
-            <form>
-                <div className="row createTaskTitle">
+        <Dialog open={open} onClose={() => setOpen(false)} fullWidth={true} className="dialog">
+            <DialogTitle>
+                <h3 className="dialogTitle">Edit task</h3>
+            </DialogTitle>
+            <DialogContent>
+                <div className="row">
                     <div className="col-6">
                         <Input
                             variant="filled"
@@ -79,7 +100,7 @@ export default () => {
                             onChange={handleChange('taskname')}
                             label="Task name"
                             fullWidth
-                            value="test"
+                            defaultValue={initTask.title}
                         />
                     </div>
                     <div className="col-6">
@@ -90,9 +111,9 @@ export default () => {
                             onChange={handleChange('location')}
                             label="Location"
                             fullWidth
+                            defaultValue={initTask.location}
                         />
-                    </div>
-                </div>
+                    </div></div>
                 <div className="row createTaskTitle">
                     <div className="col-6">
                         <Input
@@ -102,12 +123,13 @@ export default () => {
                             onChange={handleChange('image')}
                             label="Cover image"
                             fullWidth
+                            defaultValue={initTask.image}
                         />
                     </div>
                     <div className="col-6">
                         <FormControl variant="filled" fullWidth>
                             <InputLabel>Task type</InputLabel>
-                            <Select onClick={handleChange('tasktype')} defaultValue="Product">
+                            <Select onClick={handleChange('tasktype')} defaultValue={initTask.photoStyle}>
                                 <MenuItem value={'PRODUCT'}>Product</MenuItem>
                                 <MenuItem value={'PLACE'}>Place</MenuItem>
                                 <MenuItem value={'RESTAURANT'}>Cafe & Restaurant</MenuItem>
@@ -127,16 +149,17 @@ export default () => {
                             onChange={handleChange('price')}
                             label="Price rate per hour"
                             fullWidth
+                            defaultValue={initTask.price}
                         />
                     </div>
                     <div className="col-6 createTaskTitle">
-                        <Button type="invert" onClick={handleSubmit} fullWidth>
+                        <Button type="invert" onClick={submit} fullWidth>
                             Launch Task
                             <Chevron style={{ strokeWidth: 1 }} />
                         </Button>
                     </div>
                 </div>
-            </form>
-        </div>
+            </DialogContent>
+        </Dialog>
     );
 };

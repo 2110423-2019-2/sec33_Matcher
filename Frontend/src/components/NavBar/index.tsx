@@ -22,14 +22,14 @@ export default (props: any) => {
                 setUserBar({
                     ...userBar,
                     name: profile.firstname,
-                    isLogin: true
+                    isLogin: true,
                 });
             })
             .catch(() => {
                 console.log('Unauthenticated');
                 setUserBar({
                     ...userBar,
-                    isLogin: false
+                    isLogin: false,
                 });
             });
     }, []);
@@ -38,7 +38,7 @@ export default (props: any) => {
         setUserBar({
             ...userBar,
             name: auth.firstname,
-            isLogin: auth.isLogin
+            isLogin: auth.isLogin,
         });
     }, [auth]);
 
@@ -70,7 +70,7 @@ export default (props: any) => {
                                     logout().then(() => {
                                         setUserBar({
                                             ...userBar,
-                                            isLogin: false
+                                            isLogin: false,
                                         });
                                         history.push('/');
                                     });
@@ -81,10 +81,10 @@ export default (props: any) => {
                         </div>
                     </div>
                 ) : (
-                        <Link to="/signin">
-                            <Button type="outlined">Sign In</Button>
-                        </Link>
-                    )}
+                    <Link to="/signin">
+                        <Button type="outlined">Sign In</Button>
+                    </Link>
+                )}
             </div>
             <hr className={`${userBar.isLogin ? 'slider' : 'sliderB'}`} />
         </div>

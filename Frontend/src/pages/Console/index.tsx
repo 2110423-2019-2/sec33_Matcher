@@ -10,53 +10,62 @@ export default withRouter((props: any) => {
     const { auth, authDispatch } = useContext(AuthContext);
     const [currentPage, setCurrentPage] = useState<number>(0);
     const [open, setOpen] = useState(false);
-    const pages = [<EditProfile />, <UserTasks />, <CreateTask />]
+    const pages = [<EditProfile />, <UserTasks />, <CreateTask />];
     const deleteAccount = () => {
         console.log('deleted');
         // TODO call delete account api
         props.history.push('/');
-    }
+    };
     const signOut = () => {
         console.log('sign out');
         // TODO call sign out api here
-        authDispatch({ type: 'SIGN_OUT' })
+        authDispatch({ type: 'SIGN_OUT' });
         props.history.push('/');
-    }
+    };
     return (
         <div className="consolePage">
             <div className="row consoleTitle">
                 <div className="col-8">
-                    <h4 className="consoleHeader">{`${auth.role === 'customer' ? "User" : "Photographer"} Console`}</h4>
+                    <h4 className="consoleHeader">{`${auth.role === 'customer' ? 'User' : 'Photographer'} Console`}</h4>
                 </div>
             </div>
             <div className="row consoleChoices">
                 <div className="col-2">
-                    <Link to='/console/editprofile'>
-                        <p className={`${currentPage === 0 ? 'selected' : ''}`} onClick={() => setCurrentPage(0)}>Edit profile</p>
+                    <Link to="/console/editprofile">
+                        <p className={`${currentPage === 0 ? 'selected' : ''}`} onClick={() => setCurrentPage(0)}>
+                            Edit profile
+                        </p>
                     </Link>
                 </div>
                 <div className="col-2">
-                    <Link to='/console/tasks'>
-                        <p className={`${currentPage === 1 ? 'selected' : ''}`} onClick={() => setCurrentPage(1)}>Your tasks</p>
+                    <Link to="/console/tasks">
+                        <p className={`${currentPage === 1 ? 'selected' : ''}`} onClick={() => setCurrentPage(1)}>
+                            Your tasks
+                        </p>
                     </Link>
                 </div>
-                {auth.role === 'customer' ?
+                {auth.role === 'customer' ? (
                     <div className="col-2">
-                        <Link to='/console/createtask'>
-                            <p className={`${currentPage === 2 ? 'selected' : ''}`} onClick={() => setCurrentPage(2)}>Create task</p>
+                        <Link to="/console/createtask">
+                            <p className={`${currentPage === 2 ? 'selected' : ''}`} onClick={() => setCurrentPage(2)}>
+                                Create task
+                            </p>
                         </Link>
-                    </div> : null}
+                    </div>
+                ) : null}
                 <div className="col-2">
-                    <p onClick={() => setOpen(true)} className="choice">Delete Account</p>
+                    <p onClick={() => setOpen(true)} className="choice">
+                        Delete Account
+                    </p>
                 </div>
                 <div className="col-2">
-                    <p onClick={signOut} className="choice">Sign out</p>
+                    <p onClick={signOut} className="choice">
+                        Sign out
+                    </p>
                 </div>
                 <Dialog open={open} onClose={() => setOpen(false)} fullWidth={true} className="dialog">
                     <DialogTitle>
-                        <h3 className="dialogTitle">
-                            Delete the account?
-                        </h3>
+                        <h3 className="dialogTitle">Delete the account?</h3>
                     </DialogTitle>
                     <DialogContent>
                         <DialogContentText>
@@ -65,11 +74,13 @@ export default withRouter((props: any) => {
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={deleteAccount}>Delete account</Button>
-                        <Button type="outlined" onClick={() => setOpen(false)}>Back</Button>
+                        <Button type="outlined" onClick={() => setOpen(false)}>
+                            Back
+                        </Button>
                     </DialogActions>
                 </Dialog>
             </div>
             <div>{pages[currentPage]}</div>
         </div>
-    )
-})
+    );
+});
