@@ -84,7 +84,6 @@ export default (props: any) => {
                         </Link>
                     )}
             </div>
-            <hr className={`${userBar.isLogin ? 'slider' : 'sliderB'}`} />
         </div>
     );
 };
