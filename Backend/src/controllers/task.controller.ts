@@ -208,4 +208,41 @@ export default class TaskController {
             throw new HttpErrors.BadRequest();
         }
     }
+
+    static async cancelTask(req: any, res: any): Promise<void> {
+        try {
+            const user = await User.findById(req.user._id);
+            const task = await Task.findById(req.params.id);
+            if (!task) {
+                throw new HttpErrors.NotFound();
+            }
+            if (task.status === TaskStatus.AVAILABLE || task.status === TaskStatus.FINISHED) {
+                throw new HttpErrors.BadRequest();
+            } //what is the task cancelling policy?
+            if (user.role === Role.CUSTOMER) {
+                if (!user._id.equals(task.owner)) {
+                    throw new HttpErrors.Unauthorized();
+                }
+                task.status = TaskStatus.AVAILABLE;
+                task.acceptedBy = null;
+                await task.save();
+                //TODO add notification
+                res.json({ status: 'success' });
+            } else if (user.role === Role.PHOTOGRAPHER) {
+                if (!user._id.equals(task.acceptedBy)) {
+                    throw new HttpErrors.Unauthorized();
+                }
+                task.status = TaskStatus.AVAILABLE;
+                task.acceptedBy = null;
+                await task.save();
+                //TODO add notification
+                res.json({ status: 'success' });
+            } else {
+                // TODO implement cancel task for admin here
+            }
+        } catch (err) {
+            console.log(err);
+            throw new HttpErrors.BadRequest();
+        }
+    }
 }
