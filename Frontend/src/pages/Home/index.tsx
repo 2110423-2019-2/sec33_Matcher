@@ -7,6 +7,8 @@ import { ReactComponent as Chevron } from '../../assets/icons/chevron-right.svg'
 import camera from '../../assets/camera.svg';
 import social from '../../assets/icons/social icon.svg';
 import { Link } from 'react-router-dom';
+import Lottie from 'react-lottie';
+import LottieCamera from '../../assets/lottie-camera-home.json';
 
 export default () => {
   return (
@@ -21,7 +23,16 @@ export default () => {
         </div>
 
         <div className="pic">
-          <img src={camera} alt="camera" />
+          {/* <img src={camera} alt="camera" /> */}
+          <Lottie
+            options={{
+              loop: true,
+              autoplay: true,
+              animationData: LottieCamera,
+            }}
+            // height={400}
+            width={500}
+          />
         </div>
         <br></br>
 
