@@ -6,9 +6,49 @@ import { Button, VerticalCard, TaskCard, PhotoType } from "../../components/inde
 import { ReactComponent as Chevron } from '../../assets/icons/chevron-right.svg';
 import camera from '../../assets/camera.svg';
 import social from '../../assets/icons/social icon.svg';
+import graduation from '../../assets/vcard/graduation.svg';
+import wedding from '../../assets/vcard/wedding.svg';
+import event from '../../assets/vcard/event.svg';
+import product from '../../assets/vcard/product.svg';
+import place from '../../assets/vcard/place.svg';
+import cafe from '../../assets/vcard/cafe.svg';
 import { Link } from 'react-router-dom';
 import Lottie from 'react-lottie';
 import LottieCamera from '../../assets/lottie-camera-home.json';
+
+const categoryCards = [
+  {
+    src: graduation,
+    alt: 'Graduation',
+    text: 'Graduation'
+  },
+  {
+    src: wedding,
+    alt: 'Wedding',
+    text: 'Wedding'
+  },
+  {
+    src: event,
+    alt: 'Event',
+    text: 'Event'
+  },
+  {
+    src: product,
+    alt: 'Product',
+    text: 'Product'
+  },
+  {
+    src: place,
+    alt: 'Place',
+    text: 'Place'
+  },
+  {
+    src: cafe,
+    alt: 'Café & Restaurant',
+    text: 'Café & Restaurant'
+  },
+]
+
 
 export default () => {
   return (
