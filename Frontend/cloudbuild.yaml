@@ -6,7 +6,7 @@ steps:
 - name: 'gcr.io/cloud-builders/docker'
   args: ['push', 'gcr.io/$PROJECT_ID/fast-photo-frontend']
   # Deploy container image to Cloud Run
-# - name: 'gcr.io/cloud-builders/gcloud'
-#   args: ['beta', 'run', 'deploy', 'fast-photo-frontend', '--image', 'gcr.io/$PROJECT_ID/fast-photo-frontend', '--region', 'asia-east1','--platform', 'managed', '--quiet']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['beta', 'run', 'deploy', 'fast-photo-frontend', '--image', 'gcr.io/$PROJECT_ID/fast-photo-frontend', '--region', 'asia-east1','--platform', 'managed', '--quiet']
 images:
 - gcr.io/$PROJECT_ID/fast-photo-frontend
