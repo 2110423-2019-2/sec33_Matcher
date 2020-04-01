@@ -12,14 +12,17 @@ import fs from 'fs';
 export default class UserController {
     private static async getUserAvgRating(userId: string): Promise<number> {
         const avgRating = await Task.aggregate([
-            { '$match': { acceptedBy: Types.ObjectId(userId) } },
+            { $match: { acceptedBy: Types.ObjectId(userId) } },
             {
-                '$group': {
+                $group: {
                     _id: null,
-                    total: { '$avg': '$ratingScore' }
-                }
-            }
-        ])
+                    total: { $avg: '$ratingScore' },
+                },
+            },
+        ]);
+        if (avgRating.length == 0) {
+            return 0;
+        }
         return avgRating[0].total;
     }
 
@@ -47,13 +50,28 @@ export default class UserController {
     }
 
     static async getProfile(req: any, res: any): Promise<void> {
-        res.json({
-            createTime: req.user.createTime,
-            email: req.user.email,
-            firstname: req.user.firstname,
-            lastname: req.user.lastname,
-            role: req.user.role,
-        });
+        if (!req.params.userId) {
+            res.json({
+                createTime: req.user.createTime,
+                email: req.user.email,
+                firstname: req.user.firstname,
+                lastname: req.user.lastname,
+                role: req.user.role,
+            });
+        } else {
+            const id = new Types.ObjectId(req.params.userId);
+            const user = await User.findById({ _id: id });
+            if (!user) {
+                throw new HttpErrors.NotFound();
+            }
+            res.json({
+                firstname: user.firstname,
+                lastname: user.lastname,
+                role: user.role,
+                createTime: user.createTime,
+                score: await UserController.getUserAvgRating(req.params.userId),
+            });
+        }
     }
 
     static async updateProfile(req: any, res: any): Promise<void> {
@@ -76,6 +94,27 @@ export default class UserController {
         }
 
         res.json({ status: 'success' });
+    }
+
+    static async deleteProfile(req: any, res: any) {
+        if (!(await UserController.checkDelete(req))) throw new HttpErrors.BadRequest();
+        await User.findByIdAndDelete({ _id: Types.ObjectId(req.params.userId) });
+        res.json({ status: 'success' });
+    }
+
+    static async checkDelete(req: any): Promise<boolean> {
+        const id = new Types.ObjectId(req.params.userId);
+        const userProfile = await User.findById(id);
+        if (!userProfile) {
+            return false;
+        } else if (req.user.role === Role.ADMIN) {
+            return true;
+        } else {
+            if (!req.user._id.equals(req.params.userId)) {
+                return false;
+            }
+            return true;
+        }
     }
 
     static async validateInput(body: any, fields: string[]): Promise<boolean> {
@@ -119,19 +158,7 @@ export default class UserController {
         }
         return true;
     }
-
-    static async getUserProfile(req: any, res: any) {
-        const userProfile = await User.findById(req.params.id);
-        if (!userProfile) throw new HttpErrors.NotFound();
-        res.json({
-            firstname: userProfile.firstname,
-            lastname: userProfile.lastname,
-            role: userProfile.role,
-            createTime: userProfile.createTime,
-            score: await UserController.getUserAvgRating(req.params.id)
-        });
-    }
-
+    
     static async notifyUserByEmail(task: any): Promise<any> {
         const photographer = await User.findById({ _id: task.acceptedBy });
         const owner = await User.findById({ _id : task.owner });
