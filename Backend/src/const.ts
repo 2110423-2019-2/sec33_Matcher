@@ -26,6 +26,7 @@ export const photoStyles: Array<string> = [
 
 export enum TaskStatus {
     AVAILABLE = 'AVAILABLE',
+    PENDING = 'PENDING',
     ACCEPTED = 'ACCEPTED',
     REQ_FIN = 'REQ_FIN',
     FINISHED = 'FINISHED',
