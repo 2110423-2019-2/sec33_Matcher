@@ -195,7 +195,7 @@ export default class TaskController {
                 res.json({ status: 'success' });
             } else if (user.role === Role.PHOTOGRAPHER) {
                 if (!req.user._id.equals(task.acceptedBy)) throw new HttpErrors.Unauthorized();
-                if (task.status === TaskStatus.ACCEPTED) throw new HttpErrors.BadRequest();
+                if (task.status !== TaskStatus.ACCEPTED) throw new HttpErrors.BadRequest();
                 task.status = TaskStatus.REQ_FIN;
 
                 await task.save();
