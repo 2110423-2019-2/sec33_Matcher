@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>matcher notice</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital&display=swap" rel="stylesheet">
+    <style>
+        body {width: 800px; font-family: 'Montserrat', sans-serif;}
+        h4 {margin: 0; font-size: 28px; font-weight: 500;}
+        h6 {margin: 0; font-size: 20px; font-weight: 500;}
+        p {font-size: 18px;}
+        header {background-color: #F67280; padding: 64px 40px;}
+        section {background-color: #F8F8F8; padding: 64px 40px;}
+        footer {text-align: center; background-color: #F4F4F4; padding: 56px 40px;}
+        img {max-width: 100%;}
+        .row {display: flex; flex-wrap: wrap;}
+        .col {flex: 1 320px; padding: 0 20px;}
+        .section-header {text-align: center;}
+        .task {margin-bottom: 96px;}
+        .task-flex {align-items: center; display: flex; justify-content: space-between;}
+        .underline {height: 1px; width: 310px; background-color: #D0D0D0; margin: 32px 0;}
+        #task-image {background-size: cover; background: url('https://firebasestorage.googleapis.com/v0/b/web-ar-text.appspot.com/o/dummy%20img.jpg?alt=media&token=686cd3e4-e769-4e18-bcfd-9fcc0864fe5d') no-repeat center;}
+        #task-location {color: #C06C84;}
+        #task-status {color: #656565; font-size: 28px; text-transform: uppercase;}
+        #task-link {background-color: #F67280; padding: 12px 24px; color: #fff;}
+        .user-info {margin-top:16px; display: flex; align-items: center;}
+        .user-info img {border-radius: 50px; width: 50px; height: 50px; margin-right: 24px;}
+        .social {margin: auto; display: flex; width: 280px; justify-content: space-around;}    
+        .address {margin-top: 40px;}
+        .address p {color: #8c8c8c; font-size: 15px;}
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <img src="https://firebasestorage.googleapis.com/v0/b/web-ar-text.appspot.com/o/matcher-notice.svg?alt=media&token=c456e76e-0360-40fc-b2a0-0a75019be617"
+                    alt="">
+            </div>
+        </header>
+        <section>
+            <h4 class="section-header">Notification from Your Task</h4>
+            <br/><br/><br/><br/>
+            <div class="task row">
+                <div class="task-left col">
+                    <img id="task-image" src="https://firebasestorage.googleapis.com/v0/b/web-ar-text.appspot.com/o/dummy%20img.jpg?alt=media&token=686cd3e4-e769-4e18-bcfd-9fcc0864fe5d" alt="">
+                </div>
+                <div class="task-right col">
+                    <h6 id="task-title">Task Title</h6>
+                    <p id="task-location">Job location</p>
+                    <p class="dummy-text">
+                        Congratulations! A photographer have just accepted your task.
+                    </p>
+                    <div class="underline"></div>
+                    <div class="task-flex">
+                        <h6>Task Status</h6>
+                        <div id="task-status">PENDING</div>
+                    </div>
+                    <div class="underline"></div>
+                    <div class="task-flex">
+                        <h6>Go to console</h6>
+                        <a id="task-link">See Details</a>
+                    </div>
+                </div>
+            </div>
+            <div class="user row">
+                <div class="owner col">
+                    <h6>Task Owner</h6>
+                    <div class="user-info">
+                        <img id="owner-image" src="https://firebasestorage.googleapis.com/v0/b/web-ar-text.appspot.com/o/dummy%20img.jpg?alt=media&token=686cd3e4-e769-4e18-bcfd-9fcc0864fe5d" alt="">
+                        <p id="owner-name">John Doe</p>
+                    </div>
+                </div>
+                <div class="vertical-separate"></div>
+                <div class="photographer col">
+                    <h6>Photographer</h6>
+                    <div class="user-info">
+                        <img id="photographer-image" src="https://firebasestorage.googleapis.com/v0/b/web-ar-text.appspot.com/o/dummy%20img.jpg?alt=media&token=686cd3e4-e769-4e18-bcfd-9fcc0864fe5d" alt="">
+                        <p id="photographer-name">Smith ABC</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <footer>
+            <div class="social">
+                <div class="social-item">
+                    <img src="https://firebasestorage.googleapis.com/v0/b/web-ar-text.appspot.com/o/facebook.svg?alt=media&token=04a6ed18-21d3-49e8-89a6-4bb86e13c249"
+                        alt="">
+                </div>
+                <div class="social-item">
+                    <img src="https://firebasestorage.googleapis.com/v0/b/web-ar-text.appspot.com/o/instagram.svg?alt=media&token=8b563901-b47f-4251-8c55-d32069a4b436"
+                        alt="">
+                </div>
+                <div class="social-item">
+                    <img src="https://firebasestorage.googleapis.com/v0/b/web-ar-text.appspot.com/o/twitter.svg?alt=media&token=1d5fc090-c80f-439f-a0e3-70094aab53d6"
+                        alt="">
+                </div>
+                <div class="social-item">
+                    <img src="https://firebasestorage.googleapis.com/v0/b/web-ar-text.appspot.com/o/gitlab.svg?alt=media&token=8a576b9d-03b6-4049-9b7c-806011814dda"
+                        alt="">
+                </div>
+            </div>
+            <div class="address">
+                <p>254 Phayathai Rd, Wang Mai <br />Pathum Wan District, Bangkok 10330</p>
+                <p>© Matcher Inc.</p>
+            </div>
+        </footer>
+    </div>
+</body>
+
+</html>

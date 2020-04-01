@@ -6,6 +6,8 @@ import { Role } from '../const';
 import pick from 'object.pick';
 import { Types } from 'mongoose';
 import nodemailer from 'nodemailer';
+import cheerio from 'cheerio';
+import fs from 'fs';
 
 export default class UserController {
     private static async getUserAvgRating(userId: string): Promise<number> {
@@ -130,15 +132,17 @@ export default class UserController {
         });
     }
 
-    static async notifyUserByEmail(req: any, res: any){
-        const id = new Types.ObjectId(req.params.userId);
-        const user = await User.findById({ _id: id });
-        if(!user){
-            throw new HttpErrors.BadRequest();
-        }
-        else if(user.role !== Role.CUSTOMER){
-            throw new HttpErrors.BadRequest();
-        }
+    static async notifyUserByEmail(task: any): Promise<any> {
+        const photographer = await User.findById({ _id: task.acceptedBy });
+        const owner = await User.findById({ _id : task.owner });
+        const data = fs.readFileSync(__dirname + '/../template/notify_owner.html', 'utf8');
+        var $ = cheerio.load(data);
+        $('#task-title').text(task.title);
+        $('#task-location').text(task.location);
+        $('#dummy-text').text(task.description);
+        $('#owner-name').text(owner.firstname+' '+owner.lastname);
+        $('#photographer-name').text([photographer.firstname+' '+photographer.lastname]);
+        $('#task-status').text(task.status);
         const smtp = {
             host: 'smtp.mailtrap.io',
             port: 2525,
@@ -147,15 +151,22 @@ export default class UserController {
                 pass: 'e005cf73b0626a'
             }
         };
+        // const smtp = {
+        //     host: 'in-v3.mailjet.com',
+        //     port: 587,
+        //     auth: {
+        //         user: '9418771ef8b38718549b6575fcc1456f',
+        //         pass: '<redacted>'
+        //     }
+        // };
         const mail = {
             from: 'no-reply@sec33matcher.io',
-            to: user.email,
+            to: owner.email,
             subject: "Your task got a match!",
-            html: `<p>Congrats! your task got a new match from a photographer!</p>`
+            html: $.html()
         };
         var smtpTransport = nodemailer.createTransport(smtp);
         smtpTransport.sendMail(mail);
         smtpTransport.close();
-        res.json({ status: 'success' });
     }
 }

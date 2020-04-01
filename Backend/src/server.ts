@@ -60,7 +60,7 @@ export default class FastphotoApp {
         /* Setup body parser */
         app.use(bodyParser.json());
         app.use(bodyParser.urlencoded({ extended: true }));
-        app.use(cors(corsOptions));
+         app.use(cors(corsOptions));
 
         /* Setup session and passport */
         app.use(
@@ -106,7 +106,6 @@ export default class FastphotoApp {
 
         app.get('/user/:id', asyncHandler(UserController.getUserProfile));
 
-        app.get('/notify/:userId', asyncHandler(UserController.notifyUserByEmail));
         // app.post('/createtask', ensureLoggedIn(), asyncHandler(TaskController.createTask));
         app.use('/task', taskRoute);
 
