@@ -80,7 +80,7 @@ export default () => {
                 {matchedTasks.length === 0 ? null : matchedTasks.map(task => <TaskCard name={task.title} location={task.location} profilePic={task.img} price={task.price} thumbnail={task.img} button={auth.role === 'customer' ? 'Edit' : 'Pending'} />)}
             </Section>
             <Section title="Past Task">
-                {finishedTasks.length === 0 ? null : finishedTasks.map(task => <TaskCard onClick={openDialog(task._id)} name={task.title} location={task.location} profilePic={task.img} price={task.price} thumbnail={task.img} button={auth.role === 'customer' ? 'Edit' : 'Pending'} />)}
+                {finishedTasks.length === 0 ? null : finishedTasks.map(task => <TaskCard onClick={openDialog(task._id)} name={task.title} location={task.location} profilePic={task.img} price={task.price} thumbnail={task.img} button={auth.role === 'customer' ? 'Rate' : 'Pending'} />)}
             </Section>
 
             {/* dialog */}
