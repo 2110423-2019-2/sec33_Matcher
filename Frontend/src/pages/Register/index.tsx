@@ -62,7 +62,7 @@ export default () => {
                 .then(() => history.push('/signin'))
                 .catch(() => {
                     setErrorText({ ...errorText, email: 'Error' });
-                })
+                });
         }
     };
 

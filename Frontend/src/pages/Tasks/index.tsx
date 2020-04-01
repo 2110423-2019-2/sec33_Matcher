@@ -9,12 +9,12 @@ export default () => {
         filter: '',
     });
     useEffect(() => {
-        getAvailableTasks().then(tasks => {
-            console.log(tasks)
-            setTasks(tasks);
-        }).catch(err =>
-            console.log(err)
-        );
+        getAvailableTasks()
+            .then(tasks => {
+                console.log(tasks);
+                setTasks(tasks);
+            })
+            .catch(err => console.log(err));
     }, []);
     const filteredTasks = tasks.filter(task => task.photoStyle === taskFilter.filter || taskFilter.filter === '');
 
@@ -30,9 +30,9 @@ export default () => {
         }
     };
 
-    const onAccept = (id:string) => (e:any) => {
+    const onAccept = (id: string) => (e: any) => {
         matchTask(id);
-    }
+    };
 
     return (
         <div className="taskPage">
