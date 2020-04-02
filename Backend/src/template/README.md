@@ -1,1 +1,0 @@
-For storing email templates.

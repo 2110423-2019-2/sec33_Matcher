@@ -14,3 +14,4 @@ router.get('/available', ensureLoggedIn(), asyncHandler(TaskController.getAvaila
 router.post('/rate', ensureLoggedIn(), asyncHandler(TaskController.rateTask));
 router.get('/accept/:id', ensureLoggedIn(), asyncHandler(TaskController.acceptTask));
 router.get('/finish/:id', ensureLoggedIn(), asyncHandler(TaskController.finishTask));
+router.get('/cancel/:id', ensureLoggedIn(), asyncHandler(TaskController.cancelTask));
