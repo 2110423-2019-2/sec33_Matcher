@@ -1,4 +1,4 @@
-export const PHOTO_CATEGORIES = ['graduation', 'WEDDING', 'event', 'product', 'place', 'café & restaurant'];
+export const PHOTO_CATEGORIES = ['GRADUATION', 'WEDDING', 'EVENT', 'PRODUCT', 'PLACE', 'RESTAURANT'];
 export const dummyTasks = [
     {
         title: 'Poom',
