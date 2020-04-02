@@ -7,6 +7,7 @@ const UserSchema = new Schema({
     lastname: { type: String, required: [true, 'required'] },
     role: { type: String, required: [true, 'required'] },
     createTime: { type: Date, required: [true, 'required'] },
+    blacklist: { type: Boolean },
 });
 
 export interface IUser extends Document {
@@ -16,6 +17,7 @@ export interface IUser extends Document {
     lastname: string;
     role: string;
     createTime: Date;
+    blacklist: boolean | undefined;
 }
 
 export default mongoose.model<IUser>('User', UserSchema);
