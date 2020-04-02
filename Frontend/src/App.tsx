@@ -14,11 +14,10 @@ const App: React.FC = () => {
 
                 <Switch>
                     <PrivateRoute path="/protected" component={ComponentList} roles={['admin']} />
-                    <PrivateRoute path="/console" component={Console} roles={['photographer', 'customer']} />
+                    <Route path="/console" component={Console} roles={['photographer', 'customer']} />
                     <Route path="/create" component={CreateTask} />
                     <Route path="/signin" component={BodySignIn} />
                     <Route path="/register" component={Register} />
-                    <Route path="/create" component={CreateTask} />
                     <Route path="/task" component={Tasks} />
                     <Route path="/comp" component={ComponentList} />
                     <Route path="/type" component={PhotoType} />
