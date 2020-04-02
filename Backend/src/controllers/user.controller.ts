@@ -1,12 +1,28 @@
-import { User } from '../models';
+import { User, Task } from '../models';
 import { generateHash } from '../utils/userHandlers';
 import HttpErrors from 'http-errors';
 import validator from 'validator';
-import { Role, PhotoStyles } from '../const';
+import { Role } from '../const';
 import pick from 'object.pick';
-import passport from 'passport';
+import { Types } from 'mongoose';
 
 export default class UserController {
+    private static async getUserAvgRating(userId: string): Promise<number> {
+        const avgRating = await Task.aggregate([
+            { $match: { acceptedBy: Types.ObjectId(userId) } },
+            {
+                $group: {
+                    _id: null,
+                    total: { $avg: '$ratingScore' },
+                },
+            },
+        ]);
+        if (avgRating.length == 0) {
+            return 0;
+        }
+        return avgRating[0].total;
+    }
+
     static async createUser(req: any, res: any): Promise<void> {
         const fields = ['email', 'password', 'firstname', 'lastname', 'role'];
         //validate input ; pre-condition
@@ -29,15 +45,32 @@ export default class UserController {
     static async hello(req: any, res: any): Promise<void> {
         res.send('Hello World!');
     }
+
     static async getProfile(req: any, res: any): Promise<void> {
-        res.json({
-            createTime: req.user.createTime,
-            email: req.user.email,
-            firstname: req.user.firstname,
-            lastname: req.user.lastname,
-            role: req.user.role,
-        });
+        if (!req.params.userId) {
+            res.json({
+                createTime: req.user.createTime,
+                email: req.user.email,
+                firstname: req.user.firstname,
+                lastname: req.user.lastname,
+                role: req.user.role,
+            });
+        } else {
+            const id = new Types.ObjectId(req.params.userId);
+            const user = await User.findById({ _id: id });
+            if (!user) {
+                throw new HttpErrors.NotFound();
+            }
+            res.json({
+                firstname: user.firstname,
+                lastname: user.lastname,
+                role: user.role,
+                createTime: user.createTime,
+                score: await UserController.getUserAvgRating(req.params.userId),
+            });
+        }
     }
+
     static async updateProfile(req: any, res: any): Promise<void> {
         //add fields by requested update and for only legal update field
         const fields = ['email', 'password', 'firstname', 'lastname', 'role', 'createTime'];
@@ -58,6 +91,27 @@ export default class UserController {
         }
 
         res.json({ status: 'success' });
+    }
+
+    static async deleteProfile(req: any, res: any) {
+        if (!(await UserController.checkDelete(req))) throw new HttpErrors.BadRequest();
+        await User.findByIdAndDelete({ _id: Types.ObjectId(req.params.userId) });
+        res.json({ status: 'success' });
+    }
+
+    static async checkDelete(req: any): Promise<boolean> {
+        const id = new Types.ObjectId(req.params.userId);
+        const userProfile = await User.findById(id);
+        if (!userProfile) {
+            return false;
+        } else if (req.user.role === Role.ADMIN) {
+            return true;
+        } else {
+            if (!req.user._id.equals(req.params.userId)) {
+                return false;
+            }
+            return true;
+        }
     }
 
     static async validateInput(body: any, fields: string[]): Promise<boolean> {
