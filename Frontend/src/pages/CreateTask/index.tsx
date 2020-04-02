@@ -31,12 +31,12 @@ export default () => {
             taskname: taskInfo.taskname.length === 0 ? 'Taskname cannot be empty.' : '',
             location: taskInfo.location.length === 0 ? 'Location cannot be empty.' : '',
             image: taskInfo.image.length === 0 ? 'Image cannot be empty.' : '',
-            price: isNaN(parseFloat(taskInfo.price)) ? 'Invalid price.' : '',
+            price: isNaN(parseFloat(taskInfo.price)) || parseFloat(taskInfo.price) < 0? 'Invalid price.' : '',
         });
         if (taskInfo.taskname.length === 0) return false;
         if (taskInfo.location.length === 0) return false;
         if (taskInfo.image.length === 0) return false;
-        if (isNaN(parseFloat(taskInfo.price))) return false;
+        if (isNaN(parseFloat(taskInfo.price)) || parseFloat(taskInfo.price) < 0) return false;
         return true;
     };
 
