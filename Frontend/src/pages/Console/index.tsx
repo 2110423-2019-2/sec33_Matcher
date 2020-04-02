@@ -5,6 +5,7 @@ import './index.scss';
 import { Link, withRouter } from 'react-router-dom';
 import { CreateTask, EditProfile } from '..';
 import { DialogContent, DialogContentText, DialogActions, Dialog, DialogTitle } from '@material-ui/core';
+import { whoami, deleteUser, logout } from '../../api/user';
 
 export default withRouter((props: any) => {
     const { auth, authDispatch } = useContext(AuthContext);
@@ -13,14 +14,22 @@ export default withRouter((props: any) => {
     const pages = [<EditProfile />, <UserTasks />, <CreateTask />];
     const deleteAccount = () => {
         console.log('deleted');
-        // TODO call delete account api
-        props.history.push('/');
+        whoami().then(profile => {
+            deleteUser(profile._id).then(() => {
+                logout().then(res => {
+                    props.history.push('/')
+                })
+            })
+        })
+
     };
     const signOut = () => {
         console.log('sign out');
-        // TODO call sign out api here
         authDispatch({ type: 'SIGN_OUT' });
-        props.history.push('/');
+        logout().then(res =>
+            props.history.push('/')
+        )
+
     };
     return (
         <div className="consolePage">
@@ -31,11 +40,9 @@ export default withRouter((props: any) => {
             </div>
             <div className="row consoleChoices">
                 <div className="col-2">
-                    <Link to="/console/editprofile">
-                        <p className={`${currentPage === 0 ? 'selected' : ''}`} onClick={() => setCurrentPage(0)}>
-                            Edit profile
+                    <p className={`${currentPage === 0 ? 'selected' : ''}`} onClick={() => setCurrentPage(0)}>
+                        Edit profile
                         </p>
-                    </Link>
                 </div>
                 <div className="col-2">
                     <Link to="/console/tasks">
@@ -46,11 +53,9 @@ export default withRouter((props: any) => {
                 </div>
                 {auth.role === 'customer' ? (
                     <div className="col-2">
-                        <Link to="/console/createtask">
-                            <p className={`${currentPage === 2 ? 'selected' : ''}`} onClick={() => setCurrentPage(2)}>
-                                Create task
-                            </p>
-                        </Link>
+                        <p className={`${currentPage === 2 ? 'selected' : ''}`} onClick={() => setCurrentPage(2)}>
+                            Create task
+                        </p>
                     </div>
                 ) : null}
                 <div className="col-2">

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './index.scss';
 import { PHOTO_CATEGORIES, dummyTasks } from '../../const';
 import { TaskCard } from '../../components';
-import { getAvailableTasks, matchTask } from '../../api/task';
+import { getAvailableTasks, acceptTask } from '../../api/task';
 export default () => {
     const [tasks, setTasks] = useState<Array<any>>([]);
     const [taskFilter, setTaskFilter] = useState({
@@ -30,8 +30,11 @@ export default () => {
         }
     };
 
-    const onAccept = (id: string) => (e: any) => {
-        matchTask(id);
+    const onAccept = (id: string) => {
+        console.log(id)
+        acceptTask(id).then(
+            res => console.log(res)
+        )
     };
 
     return (
@@ -61,7 +64,7 @@ export default () => {
                     return (
                         <div className="col">
                             <TaskCard
-                                onClick={onAccept(task._id)}
+                                onClick={() => onAccept(task._id)}
                                 name={task.title}
                                 location={task.location}
                                 profilePic={task.img}

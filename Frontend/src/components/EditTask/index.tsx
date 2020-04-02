@@ -3,8 +3,6 @@ import {
     Dialog,
     DialogTitle,
     DialogContent,
-    DialogActions,
-    DialogContentText,
     FormControl,
     MenuItem,
     InputLabel,
@@ -17,76 +15,60 @@ import { useHistory } from 'react-router-dom';
 import { dummyTasks } from '../../const';
 export default (props: any) => {
     const [open, setOpen] = useState<boolean>(props.isOpen);
-    const [initTask, setInitTask] = useState({
+    const [task, setTask] = useState({
         title: '',
         location: '',
         image: '',
         photoStyle: '',
-        price: 0,
-    });
-    const [taskInfo, setTaskInfo] = useState({
-        taskname: '',
-        location: '',
-        image: '',
-        tasktype: '',
         price: '',
     });
     const [errorText, setErrorText] = useState({
-        taskname: '',
+        title: '',
         location: '',
         image: '',
         price: '',
     });
     const history = useHistory();
     useEffect(() => {
-        console.log('eoeoe')
-        console.log(props)
-        // getTaskById(props.taskId).then(task => {
-        //     setInitTask(task);
-        // });
-        setInitTask(dummyTasks[0]);
-    }, []);
-
+        setOpen(props.isOpen);
+        if (props.isOpen) {
+            getTaskById(props.taskId).then(task => {
+                setTask({ ...task, price: task.price.toString() });
+            });
+        }
+    }, [props.isOpen])
     const handleChange = (field: string) => (e: any) => {
-        setTaskInfo({
-            ...taskInfo,
+        setTask({
+            ...task,
             [field]: e.target.value,
         });
     };
     const validate = () => {
         setErrorText({
             ...errorText,
-            taskname: taskInfo.taskname.length === 0 ? 'Taskname cannot be empty.' : '',
-            location: taskInfo.location.length === 0 ? 'Location cannot be empty.' : '',
-            image: taskInfo.image.length === 0 ? 'Image cannot be empty.' : '',
-            price: taskInfo.price.length === 0 ? 'Price cannot be empty.' : '',
+            title: task.title.length === 0 ? 'title cannot be empty.' : '',
+            location: task.location.length === 0 ? 'Location cannot be empty.' : '',
+            image: task.image.length === 0 ? 'Image cannot be empty.' : '',
+            price: task.price.length === 0 ? 'Price cannot be empty.' : '',
         });
-        if (taskInfo.taskname.length === 0) return false;
-        if (taskInfo.location.length === 0) return false;
-        if (taskInfo.image.length === 0) return false;
-        if (taskInfo.price.length === 0) return false;
+        if (task.title.length === 0) return false;
+        if (task.location.length === 0) return false;
+        if (task.image.length === 0) return false;
+        if (task.price.length === 0) return false;
         return true;
     };
     const submit = (e: any) => {
         e.preventDefault();
+        // console.log(task)
         if (validate()) {
-            console.log(taskInfo);
-            const task = {
-                title: taskInfo.taskname,
-                location: taskInfo.location,
-                image: taskInfo.image,
-                price: parseFloat(taskInfo.price),
-                photoStyle: taskInfo.tasktype,
-            };
-            upsertTask(props.taskId, task).then(res => {
+            upsertTask(props.taskId, { ...task, price: parseFloat(task.price) }).then(res => {
                 console.log(res);
                 history.push('/console');
             });
-            // history.push('/');
         }
     };
     return (
-        <Dialog open={open} onClose={() => setOpen(false)} fullWidth={true} className="dialog">
+        <Dialog open={open} onClose={props.close} fullWidth={true} className="dialog">
             <DialogTitle>
                 <h3 className="dialogTitle">Edit task</h3>
             </DialogTitle>
@@ -95,12 +77,12 @@ export default (props: any) => {
                     <div className="col-6">
                         <Input
                             variant="filled"
-                            error={Boolean(errorText.taskname)}
-                            helperText={errorText.taskname}
-                            onChange={handleChange('taskname')}
+                            error={Boolean(errorText.title)}
+                            helperText={errorText.title}
+                            onChange={handleChange('title')}
                             label="Task name"
                             fullWidth
-                            defaultValue={initTask.title}
+                            defaultValue={task.title}
                         />
                     </div>
                     <div className="col-6">
@@ -111,7 +93,7 @@ export default (props: any) => {
                             onChange={handleChange('location')}
                             label="Location"
                             fullWidth
-                            defaultValue={initTask.location}
+                            defaultValue={task.location}
                         />
                     </div></div>
                 <div className="row createTaskTitle">
@@ -123,13 +105,13 @@ export default (props: any) => {
                             onChange={handleChange('image')}
                             label="Cover image"
                             fullWidth
-                            defaultValue={initTask.image}
+                            defaultValue={task.image}
                         />
                     </div>
                     <div className="col-6">
                         <FormControl variant="filled" fullWidth>
                             <InputLabel>Task type</InputLabel>
-                            <Select onClick={handleChange('tasktype')} defaultValue={initTask.photoStyle}>
+                            <Select onClick={handleChange('tasktype')} defaultValue={task.photoStyle}>
                                 <MenuItem value={'PRODUCT'}>Product</MenuItem>
                                 <MenuItem value={'PLACE'}>Place</MenuItem>
                                 <MenuItem value={'RESTAURANT'}>Cafe & Restaurant</MenuItem>
@@ -149,7 +131,7 @@ export default (props: any) => {
                             onChange={handleChange('price')}
                             label="Price rate per hour"
                             fullWidth
-                            defaultValue={initTask.price}
+                            defaultValue={task.price}
                         />
                     </div>
                     <div className="col-6 createTaskTitle">

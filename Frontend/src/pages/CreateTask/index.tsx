@@ -79,7 +79,6 @@ export default () => {
                             onChange={handleChange('taskname')}
                             label="Task name"
                             fullWidth
-                            value="test"
                         />
                     </div>
                     <div className="col-6">
