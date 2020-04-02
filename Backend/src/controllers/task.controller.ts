@@ -4,11 +4,11 @@ import { Role, photoStyles, TaskStatus } from '../const';
 import HttpErrors from 'http-errors';
 import { Types } from 'mongoose';
 import pick from 'object.pick';
-import { urlencoded } from 'body-parser';
+import { UserController } from '.';
 
 export default class TaskController {
-    private static requiredFields: Array<string> = ['title', 'location', 'availableTime', 'photoStyle', 'price'];
-    private static optionalFields: Array<string> = ['description', 'image'];
+    private static requiredFields: Array<string> = ['title', 'location', 'photoStyle', 'price'];
+    private static optionalFields: Array<string> = ['image'];
     private static availableOwnerRoles: Array<string> = [Role.CUSTOMER, Role.ADMIN];
 
     private static checkCreateTask(req: any): boolean {
@@ -23,13 +23,10 @@ export default class TaskController {
 
     static async createTask(req: any, res: any): Promise<void> {
         if (!TaskController.checkCreateTask(req)) throw new HttpErrors.BadRequest();
-
         const task = new Task({
             title: req.body.title,
-            description: req.body.description,
             location: req.body.location,
             owner: req.user._id,
-            availableTime: req.body.availableTime,
             photoStyle: req.body.photoStyle,
             price: req.body.price,
             image: req.body.image,
@@ -38,6 +35,30 @@ export default class TaskController {
         });
 
         await task.save();
+        res.json({ status: 'success' });
+    }
+
+    private static async checkDeleteTask(req: any): Promise<boolean> {
+        const id = new Types.ObjectId(req.params.taskId);
+        const task = await Task.findById(id);
+        if (!task) {
+            return false;
+        } else if (req.user.role === Role.ADMIN) {
+            return true;
+        } else if (req.user.role !== Role.CUSTOMER) {
+            return false;
+        } else {
+            if (task.owner.toString() !== req.user._id.toString()) {
+                return false;
+            }
+            return true;
+        }
+    }
+
+    static async deleteTask(req: any, res: any): Promise<void> {
+        //precondition
+        if (!(await TaskController.checkDeleteTask(req))) throw new HttpErrors.BadRequest();
+        await Task.findOneAndDelete({ _id: Types.ObjectId(req.params.taskId) });
         res.json({ status: 'success' });
     }
 
@@ -91,6 +112,7 @@ export default class TaskController {
             throw new HttpErrors.BadRequest();
         }
     }
+
     static async getFinishedTasks(req: any, res: any): Promise<any> {
         try {
             const user = await User.findById(req.user._id);
@@ -150,9 +172,9 @@ export default class TaskController {
             } else {
                 throw new HttpErrors.NotImplemented();
             }
-        } catch (err) {
-            console.log(err);
-            throw new HttpErrors.BadRequest();
+        }catch(err) {
+          console.log(err)
+          throw new HttpErrors.BadRequest();
         }
     }
     static async getReqFinTasks(req: any, res: any): Promise<any> {
@@ -167,9 +189,9 @@ export default class TaskController {
             } else {
                 throw new HttpErrors.NotImplemented();
             }
-        } catch (err) {
-            console.log(err);
-            throw new HttpErrors.BadRequest();
+        }catch(err) {
+          console.log(err)
+          throw new HttpErrors.BadRequest();
         }
     }
     static async acceptTask(req: any, res: any) {
@@ -213,6 +235,43 @@ export default class TaskController {
         try {
             const task = await Task.findById(req.params.id);
             res.json(task);
+        }catch(err){
+          console.log(err)
+          throw new HttpErrors.BadRequest();
+        }
+    }
+
+    static async cancelTask(req: any, res: any): Promise<void> {
+        try {
+            const user = await User.findById(req.user._id);
+            const task = await Task.findById(req.params.id);
+            if (!task) {
+                throw new HttpErrors.NotFound();
+            }
+            if (task.status === TaskStatus.AVAILABLE || task.status === TaskStatus.FINISHED) {
+                throw new HttpErrors.BadRequest();
+            } //what is the task cancelling policy?
+            if (user.role === Role.CUSTOMER) {
+                if (!user._id.equals(task.owner)) {
+                    throw new HttpErrors.Unauthorized();
+                }
+                task.status = TaskStatus.AVAILABLE;
+                task.acceptedBy = null;
+                await task.save();
+                //TODO add notification
+                res.json({ status: 'success' });
+            } else if (user.role === Role.PHOTOGRAPHER) {
+                if (!user._id.equals(task.acceptedBy)) {
+                    throw new HttpErrors.Unauthorized();
+                }
+                task.status = TaskStatus.AVAILABLE;
+                task.acceptedBy = null;
+                await task.save();
+                //TODO add notification
+                res.json({ status: 'success' });
+            } else {
+                // TODO implement cancel task for admin here
+            }
         } catch (err) {
             console.log(err);
             throw new HttpErrors.BadRequest();

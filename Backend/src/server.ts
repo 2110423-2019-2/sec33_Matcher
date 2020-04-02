@@ -9,7 +9,7 @@ import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { IUser, User } from './models';
 import session from 'express-session';
-import { taskRoute } from './routes';
+import { taskRoute, profileRoute, adminRoute } from './routes';
 import { load as loadYAML } from 'yamljs';
 import * as swaggerUI from 'swagger-ui-express';
 import cors from 'cors';
@@ -18,7 +18,7 @@ dotenv.config();
 
 const port = process.env.PORT || 8080;
 
-const whitelist = ['http://localhost:3000'];
+const whitelist = ['http://localhost:3000', 'https://fast-photo-8e48a.web.app'];
 const corsOptions = {
     origin: (origin: string, callback: any): any => {
         if (whitelist.indexOf(origin) !== -1) {
@@ -60,7 +60,9 @@ export default class FastphotoApp {
         /* Setup body parser */
         app.use(bodyParser.json());
         app.use(bodyParser.urlencoded({ extended: true }));
-        app.use(cors(corsOptions));
+        if (process.env.DISABLE_CORS !== '1') {
+            app.use(cors(corsOptions));
+        }
 
         /* Setup session and passport */
         app.use(
@@ -96,17 +98,14 @@ export default class FastphotoApp {
 
         app.post('/login', passport.authenticate('local'), AuthController.login);
 
-        app.get('/profile', ensureLoggedIn(), asyncHandler(UserController.getProfile));
-
-        app.post('/profile', ensureLoggedIn(), asyncHandler(UserController.updateProfile));
-
         app.get('/whoami', ensureLoggedIn(), AuthController.whoami);
 
         app.get('/logout', AuthController.logout);
 
-        // app.post('/createtask', ensureLoggedIn(), asyncHandler(TaskController.createTask));
         app.use('/task', taskRoute);
 
+        app.use('/profile', profileRoute);
+        app.use('/admin', adminRoute);
         /* Middleware for error handling */
         app.use(errorHandler);
         /* End of error handling */

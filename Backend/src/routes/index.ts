@@ -1,2 +1,4 @@
 import { router as taskRoute } from './task.route';
-export { taskRoute };
+import { router as profileRoute } from './profile.route';
+import { router as adminRoute } from './admin.route';
+export { taskRoute, profileRoute, adminRoute };
