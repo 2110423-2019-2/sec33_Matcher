@@ -4,6 +4,7 @@ import { Role, photoStyles, TaskStatus } from '../const';
 import HttpErrors from 'http-errors';
 import { Types } from 'mongoose';
 import pick from 'object.pick';
+import { UserController } from '.';
 
 export default class TaskController {
     private static requiredFields: Array<string> = ['title', 'location', 'photoStyle', 'price'];
@@ -165,7 +166,8 @@ export default class TaskController {
                 task.acceptedBy = req.user._id;
                 task.status = TaskStatus.ACCEPTED;
 
-                await task.save();
+                await task.save()
+                await UserController.notifyUserByEmail(task);
                 res.json({ status: 'success' });
             } else if (user.role === Role.ADMIN) {
                 // TODO implement method for admin
