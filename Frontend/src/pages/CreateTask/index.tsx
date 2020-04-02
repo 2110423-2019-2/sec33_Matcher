@@ -4,6 +4,7 @@ import { Input, Button } from '../../components';
 import { ReactComponent as Chevron } from '../../assets/icons/chevron-right.svg';
 import { upsertTask } from '../../api/task';
 import { Select } from '@material-ui/core';
+import { useHistory } from 'react-router-dom';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
@@ -22,6 +23,7 @@ export default () => {
         image: '',
         price: '',
     });
+    const history = useHistory();
 
     const validate = () => {
         setErrorText({
@@ -59,6 +61,7 @@ export default () => {
             upsertTask('', task).then(res => {
                 console.log(res);
             });
+            history.push('/console?tab=tasks')
         }
     };
 
