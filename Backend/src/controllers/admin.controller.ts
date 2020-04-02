@@ -1,4 +1,4 @@
-import { User, IUser } from '../models';
+import { User } from '../models';
 
 export default class AdminController {
     static async getAllUsers(req: any, res: any): Promise<void> {
