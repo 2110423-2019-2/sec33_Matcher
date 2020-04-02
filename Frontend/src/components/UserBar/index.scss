@@ -1,0 +1,36 @@
+.navBarProfilePic{
+  margin: auto;
+  display: inline-block;
+}
+
+.dropdown {
+    width: 100%;
+    /* margin-left: 10%; */
+    /* margin: auto; */
+    text-align: center;
+    display: inline-block;
+  }
+
+.dropButton{
+  display: inline-block;
+  margin-left: 5%;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  text-align: left;
+  width: 14%;
+  background-color: white;
+  z-index: 1;
+}
+
+.dropdown-content a {
+  font-size: 18px;
+  margin: 3%;
+  text-align: center;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown:hover .dropdown-content {display: block;}

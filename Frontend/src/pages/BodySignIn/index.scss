@@ -1,0 +1,51 @@
+@import "../colors.scss";
+
+.signIn {
+  height: 80vh;
+}
+
+.signinForm {
+  padding-top: 56px;
+}
+
+.signInHeader{
+  color: $color-dark;
+  font-size: 36px;
+  font-weight: 300;
+}
+
+.loginBox {
+  margin-left: 3em;
+}
+
+.loginFormSection {
+  margin: 1.5em 0;
+
+  .MuiTextField-root {
+    width: 100% !important;
+  }
+}
+
+.signUpLink {
+  color: $color-secondary;
+}
+
+.loginButton {
+  color: $color-white;
+}
+
+.altSignin {
+  margin-top: 15px;
+}
+
+.loginBackground {
+  position: absolute;
+  left: 0;
+  height: 80vh;
+}
+
+// @media only screen and (max-width: 720px) {
+//   .loginBackground {
+//     display: none;
+//   }
+// }

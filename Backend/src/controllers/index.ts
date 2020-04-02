@@ -1,3 +1,5 @@
 import UserController from './user.controller';
+import AuthController from './auth.controller';
+import TaskController from './task.controller';
 
-export { UserController };
+export { UserController, AuthController, TaskController };

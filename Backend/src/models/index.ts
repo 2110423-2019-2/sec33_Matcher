@@ -1,3 +1,4 @@
-import User from './user.model';
+import User, { IUser } from './user.model';
+import Task, { ITask } from './task.model';
 
-export { User };
+export { User, IUser, Task, ITask };

@@ -1,26 +1,40 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { BodySignIn, Register, Home, CreateTask, Tasks, Console, PhotoType } from "./pages";
+import "./App.css";
+import { NavBar, ComponentList, PrivateRoute, Footer } from "./components";
+import "./index.scss";
+import {
+  authReducer,
+  defaultAuth,
+  AuthContextProvider
+} from "./context/AuthContext";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 const App: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <AuthContextProvider>
+        <NavBar />
+
+        <Switch>
+          <PrivateRoute
+            path="/protected"
+            component={ComponentList}
+            roles={["admin"]}
+          />
+          <PrivateRoute path="/console" component={Console} roles={["photographer", "customer"]} />
+          <Route path="/signin" component={BodySignIn} />
+          <Route path="/register" component={Register} />
+          <Route path="/create" component={CreateTask} />
+          <Route path="/task" component={Tasks} />
+          <Route path="/comp" component={ComponentList} />
+          <Route path="/type" component={PhotoType} />
+          <Route path="/" component={Home} />
+        </Switch>
+        <Footer />
+      </AuthContextProvider>
+    </Router>
   );
-}
+};
 
 export default App;

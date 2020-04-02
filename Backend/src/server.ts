@@ -2,17 +2,36 @@ import express, { Application } from 'express';
 import * as dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
-import { UserController } from './controllers';
+import { UserController, AuthController } from './controllers';
 import { errorHandler, asyncHandler } from './utils/handlers';
+import { ensureLoggedIn } from './utils/userHandlers';
+import passport from 'passport';
+import { Strategy as LocalStrategy } from 'passport-local';
+import { IUser, User } from './models';
+import session from 'express-session';
+import { taskRoute } from './routes';
+import { load as loadYAML } from 'yamljs';
+import * as swaggerUI from 'swagger-ui-express';
+import cors from 'cors';
 
 dotenv.config();
 
 const port = process.env.PORT || 8080;
 
+let whitelist = ['http://localhost:3000']
+let corsOptions = {
+  origin: (origin: string, callback: any) => {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  },
+  credentials: true
+}
+
 export default class FastphotoApp {
     application: Application;
-
-    userController = new UserController();
 
     constructor() {
         const app = express();
@@ -21,26 +40,83 @@ export default class FastphotoApp {
             process.env.DB_CONNECTION_URI || `mongodb://${process.env.DB_HOST}:27017/${process.env.DB_NAME}`,
             { useNewUrlParser: true, useUnifiedTopology: true },
             err => {
-                if (err) console.log('MongoDB Error');
+                if (err) console.log('MongoDB Error ' + err);
             },
         );
+        mongoose.set('useCreateIndex', true);
+        mongoose.set('useFindAndModify', false);
+
+        passport.serializeUser(async (user: IUser, done) => {
+            return done(null, user.email);
+        });
+
+        passport.deserializeUser(async (email: string, done) => {
+            const user = await User.findOne({ email });
+            return done(null, user);
+        });
 
         /* Start using middleware */
+
+        /* Setup body parser */
         app.use(bodyParser.json());
         app.use(bodyParser.urlencoded({ extended: true }));
+        app.use(cors(corsOptions)); // TODO: edit to whitelist
+
+        /* Setup session and passport */
+        app.use(
+            session({
+                secret: process.env.SESSION_SECRET,
+                resave: false,
+                saveUninitialized: false,
+            }),
+        );
+        app.use(passport.initialize());
+        app.use(passport.session());
+        passport.use(
+            new LocalStrategy(
+                {
+                    usernameField: 'email',
+                    passwordField: 'password',
+                },
+                AuthController.loginLocal,
+            ),
+        );
+
+        /* Setup swagger ui document */
+        if (process.env.NODE_ENV !== 'production') {
+            const swaggerDocument = loadYAML('./swagger.yaml');
+            app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
+        }
         /* End of middlewares */
 
-        app.get('/', asyncHandler(this.userController.hello));
+        // User Routing
+        app.get('/', asyncHandler(UserController.hello));
 
-        app.post('/register', asyncHandler(this.userController.createUser));
+        app.post('/register', asyncHandler(UserController.createUser));
+
+        app.post('/login', passport.authenticate('local'), AuthController.login);
+
+        app.get('/profile', ensureLoggedIn(), asyncHandler(UserController.getProfile));
+
+        app.post('/profile', ensureLoggedIn(), asyncHandler(UserController.updateProfile));
+
+        app.get('/whoami', ensureLoggedIn(), AuthController.whoami);
+
+        app.get('/logout', AuthController.logout);
+
+        // app.post('/createtask', ensureLoggedIn(), asyncHandler(TaskController.createTask));
+        app.use('/task', taskRoute);
 
         /* Middleware for error handling */
         app.use(errorHandler);
         /* End of error handling */
 
-        app.listen(port, () => {
-            console.log(`Fastphoto listening on port ${port}!`);
-        });
+        // Prevent port collision when running tests.
+        if (!module.parent || !/.*\.test\.ts\b/.test(module.parent.filename)) {
+            app.listen(port, () => {
+                console.log(`Fastphoto listening on port ${port}!`);
+            });
+        }
 
         this.application = app;
     }
