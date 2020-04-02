@@ -22,17 +22,25 @@ export default (props: any) => {
                 setUserBar({
                     ...userBar,
                     name: profile.firstname,
-                    isLogin: true
+                    isLogin: true,
                 });
             })
             .catch(() => {
                 console.log('Unauthenticated');
                 setUserBar({
                     ...userBar,
-                    isLogin: false
+                    isLogin: false,
                 });
             });
-    }, [auth, authDispatch]);
+    }, []);
+
+    useEffect(() => {
+        setUserBar({
+            ...userBar,
+            name: auth.firstname,
+            isLogin: auth.isLogin,
+        });
+    }, [auth]);
 
     return (
         <div className="navBar">
@@ -58,17 +66,15 @@ export default (props: any) => {
                         <img className="navBarProfilePic" src={awesome} alt="awesome" width="18" height="18"></img>
                         <p className="dropButton">{userBar.name}</p>
                         <div className="dropdown-content">
-                            <Link to="/edit">
-                                <a>Profile</a>
-                            </Link>
-                            <a>Your Tasks</a>
+                            <Link to="/console"><a>Profile</a></Link>
+                            <Link to="/console/tasks"><a>Your Tasks</a></Link>
                             <a
                                 href="/#"
                                 onClick={() => {
                                     logout().then(() => {
                                         setUserBar({
                                             ...userBar,
-                                            isLogin: false
+                                            isLogin: false,
                                         });
                                         history.push('/');
                                     });
@@ -79,10 +85,10 @@ export default (props: any) => {
                         </div>
                     </div>
                 ) : (
-                        <Link to="/signin">
-                            <Button type="outlined">Sign In</Button>
-                        </Link>
-                    )}
+                    <Link to="/signin">
+                        <Button type="outlined">Sign In</Button>
+                    </Link>
+                )}
             </div>
         </div>
     );

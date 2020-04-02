@@ -43,7 +43,7 @@ export default ({
     price = 0,
     thumbnail = '/images/horizontal-placeholder.png',
     button = 'Get',
-    onClick = () => { }
+    onClick = () => { },
 }: TaskCardProps) => (
         <div style={{ display: 'inline-flex' }}>
             <div className="taskCardContainer">

@@ -1,52 +1,154 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Section, TaskCard } from '../'
+import { Section, TaskCard } from '../';
 import './index.scss';
 import { AuthContext } from '../../context/AuthContext';
-import { getAvailableTasks, getMatchedTasks, getFinishedTasks } from '../../api/task';
+import { getAvailableTasks, getMatchedTasks, getFinishedTasks, rateTask } from '../../api/task';
 import { dummyTasks } from '../../const';
+import { whoami } from '../../api/user';
+import { DialogContent, DialogContentText, DialogActions, Dialog, DialogTitle } from '@material-ui/core';
+import { Input, Button } from '../../components';
+import Rating from '@material-ui/lab/Rating';
+import EditTask from '../EditTask';
+
 interface ITask {
-    username: string,
-    location: string,
-    img: string,
-    price: number
+    title: string;
+    _id: string;
+    owner: string;
+    location: string;
+    img: string;
+    price: number;
+    ratingScore: number;
+    comment: string;
 }
 export default () => {
     const { auth } = useContext(AuthContext);
     const [availableTasks, setAvailableTasks] = useState<Array<ITask>>([]);
     const [matchedTasks, setMatchedTasks] = useState<Array<ITask>>([]);
     const [finishedTasks, setFinishedTasks] = useState<Array<ITask>>([]);
+    const [open, setOpen] = useState(false);
+    const [editTask, setEditTask] = useState({ id: '', open: true });
     const fetchTasks = () => {
-        getAvailableTasks().then(tasks => {
-            setAvailableTasks(tasks);
-        }).catch(err =>
-            console.log(err)
-        );
-        getMatchedTasks().then(tasks => {
-            setMatchedTasks(tasks);
-        }).catch(err =>
-            console.log(err)
-        );
-        getFinishedTasks().then(tasks => {
-            setFinishedTasks(tasks);
-        }).catch(err =>
-            console.log(err)
-        );
-    }
+        getAvailableTasks()
+            .then(tasks => {
+                console.log(availableTasks);
+                setAvailableTasks(tasks);
+            })
+            .catch(err => console.log(err));
+        getMatchedTasks()
+            .then(tasks => {
+                setMatchedTasks(tasks);
+            })
+            .catch(err => console.log(err));
+        getFinishedTasks()
+            .then(tasks => {
+                setFinishedTasks(tasks);
+            })
+            .catch(err => console.log(err));
+    };
+
+    const [taskID, setTaskID] = useState('');
+    const [rating, setRating] = useState<number | null>(0);
+    const [comment, setComment] = useState('');
+    const handleChange = (e: any) => {
+        setComment(e.target.value);
+    };
+
+    const handleSubmit = (e: any) => {
+        setOpen(false);
+        rateTask(taskID, rating, comment);
+    };
+
+    const openDialog = (id: string) => (e: any) => {
+        setOpen(true);
+        setTaskID(id);
+    };
+
+    //photographer profile pic
+    const awesome = '/images/awesome.png';
 
     useEffect(() => {
         fetchTasks();
-    }, [])
+        // whoami().then(res => console.log(res))
+    }, []);
     return (
         <div className="sectionContainer">
             <Section title={`${auth.role === 'customer' ? 'Available' : 'Pending'} Task`}>
-                {dummyTasks.length === 0 ? null : dummyTasks.map(task => <TaskCard name={task.username} location={task.location} profilePic={task.img} price={task.price} thumbnail={task.img} button={auth.role === 'customer' ? 'Edit' : 'Pending'} />)}
+                {availableTasks.length === 0
+                    ? null
+                    : availableTasks.map(task => (
+                        <TaskCard
+                            name={task.title}
+                            location={task.location}
+                            profilePic={task.img}
+                            price={task.price}
+                            thumbnail={task.img}
+                            button={auth.role === 'customer' ? 'Edit' : 'Pending'}
+                            onClick={() => setEditTask({ id: task._id, open: true })}
+                        />
+                    ))}
             </Section>
             <Section title="Matched Task">
-                {/* {matchedTasks.map(task => <TaskCard name={task.username} location={task.location} profilePic={task.img} price={task.price} thumbnail={task.img} />)} */}
+                {matchedTasks.length === 0
+                    ? null
+                    : matchedTasks.map(task => (
+                        <TaskCard
+                            name={task.title}
+                            location={task.location}
+                            profilePic={task.img}
+                            price={task.price}
+                            thumbnail={task.img}
+                            button={auth.role === 'customer' ? 'Edit' : 'Pending'}
+                        />
+                    ))}
             </Section>
             <Section title="Past Task">
-                {/* {finishedTasks.map(task => <TaskCard name={task.username} location={task.location} profilePic={task.img} price={task.price} thumbnail={task.img} />)} */}
+                {finishedTasks.length === 0
+                    ? null
+                    : finishedTasks.map(task => (
+                        <TaskCard
+                            onClick={openDialog(task._id)}
+                            name={task.title}
+                            location={task.location}
+                            profilePic={task.img}
+                            price={task.price}
+                            thumbnail={task.img}
+                            button={auth.role === 'customer' ? 'Edit' : 'Pending'}
+                        />
+                    ))}
             </Section>
+            <EditTask taskId={editTask.id} isOpen={editTask.open} />
+            {/* dialog */}
+            <Dialog open={open} onClose={() => setOpen(false)} fullWidth={true} className="dialog">
+                <DialogContent>
+                    <DialogContentText>
+                        <div className="ratingStar">
+                            <p className="dialogContent">Review photographer's job</p>
+                            <br></br>
+                            <Rating
+                                name="simple-controlled"
+                                size="large"
+                                value={rating}
+                                onChange={(event: any, newValue: number | null) => {
+                                    setRating(newValue);
+                                }}
+                            />
+                        </div>
+
+                        <div className="ratingProfilePic">
+                            <img className="navBarProfilePic" src={awesome} alt="awesome" width="80" height="80"></img>
+                        </div>
+                    </DialogContentText>
+                    <div className="comment">
+                        <Input variant="filled" onChange={handleChange} label="Type your comment" fullWidth />
+                    </div>
+                </DialogContent>
+
+                <DialogActions>
+                    <Button type="outlined" onClick={handleSubmit}>
+                        Done
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </div>
-    )
-}
+    );
+};
