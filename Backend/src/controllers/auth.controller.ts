@@ -7,7 +7,12 @@ export default class AuthController {
         if (!user) {
             // no user in database
             return done(null, false);
-        } else if (!(await bcrypt.compare(password, user.password))) return done(null, false);
+        } else if (!(await bcrypt.compare(password, user.password))) {
+            return done(null, false);
+        } else if (user.blacklist === true) {
+            // user is blacklisted
+            return done(null, false);
+        }
         return done(null, user);
     }
 

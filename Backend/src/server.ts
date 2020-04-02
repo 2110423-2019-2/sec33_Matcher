@@ -103,7 +103,7 @@ export default class FastphotoApp {
         app.get('/logout', AuthController.logout);
 
         app.use('/task', taskRoute);
-        
+
         app.use('/profile', profileRoute);
         app.use('/admin', adminRoute);
         /* Middleware for error handling */
