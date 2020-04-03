@@ -135,7 +135,7 @@ export default class TaskController {
 
     static async getAvailableTasks(req: any, res: any): Promise<any> {
         try {
-            const user = await User.findOne({ __id: req.user._id });
+            const user = await User.findById(req.user._id);
             if (user.role === Role.CUSTOMER) {
                 const tasks = await Task.find({ status: TaskStatus.AVAILABLE, owner: req.user._id });
                 res.json(tasks);
