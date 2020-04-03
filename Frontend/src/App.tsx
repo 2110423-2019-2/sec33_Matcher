@@ -1,5 +1,5 @@
 import React from 'react';
-import { BodySignIn, Register, Home, CreateTask, Tasks, Console } from './pages';
+import { BodySignIn, Register, Home, CreateTask, Tasks, Console, UserListTable } from './pages';
 import './App.css';
 import { NavBar, ComponentList, PrivateRoute, PhotoType, Footer } from './components';
 import './index.scss';
