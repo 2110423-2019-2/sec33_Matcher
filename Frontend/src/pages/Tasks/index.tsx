@@ -51,22 +51,10 @@ export default () => {
     };
 
     const handleChange = (field: string) => (e: any) => {
-        if (field === 'lowerPrice') {
-            setDialogData({
-                ...dialogData,
-                priceRange: [e.target.value, dialogData.priceRange[1]],
-            });
-        } else if (field === 'upperPrice') {
-            setDialogData({
-                ...dialogData,
-                priceRange: [dialogData.priceRange[0], e.target.value],
-            });
-        } else {
             setDialogData({
                 ...dialogData,
                 [field]: e.target.value,
             });
-        }
     };
 
     const handleSlider = (e: any, Val: number | number[]) => {
@@ -138,29 +126,33 @@ export default () => {
                 <DialogTitle className="dialogTitle">Additional Filter</DialogTitle>
                 <DialogContent>
                     <div className="locationIn">
-                        <Input variant="filled" value={dialogData.location} onChange={handleChange('location')} label="Location" fullWidth />
+                        <Input
+                            variant="filled"
+                            value={dialogData.location}
+                            onChange={handleChange('location')}
+                            label="Location"
+                            fullWidth
+                        />
                     </div>
                     <h6 className="dialogLabel">Price</h6>
                     <div className="row">
-                        <div className="col-3">
-                            <Input
-                                value={dialogData.priceRange[0]}
-                                label="min"
-                                variant="filled"
-                                onChange={handleChange('lowerPrice')}
-                                type="number"
-                            />
-                        </div>
-                        <div className="col-6">
-                            <Slider value={dialogData.priceRange} min={0} max={20000} onChange={handleSlider} />
-                        </div>
-                        <div className="col-3">
-                            <Input
-                                value={dialogData.priceRange[1]}
-                                label="max"
-                                variant="filled"
-                                onChange={handleChange('upperPrice')}
-                                type="number"
+                        <div className="col-12">
+                            <Slider
+                                value={dialogData.priceRange}
+                                min={0}
+                                max={20000}
+                                onChange={handleSlider}
+                                valueLabelDisplay="auto"
+                                marks={[
+                                    {
+                                        value: 0,
+                                        label: 'min',
+                                    },
+                                    {
+                                        value: 20000,
+                                        label: 'max',
+                                    },
+                                ]}
                             />
                         </div>
                     </div>
