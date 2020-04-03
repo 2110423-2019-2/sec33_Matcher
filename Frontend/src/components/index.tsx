@@ -10,6 +10,7 @@ import Footer from './Footer';
 import PhotoType from './PhotoType';
 import Section from './Section';
 import UserTasks from './UserTasks';
+import CommentCard from './CommentCard';
 
 export {
     NavBar,
@@ -24,4 +25,5 @@ export {
     PhotoType,
     Section,
     UserTasks,
+    CommentCard
 };

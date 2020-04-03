@@ -1,5 +1,5 @@
 import React from 'react';
-import { BodySignIn, Register, Home, CreateTask, Tasks, Console } from './pages';
+import { BodySignIn, Register, Home, CreateTask, Tasks, Console, Profile } from './pages';
 import './App.css';
 import { NavBar, ComponentList, PrivateRoute, PhotoType, Footer } from './components';
 import './index.scss';
@@ -21,6 +21,7 @@ const App: React.FC = () => {
                     <Route path="/task" component={Tasks} />
                     <Route path="/comp" component={ComponentList} />
                     <Route path="/type" component={PhotoType} />
+                    <Route path='/profile/:id' component={Profile} />
                     <Route path="/" component={Home} />
                 </Switch>
                 <Footer />

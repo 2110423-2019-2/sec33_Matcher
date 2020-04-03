@@ -1,0 +1,22 @@
+@import "../colors.scss";
+
+.commentText {
+    color: $color-dark;
+    font-size: 14px;
+}
+
+.commentTitle {
+    margin: 1em 0 1em 0;
+}
+
+.commentBox {
+    display: inline-flex;
+    margin-top: 0.7em;
+}
+
+.commenterPic {
+    display: block;
+    margin: auto;
+    width: 80px;
+    height: 80px;
+}
