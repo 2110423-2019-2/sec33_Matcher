@@ -44,7 +44,6 @@ export default () => {
         fetchTasks();
     }, [])
 
-
     return (
         <div className="sectionContainer">
             <Section title="Pending task">
@@ -91,8 +90,11 @@ export default () => {
                             location={t.location}
                             profilePic={t.image}
                             price={t.price}
-                            button='DONE' /
-                        >)
+                            button='DONE'
+                            rating={t.ratingScore}
+                            comment={t.comment}
+                            review
+                        />)
                 }
             </Section>
         </div>

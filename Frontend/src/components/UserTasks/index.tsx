@@ -52,7 +52,7 @@ export default () => {
         <div>
             {auth.role === 'customer' ? <CustomerConsole /> : <PhotoGrapherConsole />}
             {/* <EditTask taskId={editTask.id} isOpen={editTask.open} close={() => setEditTask({ id: '', open: false })} /> */}
-            <Dialog open={open} onClose={() => setOpen(false)} fullWidth={true} className="dialog">
+            {/* <Dialog open={open} onClose={() => setOpen(false)} fullWidth={true} className="dialog">
                 <DialogContent>
                     <DialogContentText>
                         <div className="ratingStar">
@@ -81,7 +81,7 @@ export default () => {
                         Done
                     </Button>
                 </DialogActions>
-            </Dialog>
+            </Dialog> */}
         </div >
     );
 };

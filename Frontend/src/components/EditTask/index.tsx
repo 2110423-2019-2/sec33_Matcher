@@ -30,13 +30,11 @@ export default (props: any) => {
     });
     const history = useHistory();
     useEffect(() => {
-        setOpen(props.isOpen);
-        if (props.isOpen) {
-            getTaskById(props.taskId).then(task => {
-                setTask({ ...task, price: task.price.toString() });
-            });
-        }
-    }, [props.isOpen])
+        getTaskById(props.taskId).then(task => {
+            console.log(task)
+            setTask({ ...task, price: task.price.toString() });
+        });
+    }, [])
     const handleChange = (field: string) => (e: any) => {
         setTask({
             ...task,
@@ -68,80 +66,75 @@ export default (props: any) => {
         }
     };
     return (
-        <Dialog open={open} onClose={props.close} fullWidth={true} className="dialog">
-            <DialogTitle>
-                <h3 className="dialogTitle">Edit task</h3>
-            </DialogTitle>
-            <DialogContent>
-                <div className="row">
-                    <div className="col-6">
-                        <Input
-                            variant="filled"
-                            error={Boolean(errorText.title)}
-                            helperText={errorText.title}
-                            onChange={handleChange('title')}
-                            label="Task name"
-                            fullWidth
-                            defaultValue={task.title}
-                        />
-                    </div>
-                    <div className="col-6">
-                        <Input
-                            variant="filled"
-                            error={Boolean(errorText.location)}
-                            helperText={errorText.location}
-                            onChange={handleChange('location')}
-                            label="Location"
-                            fullWidth
-                            defaultValue={task.location}
-                        />
-                    </div></div>
-                <div className="row createTaskTitle">
-                    <div className="col-6">
-                        <Input
-                            variant="filled"
-                            error={Boolean(errorText.image)}
-                            helperText={errorText.image}
-                            onChange={handleChange('image')}
-                            label="Cover image"
-                            fullWidth
-                            defaultValue={task.image}
-                        />
-                    </div>
-                    <div className="col-6">
-                        <FormControl variant="filled" fullWidth>
-                            <InputLabel>Task type</InputLabel>
-                            <Select onClick={handleChange('tasktype')} defaultValue={task.photoStyle}>
-                                <MenuItem value={'PRODUCT'}>Product</MenuItem>
-                                <MenuItem value={'PLACE'}>Place</MenuItem>
-                                <MenuItem value={'RESTAURANT'}>Cafe & Restaurant</MenuItem>
-                                <MenuItem value={'GRADUATION'}>Graduation</MenuItem>
-                                <MenuItem value={'WEDDING'}>Wedding</MenuItem>
-                                <MenuItem value={'EVENT'}>Event</MenuItem>
-                            </Select>
-                        </FormControl>
-                    </div>
+        <div>
+            <div className="row">
+                <div className="col-6">
+                    <Input
+                        variant="filled"
+                        error={Boolean(errorText.title)}
+                        helperText={errorText.title}
+                        onChange={handleChange('title')}
+                        label="Task name"
+                        fullWidth
+                        defaultValue={task.title}
+                    />
                 </div>
-                <div className="row createTaskTitle">
-                    <div className="col-6">
-                        <Input
-                            variant="filled"
-                            error={Boolean(errorText.price)}
-                            helperText={errorText.price}
-                            onChange={handleChange('price')}
-                            label="Price rate per hour"
-                            fullWidth
-                            defaultValue={task.price}
-                        />
-                    </div>
-                    <div className="col-6 createTaskTitle">
-                        <Button type="invert" onClick={submit} fullWidth>
-                            Launch Task
+                <div className="col-6">
+                    <Input
+                        variant="filled"
+                        error={Boolean(errorText.location)}
+                        helperText={errorText.location}
+                        onChange={handleChange('location')}
+                        label="Location"
+                        fullWidth
+                        defaultValue={task.location}
+                    />
+                </div></div>
+            <div className="row createTaskTitle">
+                <div className="col-6">
+                    <Input
+                        variant="filled"
+                        error={Boolean(errorText.image)}
+                        helperText={errorText.image}
+                        onChange={handleChange('image')}
+                        label="Cover image"
+                        fullWidth
+                        defaultValue={task.image}
+                    />
+                </div>
+                <div className="col-6">
+                    <FormControl variant="filled" fullWidth>
+                        <InputLabel>Task type</InputLabel>
+                        <Select onClick={handleChange('tasktype')} defaultValue={task.photoStyle}>
+                            <MenuItem value={'PRODUCT'}>Product</MenuItem>
+                            <MenuItem value={'PLACE'}>Place</MenuItem>
+                            <MenuItem value={'RESTAURANT'}>Cafe & Restaurant</MenuItem>
+                            <MenuItem value={'GRADUATION'}>Graduation</MenuItem>
+                            <MenuItem value={'WEDDING'}>Wedding</MenuItem>
+                            <MenuItem value={'EVENT'}>Event</MenuItem>
+                        </Select>
+                    </FormControl>
+                </div>
+            </div>
+            <div className="row createTaskTitle">
+                <div className="col-6">
+                    <Input
+                        variant="filled"
+                        error={Boolean(errorText.price)}
+                        helperText={errorText.price}
+                        onChange={handleChange('price')}
+                        label="Price rate per hour"
+                        fullWidth
+                        defaultValue={task.price}
+                    />
+                </div>
+                <div className="col-6 createTaskTitle">
+                    <Button type="invert" onClick={submit} fullWidth>
+                        Save
                             <Chevron style={{ strokeWidth: 1 }} />
-                        </Button>
-                    </div>
+                    </Button>
                 </div>
-            </DialogContent>
-        </Dialog>
+            </div>
+        </div>
     );
 };

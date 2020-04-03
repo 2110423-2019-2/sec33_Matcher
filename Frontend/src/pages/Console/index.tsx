@@ -9,9 +9,9 @@ import { whoami, deleteUser, logout } from '../../api/user';
 
 export default withRouter((props: any) => {
     const { auth, authDispatch } = useContext(AuthContext);
-    const [currentPage, setCurrentPage] = useState<number>(0);
+    const [currentPage, setCurrentPage] = useState<'profile' | 'task' | 'create'>('task');
     const [open, setOpen] = useState(false);
-    const pages = [<EditProfile />, <UserTasks />, <CreateTask />];
+    const pages = { profile: <EditProfile />, task: <UserTasks />, create: <CreateTask /> };
     const deleteAccount = () => {
         console.log('deleted');
         whoami().then(profile => {
@@ -31,6 +31,14 @@ export default withRouter((props: any) => {
         )
 
     };
+    useEffect(() => {
+        if (!props.location.search) {
+            setCurrentPage('task');
+        } else {
+            setCurrentPage(props.location.search.slice(5, props.location.search.length));
+        }
+        console.log(props.location)
+    }, [props.location.search])
     return (
         <div className="consolePage">
             <div className="row consoleTitle">
@@ -40,22 +48,26 @@ export default withRouter((props: any) => {
             </div>
             <div className="row consoleChoices">
                 <div className="col-2">
-                    <p className={`${currentPage === 0 ? 'selected' : ''}`} onClick={() => setCurrentPage(0)}>
-                        Edit profile
+                    <Link to='/console/?tab=profile'>
+                        <p className={`${currentPage === 'profile' ? 'selected' : ''}`}>
+                            Edit profile
                         </p>
+                    </Link>
                 </div>
                 <div className="col-2">
-                    <Link to="/console/tasks">
-                        <p className={`${currentPage === 1 ? 'selected' : ''}`} onClick={() => setCurrentPage(1)}>
+                    <Link to='/console/?tab=task'>
+                        <p className={`${currentPage === 'task' ? 'selected' : ''}`} >
                             Your tasks
                         </p>
                     </Link>
                 </div>
                 {auth.role === 'customer' ? (
                     <div className="col-2">
-                        <p className={`${currentPage === 2 ? 'selected' : ''}`} onClick={() => setCurrentPage(2)}>
-                            Create task
+                        <Link to='/console/?tab=create'>
+                            <p className={`${currentPage === 'create' ? 'selected' : ''}`}>
+                                Create task
                         </p>
+                        </Link>
                     </div>
                 ) : null}
                 <div className="col-2">
@@ -68,7 +80,7 @@ export default withRouter((props: any) => {
                         Sign out
                     </p>
                 </div>
-                <Dialog open={open} onClose={() => setOpen(false)} fullWidth={true} className="dialog">
+                {/* <Dialog open={open} onClose={() => setOpen(false)} fullWidth={true} className="dialog">
                     <DialogTitle>
                         <h3 className="dialogTitle">Delete the account?</h3>
                     </DialogTitle>
@@ -83,7 +95,7 @@ export default withRouter((props: any) => {
                             Back
                         </Button>
                     </DialogActions>
-                </Dialog>
+                </Dialog> */}
             </div>
             <div>{pages[currentPage]}</div>
         </div>
