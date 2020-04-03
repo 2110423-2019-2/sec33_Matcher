@@ -9,12 +9,12 @@ export default () => {
     const [tasks, setTasks] = useState<Array<any>>([]);
     const [dialogData, setDialogData] = useState({
         location: '',
-        priceRange: [0, 20000]
-    })
+        priceRange: [0, 20000],
+    });
     const [taskFilter, setTaskFilter] = useState({
         photoStyle: '',
         location: '',
-        priceRange: [0, 20000]
+        priceRange: [0, 20000],
     });
     useEffect(() => {
         getAvailableTasks()
@@ -26,11 +26,10 @@ export default () => {
     }, []);
     const filteredTasks = tasks.filter(
         task =>
-            task.photoStyle === taskFilter.photoStyle ||
-            (taskFilter.photoStyle === '' &&
-                task.location.includes(taskFilter.location) &&
-                task.price >= taskFilter.priceRange[0] &&
-                task.price <= taskFilter.priceRange[1]),
+            (task.photoStyle === taskFilter.photoStyle || taskFilter.photoStyle === '') &&
+            task.location.includes(taskFilter.location) &&
+            task.price >= taskFilter.priceRange[0] &&
+            task.price <= taskFilter.priceRange[1],
     );
 
     const onclick = (category: string) => (e: any) => {
@@ -51,19 +50,31 @@ export default () => {
         setDialog(false);
     };
 
-    const handleChange = (field: string) => (e:any) => {
-        setDialogData({
-            ...dialogData,
-            [field]: e.target.value
-        })
+    const handleChange = (field: string) => (e: any) => {
+        if (field === 'lowerPrice') {
+            setDialogData({
+                ...dialogData,
+                priceRange: [e.target.value, dialogData.priceRange[1]],
+            });
+        } else if (field === 'upperPrice') {
+            setDialogData({
+                ...dialogData,
+                priceRange: [dialogData.priceRange[0], e.target.value],
+            });
+        } else {
+            setDialogData({
+                ...dialogData,
+                [field]: e.target.value,
+            });
+        }
     };
 
-    const handleSlider = (e:any, Val:number | number[]) => {
+    const handleSlider = (e: any, Val: number | number[]) => {
         setDialogData({
             ...dialogData,
-            priceRange: Val as number[]
-        })
-    }
+            priceRange: Val as number[],
+        });
+    };
 
     const onFilter = () => {
         setTaskFilter({
@@ -127,34 +138,28 @@ export default () => {
                 <DialogTitle className="dialogTitle">Additional Filter</DialogTitle>
                 <DialogContent>
                     <div className="locationIn">
-                        <Input variant="filled" onChange={handleChange('location')} label="Location" fullWidth />
+                        <Input variant="filled" value={dialogData.location} onChange={handleChange('location')} label="Location" fullWidth />
                     </div>
                     <h6 className="dialogLabel">Price</h6>
                     <div className="row">
                         <div className="col-3">
-                            <Input 
+                            <Input
                                 value={dialogData.priceRange[0]}
                                 label="min"
                                 variant="filled"
-                                onChange={handleChange('lowerPrice')} 
+                                onChange={handleChange('lowerPrice')}
                                 type="number"
                             />
                         </div>
                         <div className="col-6">
-                            <Slider
-                                value={dialogData.priceRange}
-                                min={0}
-                                max={20000}
-                                scale={(x) => x ** 2}
-                                onChange={handleSlider}
-                            />
+                            <Slider value={dialogData.priceRange} min={0} max={20000} onChange={handleSlider} />
                         </div>
                         <div className="col-3">
-                            <Input 
+                            <Input
                                 value={dialogData.priceRange[1]}
                                 label="max"
                                 variant="filled"
-                                onChange={handleChange('upperPrice')} 
+                                onChange={handleChange('upperPrice')}
                                 type="number"
                             />
                         </div>
@@ -164,9 +169,7 @@ export default () => {
                     <Button type="outlined" onClick={closeDialog}>
                         Cancel
                     </Button>
-                    <Button onClick={onFilter}>
-                        Apply Filter
-                    </Button>
+                    <Button onClick={onFilter}>Apply Filter</Button>
                 </DialogActions>
             </Dialog>
         </div>
