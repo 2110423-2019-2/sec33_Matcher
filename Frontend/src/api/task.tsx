@@ -22,6 +22,6 @@ export const upsertTask = async (id?: string, task?: any) => {
     return await axios.put(apiEndpointOf(`/task/${id}`), task, { withCredentials: true });
 };
 export const deleteTask = async (id: string) =>
-    (await axios.delete(apiEndpointOf(`/task/${id}`), { withCredentials: true })).data;
+    (await axios.delete(apiEndpointOf(`/task/delete/${id}`), { withCredentials: true })).data;
 export const rateTask = (taskId: string, rating: number | null, comment?: string): Promise<any> =>
     axios.post(apiEndpointOf('/task/rate'), { taskId, rating, comment }, { withCredentials: true });
