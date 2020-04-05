@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import './index.scss';
 import { PHOTO_CATEGORIES, dummyTasks } from '../../const';
 import { TaskCard, Input, Button } from '../../components';
+import { AuthContext } from '../../context/AuthContext';
 import { getAvailableTasks, matchTask } from '../../api/task';
 import { DialogContent, DialogContentText, DialogActions, Dialog, DialogTitle, Slider } from '@material-ui/core';
 export default () => {
+    const { auth, authDispatch } = useContext(AuthContext);
     const [dialog, setDialog] = useState(false);
     const [tasks, setTasks] = useState<Array<any>>([]);
     const [dialogData, setDialogData] = useState({
@@ -51,10 +53,10 @@ export default () => {
     };
 
     const handleChange = (field: string) => (e: any) => {
-            setDialogData({
-                ...dialogData,
-                [field]: e.target.value,
-            });
+        setDialogData({
+            ...dialogData,
+            [field]: e.target.value,
+        });
     };
 
     const handleSlider = (e: any, Val: number | number[]) => {
@@ -74,7 +76,11 @@ export default () => {
     };
 
     const onAccept = (id: string) => (e: any) => {
-        matchTask(id);
+        if (auth.role != 'photographer') {
+            alert('Only Photographer is allower to accept task!');
+        } else {
+            matchTask(id);
+        }
     };
 
     return (
@@ -121,6 +127,7 @@ export default () => {
                         </div>
                     );
                 })}
+                {!auth.isLogin && <p>Only Registered user can see Tasks</p>}
             </div>
             <Dialog open={dialog} onClose={closeDialog} fullWidth={true}>
                 <DialogTitle className="dialogTitle">Additional Filter</DialogTitle>
