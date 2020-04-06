@@ -21,6 +21,7 @@ const App: React.FC = () => {
                     <Route path="/task" component={Tasks} />
                     <Route path="/comp" component={ComponentList} />
                     <Route path="/type" component={PhotoType} />
+                    <Route path="/users" component={UserListTable} />
                     <Route path="/" component={Home} />
                 </Switch>
                 <Footer />

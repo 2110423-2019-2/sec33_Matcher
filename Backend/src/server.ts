@@ -9,7 +9,7 @@ import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { IUser, User } from './models';
 import session from 'express-session';
-import { taskRoute, profileRoute } from './routes';
+import { taskRoute, profileRoute, adminRoute } from './routes';
 import { load as loadYAML } from 'yamljs';
 import * as swaggerUI from 'swagger-ui-express';
 import cors from 'cors';
@@ -60,7 +60,9 @@ export default class FastphotoApp {
         /* Setup body parser */
         app.use(bodyParser.json());
         app.use(bodyParser.urlencoded({ extended: true }));
-         app.use(cors(corsOptions));
+        if (process.env.DISABLE_CORS !== '1') {
+            app.use(cors(corsOptions));
+        }
 
         /* Setup session and passport */
         app.use(
@@ -101,8 +103,9 @@ export default class FastphotoApp {
         app.get('/logout', AuthController.logout);
 
         app.use('/task', taskRoute);
-        
+
         app.use('/profile', profileRoute);
+        app.use('/admin', adminRoute);
         /* Middleware for error handling */
         app.use(errorHandler);
         /* End of error handling */
