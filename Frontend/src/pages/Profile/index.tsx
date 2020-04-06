@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './index.scss';
 import { useParams } from 'react-router-dom';
 import Rating from '@material-ui/lab/Rating';
 import { CommentCard } from '../../components';
 import ProfileBackground from '../../assets/profilebg.svg';
+import { getPhotographerProfile } from '../../api/profile';
 
 interface Comment {
     ownerFirstname: string,
@@ -47,7 +48,13 @@ const initialProfile: Profile = {
 
 export default () => {
     const { id } = useParams();
-    const [profile, setProfile] = useState<any>(initialProfile);
+    const [profile, setProfile] = useState<Profile>(initialProfile);
+
+    useEffect(() => {
+        getPhotographerProfile(id || '')
+            .then(profile => setProfile({ ...profile, comments: profile.comments || [] }))
+            .catch(err => console.log(err));
+    }, [])
 
     return (
         <div className="profileContainer">
