@@ -18,7 +18,7 @@ dotenv.config();
 
 const port = process.env.PORT || 8080;
 
-const whitelist = ['http://localhost:3000'];
+const whitelist = ['http://localhost:3000', 'https://fast-photo-8e48a.web.app'];
 const corsOptions = {
     origin: (origin: string, callback: any): any => {
         if (whitelist.indexOf(origin) !== -1) {
@@ -60,7 +60,7 @@ export default class FastphotoApp {
         /* Setup body parser */
         app.use(bodyParser.json());
         app.use(bodyParser.urlencoded({ extended: true }));
-        app.use(cors(corsOptions));
+         app.use(cors(corsOptions));
 
         /* Setup session and passport */
         app.use(

@@ -4,6 +4,7 @@ import { Role, photoStyles, TaskStatus } from '../const';
 import HttpErrors from 'http-errors';
 import { Types } from 'mongoose';
 import pick from 'object.pick';
+import { UserController } from '.';
 
 export default class TaskController {
     private static requiredFields: Array<string> = ['title', 'location', 'photoStyle', 'price'];
@@ -165,7 +166,8 @@ export default class TaskController {
                 task.acceptedBy = req.user._id;
                 task.status = TaskStatus.ACCEPTED;
 
-                await task.save();
+                await task.save()
+                await UserController.notifyUserByEmail(task);
                 res.json({ status: 'success' });
             } else if (user.role === Role.ADMIN) {
                 // TODO implement method for admin
@@ -191,7 +193,7 @@ export default class TaskController {
                 res.json({ status: 'success' });
             } else if (user.role === Role.PHOTOGRAPHER) {
                 if (!req.user._id.equals(task.acceptedBy)) throw new HttpErrors.Unauthorized();
-                if (task.status === TaskStatus.ACCEPTED) throw new HttpErrors.BadRequest();
+                if (task.status !== TaskStatus.ACCEPTED) throw new HttpErrors.BadRequest();
                 task.status = TaskStatus.REQ_FIN;
 
                 await task.save();
@@ -200,6 +202,43 @@ export default class TaskController {
                 // TODO implement finish task for admin here
             } else {
                 throw new HttpErrors.Unauthorized();
+            }
+        } catch (err) {
+            console.log(err);
+            throw new HttpErrors.BadRequest();
+        }
+    }
+
+    static async cancelTask(req: any, res: any): Promise<void> {
+        try {
+            const user = await User.findById(req.user._id);
+            const task = await Task.findById(req.params.id);
+            if (!task) {
+                throw new HttpErrors.NotFound();
+            }
+            if (task.status === TaskStatus.AVAILABLE || task.status === TaskStatus.FINISHED) {
+                throw new HttpErrors.BadRequest();
+            } //what is the task cancelling policy?
+            if (user.role === Role.CUSTOMER) {
+                if (!user._id.equals(task.owner)) {
+                    throw new HttpErrors.Unauthorized();
+                }
+                task.status = TaskStatus.AVAILABLE;
+                task.acceptedBy = null;
+                await task.save();
+                //TODO add notification
+                res.json({ status: 'success' });
+            } else if (user.role === Role.PHOTOGRAPHER) {
+                if (!user._id.equals(task.acceptedBy)) {
+                    throw new HttpErrors.Unauthorized();
+                }
+                task.status = TaskStatus.AVAILABLE;
+                task.acceptedBy = null;
+                await task.save();
+                //TODO add notification
+                res.json({ status: 'success' });
+            } else {
+                // TODO implement cancel task for admin here
             }
         } catch (err) {
             console.log(err);
