@@ -8,8 +8,35 @@ import { Types } from 'mongoose';
 import nodemailer from 'nodemailer';
 import cheerio from 'cheerio';
 import fs from 'fs';
+import { containAll, inRange } from '../utils/utils';
 
 export default class UserController {
+    static async validateInput(body: any, fields: string[]): Promise<boolean> {
+        if (!containAll(body, fields)) return false;
+
+        if (fields.includes('role')) {
+            if (body.role !== Role.PHOTOGRAPHER && body.role !== Role.CUSTOMER) return false;
+        }
+
+        if (fields.includes('email')) {
+            if (!validator.isEmail(body.email)) return false;
+            if (await User.exists({ email: body.email })) return false;
+        }
+
+        if (fields.includes('firstname')) {
+            if (!inRange(body.firstname.length, 2, 20)) return false;
+        }
+
+        if (fields.includes('lastname')) {
+            if (!inRange(body.lastname.length, 2, 20)) return false;
+        }
+
+        if (fields.includes('password')) {
+            if (!inRange(body.password.length, 8, 20)) return false;
+        }
+        return true;
+    }
+
     private static async getUserAvgRating(userId: string): Promise<number> {
         const avgRating = await Task.aggregate([
             { $match: { acceptedBy: Types.ObjectId(userId) } },
@@ -28,10 +55,9 @@ export default class UserController {
 
     static async createUser(req: any, res: any): Promise<void> {
         const fields = ['email', 'password', 'firstname', 'lastname', 'role'];
-        //validate input ; pre-condition
         const inputBody = pick(req.body, fields);
-        const check = await UserController.validateInput(inputBody, fields);
-        if (!check) throw new HttpErrors.BadRequest();
+        if (!(await UserController.validateInput(inputBody, fields))) throw new HttpErrors.BadRequest();
+
         const hash = await generateHash(req.body.password);
         const user = new User({
             email: req.body.email,
@@ -98,7 +124,7 @@ export default class UserController {
 
     static async deleteProfile(req: any, res: any) {
         if (!(await UserController.checkDelete(req))) throw new HttpErrors.BadRequest();
-        await User.findByIdAndDelete({ _id: Types.ObjectId(req.params.userId) });
+        await User.findByIdAndDelete(req.params.userId);
         res.json({ status: 'success' });
     }
 
@@ -115,48 +141,6 @@ export default class UserController {
             }
             return true;
         }
-    }
-
-    static async validateInput(body: any, fields: string[]): Promise<boolean> {
-        // Preconditions begin
-        const inRange = (x: number, lowerBound: number, upperBound: number): boolean => {
-            return x >= lowerBound && x <= upperBound;
-        };
-
-        const fieldCheck = (body: any, fields: string[]): boolean =>
-            fields.every((field): boolean => {
-                return body.hasOwnProperty(field);
-            });
-
-        // Precondition : Should contains all require fields
-        if (!fieldCheck(body, fields)) return false;
-
-        if (fields.includes('role')) {
-            // Precondition : Role should be either "photographer" or "customer"
-            if (body.role !== Role.PHOTOGRAPHER && body.role !== Role.CUSTOMER) return false;
-        }
-
-        if (fields.includes('email')) {
-            // Precondition : Should reject bad email
-            if (!validator.isEmail(body.email)) return false;
-            // Precondition : Email must be unique
-            if (await User.exists({ email: body.email })) return false;
-        }
-
-        // Precondition : Firstname and Lastname length must be between 2 and 20 characters
-        if (fields.includes('firstname')) {
-            if (!inRange(body.firstname.length, 2, 20)) return false;
-        }
-
-        if (fields.includes('lastname')) {
-            if (!inRange(body.lastname.length, 2, 20)) return false;
-        }
-
-        if (fields.includes('password')) {
-            // Precondition : Password length must be between 8 and 20 characters
-            if (!inRange(body.password.length, 8, 20)) return false;
-        }
-        return true;
     }
 
     static async notifyUserByEmail(task: any): Promise<any> {
