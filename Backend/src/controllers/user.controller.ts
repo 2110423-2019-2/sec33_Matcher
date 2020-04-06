@@ -120,12 +120,29 @@ export default class UserController {
     static async getUserProfile(req: any, res: any) {
         const userProfile = await User.findById(req.params.id);
         if (!userProfile) throw new HttpErrors.NotFound();
+
+        let comments = [];
+        if (userProfile.role === Role.PHOTOGRAPHER) {
+            comments = await Task.find({
+                ratingScore: { $exists: true },
+                acceptedBy: userProfile._id,
+            })
+                .select('ratingScore comment')
+                .populate('owner', 'firstname lastname');
+        }
+
         res.json({
             firstname: userProfile.firstname,
             lastname: userProfile.lastname,
             role: userProfile.role,
             createTime: userProfile.createTime,
-            score: await UserController.getUserAvgRating(req.params.id)
+            score: await UserController.getUserAvgRating(req.params.id),
+            comments: comments.map(comment => ({ 
+                rating: comment.ratingScore,
+                comment: comment.comment || '',
+                ownerFirstname: comment.owner.firstname, 
+                ownerLastname: comment.owner.lastname
+            })),
         });
     }
 }
