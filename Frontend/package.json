@@ -30,6 +30,7 @@
     "react-lottie": "^1.2.3",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.0",
+    "react-virtualized": "^9.21.2",
     "simplebar-react": "^2.1.0",
     "typescript": "~3.7.2",
     "validator": "^12.2.0"
