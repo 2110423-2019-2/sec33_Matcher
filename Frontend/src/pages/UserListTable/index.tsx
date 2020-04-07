@@ -9,29 +9,28 @@ import TableRow from '@material-ui/core/TableRow';
 import { Button } from "../../components";
 import { getUserList, blackList } from '../../api/admin';
 
-interface Column {
+export default () => {
+  
+  interface Column {
   id: 'name' | 'email' | 'role' | 'button';
   label: string;
-}
+  }
 
-const columns: Column[] = [
-  { id: 'name', label: 'Name'},
-  { id: 'email', label: 'Email'},
-  { id: 'role',  label: 'Role'},
-  { id: 'button', label: 'Blacklist'},
-];
-
-interface Data {
+  interface Data {
   _id: string;
   firstname: string;
   lastname: string;
   email: string;
   role: string;
   blacklist: boolean;
-}
+  }
 
-
-export default () => {
+  const columns: Column[] = [
+    { id: 'name', label: 'Name'},
+    { id: 'email', label: 'Email'},
+    { id: 'role',  label: 'Role'},
+    { id: 'button', label: 'Blacklist'},
+  ];  
 
   const fillData = (data : Data) => {
     if(data.blacklist){
@@ -47,15 +46,19 @@ export default () => {
   }}; 
 
   const [userList, setUserList] = React.useState([]);
+
   const [page, setPage] = React.useState(0);
+
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
   const setUser = () => {
     getUserList().then(userLists => setUserList(userLists));
   };
+
   useEffect(() => {setUser()}, [])
+
   const rows = userList.map(user => fillData(user));
   
-
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
   };
@@ -68,7 +71,7 @@ export default () => {
   const handleClick = (id : string) => {
     blackList(id)
     .then(() => {
-      window.location.reload(false);
+      setUser();
   })
   }
 
