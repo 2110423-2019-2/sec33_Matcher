@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useContext, Fragment } from 'react';
-import { Section, TaskCard, Button } from '..'
-import { getPendingTasks, getMatchedTasks, getReqFinTasks, getFinishedTasks, finishTask, getAvailableTasks, acceptTask, deleteTask } from '../../api/task';
+import { Section, TaskCard, Button, Input } from '..'
+import { getPendingTasks, getMatchedTasks, getReqFinTasks, getFinishedTasks, finishTask, getAvailableTasks, acceptTask, deleteTask, rateTask } from '../../api/task';
 import Modal from '../Modal';
 import { MenuItem, Dialog } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import EditTask from '../EditTask';
+import Rating from '@material-ui/lab/Rating';
 
 interface ITask {
     title: string;
@@ -25,8 +26,27 @@ export default () => {
     const [reqFinTasks, setReqFinTasks] = useState<Array<ITask>>([]);
     const [finishedTasks, setFinishedTasks] = useState<Array<ITask>>([]);
     const history = useHistory();
+    const awesome = '/images/awesome.png';
     const [edit, setEdit] = useState(false);
     const [deleted, setDeleted] = useState(false);
+    const [accept, setAccept] = useState(false);
+    const [cancel, setCancel] = useState(false);
+    const [finish, setFinish] = useState(false);
+    const [review, setReview] = useState(false);
+    const [rating, setRating] = useState<number | null>(0);
+    const [cmt, setCmt] = useState('');
+    const [selectedTask, setSelectedTask] = useState<ITask>(
+        {
+            title: '',
+            _id: '',
+            owner: '',
+            location: '',
+            image: '',
+            price: 0,
+            ratingScore: 0,
+            comment: '',
+            acceptedBy: ''
+        });
     const fetchTasks = () => {
         getAvailableTasks().then(t => {
             setAvailableTasks(t);
@@ -46,26 +66,75 @@ export default () => {
     }
 
     const handleFinishTask = (id: string) => {
-        finishTask(id).then(res =>
+        finishTask(id).then(res => {
             console.log(res)
-        )
+            fetchTasks();
+            setFinish(false);
+        })
     }
     const handleAcceptTask = (id: string) => {
         acceptTask(id).then(res => {
             console.log(res)
+            fetchTasks();
+            setAccept(false);
         })
     }
     const handleDeleteTask = (id: string) => {
         deleteTask(id).then(res => {
             console.log(res);
+            fetchTasks();
+            setDeleted(false);
         })
     }
-
+    // const handleCancelTask = (id: string) => {
+    //     cancelTask(id).then(res => {
+    //         fetchTasks();
+    //         setCancel(false);
+    //     })
+    // }
+    const handleReviewTask = (id: string) => {
+        rateTask(id, rating, cmt).then(res => {
+            console.log(res);
+            fetchTasks();
+            setReview(false);
+        })
+    }
     const viewPhotographer = (id: string) => {
         history.push(`/profile/${id}`);
     }
+    const commentChange = (e: any) => {
+        setCmt(e.target.value);
+    }
     const closeDeleted = () => setDeleted(false);
     const closeEdit = () => setEdit(false);
+    const closeAccept = () => setAccept(false);
+    const closeCancel = () => setCancel(false);
+    const closeFinish = () => setFinish(false);
+    const closeReview = () => setReview(false);
+    const editThisTask = (task: ITask) => {
+        setEdit(true);
+        setSelectedTask(task);
+    }
+    const deleteThisTask = (task: ITask) => {
+        setDeleted(true);
+        setSelectedTask(task);
+    }
+    const acceptThisTask = (task: ITask) => {
+        setAccept(true);
+        setSelectedTask(task);
+    }
+    const cancelThisTask = (task: ITask) => {
+        setCancel(true);
+        setSelectedTask(task);
+    }
+    const finishThisTask = (task: ITask) => {
+        setFinish(true);
+        setSelectedTask(task);
+    }
+    const reviewThisTask = (task: ITask) => {
+        setReview(true);
+        setSelectedTask(task);
+    }
     useEffect(() => {
         fetchTasks();
     }, [])
@@ -79,42 +148,21 @@ export default () => {
                         null :
                         availableTasks.map(t => {
                             return (
-                                <div>
-                                    <TaskCard name={t.title}
-                                        location={t.location}
-                                        profilePic={t.image}
-                                        price={t.price}
-                                        button='Edit'
-                                        options={
-                                            <div>
-                                                <MenuItem onClick={() => setDeleted(true)}><p>Delete task</p></MenuItem>
-                                                <MenuItem onClick={() => setEdit(true)}><p>Edit task</p></MenuItem>
-                                            </div>
-                                        }
-                                    />
-                                    <Modal
-                                        open={deleted}
-                                        close={closeDeleted}
-                                        key={`delete${t._id}`}
-                                        title="Delete task"
-                                        description={`This task will be permanently deleted.`}
-                                        action={
-                                            <Fragment>
-                                                <Button fullWidth type="outlined" onClick={closeDeleted}>Cancel</Button>
-                                                <Button fullWidth onClick={() => handleDeleteTask(t._id)}>Delete</Button>
-                                            </Fragment>
-                                        }
-                                    />
-                                    <Modal
-                                        open={edit}
-                                        close={closeEdit}
-                                        key={`edit${t._id}`}
-                                        title="Edit task"
-                                        description={
-                                            <EditTask taskId={t._id} />
-                                        }
-                                    />
-                                </div>
+                                <TaskCard
+                                    thumbnail={t.image}
+                                    name={t.title}
+                                    location={t.location}
+                                    profilePic={t.image}
+                                    price={t.price}
+                                    button='Edit'
+                                    onClick={() => editThisTask(t)}
+                                    options={
+                                        <div>
+                                            <MenuItem onClick={() => deleteThisTask(t)}><p>Delete task</p></MenuItem>
+                                            <MenuItem onClick={() => editThisTask(t)}><p>Edit task</p></MenuItem>
+                                        </div>
+                                    }
+                                />
                             )
                         })
                 }
@@ -123,45 +171,61 @@ export default () => {
                 {
                     pendingTasks.length === 0 ?
                         null :
-                        pendingTasks.map(t => <TaskCard name={t.title}
-                            location={t.location}
-                            profilePic={t.image}
-                            price={t.price}
-                            button='ACCEPT'
-                            onClick={() => handleAcceptTask(t._id)}
-                            options={
-                                <div>
-                                    <MenuItem onClick={() => viewPhotographer(t.acceptedBy ? t.acceptedBy : '')}><p>Photographer profile</p></MenuItem>
-                                    <MenuItem><p>Accept task</p></MenuItem>
-                                    <MenuItem><p>Decline matching</p></MenuItem>
-                                </div>
-                            }
-                        />)
+                        pendingTasks.map(t =>
+                            <TaskCard
+                                thumbnail={t.image}
+                                name={t.title}
+                                key={t._id}
+                                location={t.location}
+                                profilePic={t.image}
+                                price={t.price}
+                                button='Accept'
+                                onClick={() => acceptThisTask(t)}
+                                options={
+                                    <div>
+                                        <MenuItem onClick={() => viewPhotographer(t.acceptedBy ? t.acceptedBy : '')}><p>Photographer profile</p></MenuItem>
+                                        <MenuItem onClick={() => acceptThisTask(t)}><p>Accept task</p></MenuItem>
+                                        <MenuItem onClick={() => cancelThisTask(t)}><p>Decline matching</p></MenuItem>
+                                    </div>
+                                }
+                            />
+                        )
                 }
             </Section>
             <Section title="Matched task">
                 {
                     matchedTasks.length === 0 ?
                         null :
-                        matchedTasks.map(t => <TaskCard name={t.title}
-                            location={t.location}
-                            profilePic={t.image}
-                            price={t.price}
-                            button='MATCHED'
-                        />)
+                        matchedTasks.map(t =>
+                            <TaskCard
+                                thumbnail={t.image}
+                                name={t.title}
+                                key={t._id}
+                                location={t.location}
+                                profilePic={t.image}
+                                price={t.price}
+                                button='Matched'
+                                disable
+                            />
+                        )
                 }
             </Section>
             <Section title="Request for finished task">
                 {
                     reqFinTasks.length === 0 ?
                         null :
-                        reqFinTasks.map(t => <TaskCard name={t.title}
-                            location={t.location}
-                            profilePic={t.image}
-                            price={t.price}
-                            button='FINISH'
-                            onClick={() => handleFinishTask(t._id)}
-                        />)
+                        reqFinTasks.map(t =>
+                            <TaskCard
+                                thumbnail={t.image}
+                                name={t.title}
+                                key={t._id}
+                                location={t.location}
+                                profilePic={t.image}
+                                price={t.price}
+                                button='Confirm'
+                                onClick={() => finishThisTask(t)}
+                            />
+                        )
                 }
             </Section>
             <Section title="Past task">
@@ -170,19 +234,111 @@ export default () => {
                         null :
                         finishedTasks.map(t => {
                             return (
-                                <TaskCard name={t.title}
+                                <TaskCard
+                                    thumbnail={t.image}
+                                    name={t.title}
+                                    key={t._id}
                                     location={t.location}
                                     profilePic={t.image}
                                     price={t.price}
-                                    button='DONE'
+                                    button='Review'
                                     rating={t.ratingScore}
                                     comment={t.comment}
                                     review
+                                    onClick={t.ratingScore ? () => { } : () => reviewThisTask(t)}
                                 />
                             )
                         })
                 }
             </Section>
+            <Modal
+                open={deleted}
+                close={closeDeleted}
+                title="Delete task"
+                description={`This task will be permanently deleted.`}
+                action={
+                    <Fragment>
+                        <Button fullWidth type="outlined" onClick={closeDeleted}>Cancel</Button>
+                        <Button fullWidth onClick={() => handleDeleteTask(selectedTask._id)}>Delete</Button>
+                    </Fragment>
+                }
+            />
+            <Modal
+                open={edit}
+                close={closeEdit}
+                title="Edit task"
+                description={
+                    <EditTask init={selectedTask} />
+                }
+            />
+            <Modal
+                open={accept}
+                close={closeAccept}
+                title="Accept task"
+                description={`Do you want to accept this request ?`}
+                action={
+                    <Fragment>
+                        <Button fullWidth type="outlined" onClick={closeAccept}>Cancel</Button>
+                        <Button fullWidth onClick={() => handleAcceptTask(selectedTask._id)}>Accept</Button>
+                    </Fragment>
+                }
+            />
+            {/* <Modal
+                open={cancel}
+                close={closeCancel}
+                title='Cancel task'
+                description={`Do you want to cancel this request.`}
+                action={
+                    <Fragment>
+                        <Button fullWidth type="outlined" onClick={closeCancel}>Cancel</Button>
+                        <Button fullWidth onClick={() => handleCancelTask(selectedTask._id)}>Accept</Button>
+                    </Fragment>
+                }    
+            /> */}
+            <Modal
+                open={finish}
+                close={closeFinish}
+                title='Finish task'
+                description={`Is this task already finished ?`}
+                action={
+                    <Fragment>
+                        <Button fullWidth type="outlined" onClick={closeFinish}>Cancel</Button>
+                        <Button fullWidth onClick={() => handleFinishTask(selectedTask._id)}>Confirm</Button>
+                    </Fragment>
+                }
+            />
+            <Modal
+                open={review}
+                close={closeReview}
+                description={
+                    <Fragment>
+                        <div className="ratingStar">
+                            <h6 className="dialogContent">Review photographer's job</h6>
+                            <br></br>
+                            <Rating
+                                size="large"
+                                value={rating}
+                                onChange={(event, newValue) => {
+                                    setRating(newValue);
+                                }}
+                            />
+                        </div>
+                        <div className="ratingProfilePic">
+                            <img className="navBarProfilePic" src={awesome} alt="awesome" width="80" height="80"></img>
+                        </div>
+                        <div className="comment">
+                            <Input variant="filled" onChange={commentChange} label="Type your comment" fullWidth />
+                        </div>
+                    </Fragment>
+                }
+                action={
+                    <Fragment>
+                        <Button fullWidth type="outlined" onClick={closeReview}>Cancel</Button>
+                        <Button fullWidth onClick={() => handleReviewTask(selectedTask._id)}>Submit</Button>
+                    </Fragment>
+                }
+            />
+
         </div>
     )
 }

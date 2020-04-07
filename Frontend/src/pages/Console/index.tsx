@@ -80,7 +80,7 @@ export default withRouter((props: any) => {
                         Sign out
                     </p>
                 </div>
-                {/* <Dialog open={open} onClose={() => setOpen(false)} fullWidth={true} className="dialog">
+                <Dialog open={open} onClose={() => setOpen(false)} fullWidth={true} className="dialog">
                     <DialogTitle>
                         <h3 className="dialogTitle">Delete the account?</h3>
                     </DialogTitle>
@@ -95,7 +95,7 @@ export default withRouter((props: any) => {
                             Back
                         </Button>
                     </DialogActions>
-                </Dialog> */}
+                </Dialog>
             </div>
             <div>{pages[currentPage]}</div>
         </div>

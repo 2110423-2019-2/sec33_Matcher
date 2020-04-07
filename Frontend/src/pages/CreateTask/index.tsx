@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, Fragment, Suspense } from 'react';
 import './index.scss';
-import { Input, Button } from '../../components';
+import { Input, Button, Modal } from '../../components';
 import { ReactComponent as Chevron } from '../../assets/icons/chevron-right.svg';
 import { useHistory } from 'react-router-dom';
 import { upsertTask } from '../../api/task';
@@ -23,7 +23,8 @@ export default () => {
         image: '',
         price: '',
     });
-
+    const [confirm, setConfirm] = useState(false);
+    const closeConfirm = () => setConfirm(false);
     const validate = () => {
         setErrorText({
             ...errorText,
@@ -40,7 +41,12 @@ export default () => {
     };
 
     const history = useHistory();
-
+    const confirmTask = (e: any) => {
+        e.preventDefault();
+        if (validate()) {
+            setConfirm(true);
+        }
+    }
     const handleChange = (field: string) => (e: any) => {
         setTaskInfo({
             ...taskInfo,
@@ -129,13 +135,35 @@ export default () => {
                         />
                     </div>
                     <div className="col-6 createTaskTitle">
-                        <Button type="invert" onClick={handleSubmit} fullWidth>
+                        <Button type="invert" onClick={confirmTask} fullWidth>
                             Launch Task
                             <Chevron style={{ strokeWidth: 1 }} />
                         </Button>
                     </div>
                 </div>
             </form>
+            <Modal
+                open={confirm}
+                close={closeConfirm}
+                title='Do you want to create the following task ?'
+                description={
+                    <Fragment>
+                        <h6 className="confirm-text">{`Task name: ${taskInfo.taskname}`}</h6>
+                        <h6 className="confirm-text">{`Location: ${taskInfo.location}`}</h6>
+                        <h6 className="confirm-text">{`Cover image:`}</h6>
+                        <img src={taskInfo.image} alt="cover" className="prev-cover" />
+                        <h6 className="confirm-text">{`Task type: ${taskInfo.tasktype}`}</h6>
+                        <h6 className="confirm-text">{`Price rate(per hour): ${taskInfo.price}`}</h6>
+                    </Fragment>
+                }
+                action={
+                    <Fragment>
+                        <Button fullWidth type="outlined" onClick={closeConfirm}>Cancel</Button>
+                        <Button fullWidth onClick={handleSubmit}>Submit</Button>
+                    </Fragment>
+                }
+
+            />
         </div>
     );
 };

@@ -19,7 +19,7 @@ export const getFinishedTasks = async () =>
 export const finishTask = async (id: string) => (await axios.get(apiEndpointOf(`/task/finish/${id}`), { withCredentials: true })).data;
 export const upsertTask = async (id?: string, task?: any) => {
     if (!id) return await axios.post(apiEndpointOf('/task'), task, { withCredentials: true });
-    return await axios.put(apiEndpointOf(`/task/${id}`), task, { withCredentials: true });
+    return await axios.post(apiEndpointOf(`/task/update/${id}`), task, { withCredentials: true });
 };
 export const deleteTask = async (id: string) =>
     (await axios.delete(apiEndpointOf(`/task/delete/${id}`), { withCredentials: true })).data;

@@ -13,8 +13,7 @@ import { ReactComponent as Chevron } from '../../assets/icons/chevron-right.svg'
 import { upsertTask, getTaskById } from '../../api/task';
 import { useHistory } from 'react-router-dom';
 import { dummyTasks } from '../../const';
-export default (props: any) => {
-    const [open, setOpen] = useState<boolean>(props.isOpen);
+export default ({ init }: any) => {
     const [task, setTask] = useState({
         title: '',
         location: '',
@@ -30,11 +29,9 @@ export default (props: any) => {
     });
     const history = useHistory();
     useEffect(() => {
-        getTaskById(props.taskId).then(task => {
-            console.log(task)
-            setTask({ ...task, price: task.price.toString() });
-        });
-    }, [])
+        setTask(init);
+        console.log(init);
+    }, [init])
     const handleChange = (field: string) => (e: any) => {
         setTask({
             ...task,
@@ -59,10 +56,10 @@ export default (props: any) => {
         e.preventDefault();
         // console.log(task)
         if (validate()) {
-            upsertTask(props.taskId, { ...task, price: parseFloat(task.price) }).then(res => {
+            upsertTask(init._id, { ...task, price: parseFloat(task.price) }).then(res => {
                 console.log(res);
                 history.push('/console');
-            });
+            }).catch(err => console.log(err));
         }
     };
     return (
@@ -76,7 +73,7 @@ export default (props: any) => {
                         onChange={handleChange('title')}
                         label="Task name"
                         fullWidth
-                        defaultValue={task.title}
+                        value={task.title}
                     />
                 </div>
                 <div className="col-6">
@@ -87,7 +84,7 @@ export default (props: any) => {
                         onChange={handleChange('location')}
                         label="Location"
                         fullWidth
-                        defaultValue={task.location}
+                        value={task.location}
                     />
                 </div></div>
             <div className="row createTaskTitle">
@@ -99,19 +96,19 @@ export default (props: any) => {
                         onChange={handleChange('image')}
                         label="Cover image"
                         fullWidth
-                        defaultValue={task.image}
+                        value={task.image}
                     />
                 </div>
                 <div className="col-6">
                     <FormControl variant="filled" fullWidth>
                         <InputLabel>Task type</InputLabel>
-                        <Select onClick={handleChange('tasktype')} defaultValue={task.photoStyle}>
-                            <MenuItem value={'PRODUCT'}>Product</MenuItem>
-                            <MenuItem value={'PLACE'}>Place</MenuItem>
-                            <MenuItem value={'RESTAURANT'}>Cafe & Restaurant</MenuItem>
-                            <MenuItem value={'GRADUATION'}>Graduation</MenuItem>
-                            <MenuItem value={'WEDDING'}>Wedding</MenuItem>
-                            <MenuItem value={'EVENT'}>Event</MenuItem>
+                        <Select onClick={handleChange('tasktype')} value={task.photoStyle}>
+                            <MenuItem value='PRODUCT'>Product</MenuItem>
+                            <MenuItem value='PLACE'>Place</MenuItem>
+                            <MenuItem value='RESTAURANT'>Cafe & Restaurant</MenuItem>
+                            <MenuItem value='GRADUATION'>Graduation</MenuItem>
+                            <MenuItem value='WEDDING'>Wedding</MenuItem>
+                            <MenuItem value='EVENT'>Event</MenuItem>
                         </Select>
                     </FormControl>
                 </div>
@@ -125,7 +122,7 @@ export default (props: any) => {
                         onChange={handleChange('price')}
                         label="Price rate per hour"
                         fullWidth
-                        defaultValue={task.price}
+                        value={task.price}
                     />
                 </div>
                 <div className="col-6 createTaskTitle">

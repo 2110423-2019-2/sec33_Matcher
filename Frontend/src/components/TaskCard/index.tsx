@@ -125,7 +125,7 @@ export default ({
                     </p>
                     </div>
                     <div className="col-6">
-                        <Button onClick={onClick} disable={disable}>{button}</Button>
+                        <Button onClick={onClick} disable={disable || (review && rating !== null)}>{review && rating !== null ? 'Reviewed' : button}</Button>
                     </div>
                 </div>
                 {

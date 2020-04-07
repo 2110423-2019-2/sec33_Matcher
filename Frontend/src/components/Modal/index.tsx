@@ -12,12 +12,8 @@ interface ModalProps {
 
 
 export default ({ title, description, action, open, close }: ModalProps) => {
-    const [isOpen, setIsOpen] = useState(false);
-    const closeModal = () => {
-        setIsOpen(false);
-    }
     return (
-        <Dialog open={open} onClose={close}>
+        <Dialog open={open} onClose={close} fullWidth>
             <DialogTitle>
                 <h3>
                     {title}
