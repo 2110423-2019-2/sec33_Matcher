@@ -1,5 +1,5 @@
 import React from 'react';
-import { BodySignIn, Register, Home, CreateTask, Tasks, Console, UserListTable } from './pages';
+import { BodySignIn, Register, Home, CreateTask, Tasks, Console, UserListTable, Profile } from './pages';
 import './App.css';
 import { NavBar, ComponentList, PrivateRoute, PhotoType, Footer } from './components';
 import './index.scss';
@@ -11,7 +11,6 @@ const App: React.FC = () => {
         <Router>
             <AuthContextProvider>
                 <NavBar />
-
                 <Switch>
                     <PrivateRoute path="/protected" component={ComponentList} roles={['admin']} />
                     <Route path="/console" component={Console} roles={['photographer', 'customer']} />
@@ -21,6 +20,7 @@ const App: React.FC = () => {
                     <Route path="/task" component={Tasks} />
                     <Route path="/comp" component={ComponentList} />
                     <Route path="/type" component={PhotoType} />
+                    <Route path='/profile/:id' component={Profile} />
                     <Route path="/users" component={UserListTable} />
                     <Route path="/" component={Home} />
                 </Switch>
