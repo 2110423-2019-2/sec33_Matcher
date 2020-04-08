@@ -1,36 +1,52 @@
-@import '../colors.scss';
+@import "../colors.scss";
 
 .button {
-    padding: 10px 50px;
-    font-size: 18px;
-    background-color: $color-ternary;
-    min-width: 100px;
-    display: inline-flex;
-    border: 2.5px solid $color-ternary;
-    cursor: pointer;
+  padding: 10px;
+  padding-left: auto;
+  padding-right: auto;
+  font-size: 18px;
+  background-color: $color-ternary;
+  min-width: 134px;
+  // width: 134px;
+  justify-content: center;
+  display: inline-flex;
+  border: 2.5px solid $color-ternary;
+  cursor: pointer;
 
-    &.outlined {
-        border-color: $color-primary;
-        background-color: rgba(255,255,255,0);
-    }
+  &.outlined {
+    border-color: $color-primary;
+    background-color: rgba(255, 255, 255, 0);
+  }
 
-    &.invert {
-        color: $color-white;
-    }
+  &.invert {
+    color: $color-white;
+  }
+  &.fullWidth {
+    width: 100%;
+  }
+  &.disable {
+    opacity: 0.5;
+  }
 }
 
 .button:hover {
-    &.filled {
-        background-color: rgba(255,255,255,0);
+  &.filled {
+    background-color: rgba(255, 255, 255, 0);
+    &.disable{
+      background-color:rgb(248, 177, 149);
+      opacity: 0.5;
+      cursor: default;
+      user-select: none;
     }
+  }
 
-    &.outlined {
-        background-color: $color-primary;
-        color: $color-white;
-    }
+  &.outlined {
+    background-color: $color-primary;
+    color: $color-white;
+  }
 
-    &.invert {
-        background-color: rgba(255,255,255,0);
-        color: $color-dark;
-    }
+  &.invert {
+    background-color: rgba(255, 255, 255, 0);
+    color: $color-dark;
+  }
 }

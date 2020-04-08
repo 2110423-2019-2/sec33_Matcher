@@ -1,5 +1,13 @@
 @import "../colors.scss";
 
+.signIn {
+  height: 80vh;
+}
+
+.signinForm {
+  padding-top: 56px;
+}
+
 .signInHeader{
   color: $color-dark;
   font-size: 36px;
