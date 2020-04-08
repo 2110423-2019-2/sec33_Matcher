@@ -24,7 +24,8 @@ export default () => {
         price: '',
     });
     const [confirm, setConfirm] = useState(false);
-    const closeConfirm = () => setConfirm(false);
+    const closeConfirm = () => setConfirm(false)
+    
 
     const history = useHistory();
     const confirmTask = (e: any) => {
@@ -33,13 +34,7 @@ export default () => {
             setConfirm(true);
         }
     }
-    const handleChange = (field: string) => (e: any) => {
-        setTaskInfo({
-            ...taskInfo,
-            [field]: e.target.value,
-        });
-    };
-
+        
     const validate = () => {
         setErrorText({
             ...errorText,
@@ -55,6 +50,13 @@ export default () => {
         return true;
     };
     
+    const handleChange = (field: string) => (e: any) => {
+        setTaskInfo({
+            ...taskInfo,
+            [field]: e.target.value,
+        });
+    };
+
     const handleSubmit = (e: any) => {
         e.preventDefault();
         if (validate()) {
@@ -67,11 +69,12 @@ export default () => {
             }
             upsertTask('', task).then(() => {
                 closeConfirm();
-
             }).catch(err => {
                 console.log(err);
             })
-
+            history.push('/console?tab=task')
+        }
+    }
     return (
         <div className="createTaskPage">
             <form>
@@ -164,10 +167,5 @@ export default () => {
 
             />
         </div>
-<<<<<<< HEAD
-  );
-};  
-=======
-    );
-};  
->>>>>>> origin/dev_frontend
+        );
+};
