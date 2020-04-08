@@ -7,9 +7,10 @@ interface ButtonProps {
     className?: string;
     onClick?: any;
     fullWidth?: boolean;
+    disable?: boolean;
 }
-export default ({ children, type = 'filled', className = '', onClick = () => { }, fullWidth = false }: ButtonProps) => (
-    <div className={`button ${type} ${fullWidth ? 'fullWidth' : ''} ${className}`} onClick={onClick}>
+export default ({ children, type = 'filled', className = '', onClick = () => { }, fullWidth = false, disable = false }: ButtonProps) => (
+    <div className={`button ${type} ${fullWidth ? 'fullWidth' : ''} ${className} ${disable ? 'disable' : ''}`} onClick={onClick}>
         {children}
     </div>
 );

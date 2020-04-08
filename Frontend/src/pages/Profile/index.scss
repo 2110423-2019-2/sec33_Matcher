@@ -1,0 +1,41 @@
+@import '../colors.scss';
+
+.profileContainer {
+    padding: 1px 7.29vw;
+
+    h4 {
+        color: $color-primary;
+    }
+}
+
+.avgRatingBox {
+    margin-top: 1.8em;
+
+    hr {
+        color: $color-dark;
+    }
+
+    .avgRateText {
+        margin-left: 0;
+    }
+
+    .breakingLine {
+        margin: 1em 0 0.8em 0;
+    }
+}
+
+.commentsBox {
+    height: 38vh;
+    overflow-y: scroll;
+}
+
+::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 7px;
+  }
+  
+::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, .15);
+    box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+}

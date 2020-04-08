@@ -60,7 +60,8 @@ export default () => {
         if (validate()) {
             register(userInfo)
                 .then(() => history.push('/signin'))
-                .catch(() => {
+                .catch((err) => {
+                    console.log(err)
                     setErrorText({ ...errorText, email: 'Error' });
                 });
         }
