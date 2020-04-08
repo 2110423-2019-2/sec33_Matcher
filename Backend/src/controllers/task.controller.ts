@@ -4,7 +4,6 @@ import { Role, photoStyles, TaskStatus } from '../const';
 import HttpErrors from 'http-errors';
 import { Types } from 'mongoose';
 import pick from 'object.pick';
-import { urlencoded } from 'body-parser';
 
 export default class TaskController {
     private static requiredFields: Array<string> = ['title', 'location', 'photoStyle', 'price'];
@@ -275,4 +274,8 @@ export default class TaskController {
             throw new HttpErrors.BadRequest();
         }
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/dev_frontend

@@ -14,7 +14,7 @@ export default () => {
         taskname: '',
         location: '',
         image: '',
-        tasktype: '',
+        tasktype: 'PRODUCT',
         price: '',
     });
     const [errorText, setErrorText] = useState({
@@ -24,21 +24,8 @@ export default () => {
         price: '',
     });
     const [confirm, setConfirm] = useState(false);
-    const closeConfirm = () => setConfirm(false);
-    const validate = () => {
-        setErrorText({
-            ...errorText,
-            taskname: taskInfo.taskname.length === 0 ? 'Taskname cannot be empty.' : '',
-            location: taskInfo.location.length === 0 ? 'Location cannot be empty.' : '',
-            image: taskInfo.image.length === 0 ? 'Image cannot be empty.' : '',
-            price: taskInfo.price.length === 0 ? 'Price cannot be empty.' : '',
-        });
-        if (taskInfo.taskname.length === 0) return false;
-        if (taskInfo.location.length === 0) return false;
-        if (taskInfo.image.length === 0) return false;
-        if (taskInfo.price.length === 0) return false;
-        return true;
-    };
+    const closeConfirm = () => setConfirm(false)
+    
 
     const history = useHistory();
     const confirmTask = (e: any) => {
@@ -47,6 +34,22 @@ export default () => {
             setConfirm(true);
         }
     }
+        
+    const validate = () => {
+        setErrorText({
+            ...errorText,
+            taskname: taskInfo.taskname.length === 0 ? 'Taskname cannot be empty.' : '',
+            location: taskInfo.location.length === 0 ? 'Location cannot be empty.' : '',
+            image: taskInfo.image.length === 0 ? 'Image cannot be empty.' : '',
+            price: isNaN(parseFloat(taskInfo.price)) || parseFloat(taskInfo.price) < 0? 'Invalid price.' : '',
+        });
+        if (taskInfo.taskname.length === 0) return false;
+        if (taskInfo.location.length === 0) return false;
+        if (taskInfo.image.length === 0) return false;
+        if (isNaN(parseFloat(taskInfo.price)) || parseFloat(taskInfo.price) < 0) return false;
+        return true;
+    };
+    
     const handleChange = (field: string) => (e: any) => {
         setTaskInfo({
             ...taskInfo,
@@ -66,14 +69,12 @@ export default () => {
             }
             upsertTask('', task).then(() => {
                 closeConfirm();
-
             }).catch(err => {
                 console.log(err);
             })
-
+            history.push('/console?tab=task')
         }
-    };
-
+    }
     return (
         <div className="createTaskPage">
             <form>
@@ -112,8 +113,8 @@ export default () => {
                     </div>
                     <div className="col-6">
                         <FormControl variant="filled" fullWidth>
-                            <InputLabel>Task type</InputLabel>
-                            <Select onClick={handleChange('tasktype')} defaultValue="Product">
+                            <InputLabel>Photo style</InputLabel>
+                            <Select onClick={handleChange('tasktype')} defaultValue="PRODUCT">
                                 <MenuItem value={'PRODUCT'}>Product</MenuItem>
                                 <MenuItem value={'PLACE'}>Place</MenuItem>
                                 <MenuItem value={'RESTAURANT'}>Cafe & Restaurant</MenuItem>
@@ -166,5 +167,5 @@ export default () => {
 
             />
         </div>
-    );
-};  
+        );
+};

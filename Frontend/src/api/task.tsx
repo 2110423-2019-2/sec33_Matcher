@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { apiEndpointOf } from '../const';
 
+export const matchTask = async (id: string) =>
+    (await axios.get(apiEndpointOf(`/task/accept/${id}`), { withCredentials: true })).data;
 export const acceptTask = async (id: string) =>
     (await axios.get(apiEndpointOf(`/task/accept/${id}`), { withCredentials: true })).data;
 export const getAllTasks = async () => (await axios.get(apiEndpointOf('/tasks'))).data;
