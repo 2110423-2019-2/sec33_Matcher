@@ -1,4 +1,4 @@
-swagger: '2.0'
+swagger: "2.0"
 info:
   description: |
     This is a Matcher API server.
@@ -13,19 +13,19 @@ info:
 # host: petstore.swagger.io
 # basePath: /v2
 tags:
-- name: AuthController
-  description: Authentication
-- name: UserController
-  description: Access to user's profile
-- name: TaskController
-  description: Access task
+  - name: AuthController
+    description: Authentication
+  - name: UserController
+    description: Access to user's profile
+  - name: TaskController
+    description: Access task
 # schemes:
 # - http
 paths:
   /:
     get:
       tags:
-      - Ping
+        - Ping
       summary: Root path
       description: Root path
       responses:
@@ -34,149 +34,149 @@ paths:
   /login:
     post:
       tags:
-      - AuthController
+        - AuthController
       summary: Login to the system
       operationId: login
       consumes:
-      - application/json
+        - application/json
       produces:
-      - application/json
+        - application/json
       parameters:
-      - in: body
-        name: body
-        description: User's credential used for login.
-        required: true
-        schema:
-          type: object
-          properties:
-            email:
-              type: string
-            password:
-              type: string
+        - in: body
+          name: body
+          description: User's credential used for login.
+          required: true
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+              password:
+                type: string
       responses:
         200:
           description: Logged in
           schema:
-            $ref: '#/definitions/Success'
+            $ref: "#/definitions/Success"
         400:
           description: Invalid input
   /logout:
     get:
       tags:
-      - AuthController
+        - AuthController
       summary: Logout from the system
       operationId: logout
       consumes:
-      - application/json
+        - application/json
       produces:
-      - application/json
+        - application/json
       responses:
         200:
           description: Logged out
           schema:
-            $ref: '#/definitions/Success'
+            $ref: "#/definitions/Success"
   /register:
     post:
       tags:
-      - UserController
+        - UserController
       summary: Create an account
       responses:
         200:
           description: Created
           schema:
-            $ref: '#/definitions/Success'
+            $ref: "#/definitions/Success"
         400:
           description: Invalid input
       parameters:
-      - in: body
-        name: body
-        description: User account
-        required: true
-        schema:
-          type: object
-          properties:
-            email:
-              type: string
-            password:
-              type: string
-            firstname:
-              type: string
-            lastname:
-              type: string
-            role:
-              type: string
-              enum:
-              - photographer
-              - customer
+        - in: body
+          name: body
+          description: User account
+          required: true
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+              password:
+                type: string
+              firstname:
+                type: string
+              lastname:
+                type: string
+              role:
+                type: string
+                enum:
+                  - photographer
+                  - customer
   /whoami:
     get:
       tags:
-      - AuthController
+        - AuthController
       summary: Fetch user instance
       description: Duplicated to GET /profile, subject to remove.
       responses:
         200:
           description: User object
           schema:
-            $ref: '#/definitions/User'
+            $ref: "#/definitions/User"
         401:
           description: Unauthorized
   /profile:
     get:
       tags:
-      - UserController
+        - UserController
       summary: Fetch user profile
       responses:
         200:
           description: User object
           schema:
-            $ref: '#/definitions/User'
+            $ref: "#/definitions/User"
         401:
           description: Unauthorized
     post:
       tags:
-      - UserController
+        - UserController
       summary: Update user profile
       parameters:
-      - in: body
-        name: body
-        description: Field(s) to change
-        required: true
-        schema:
-          $ref: '#/definitions/User'
+        - in: body
+          name: body
+          description: Field(s) to change
+          required: true
+          schema:
+            $ref: "#/definitions/User"
       responses:
         200:
           description: Updated profile
           schema:
-            $ref: '#/definitions/Success'
+            $ref: "#/definitions/Success"
   /task/accept/{id}:
     get:
       parameters:
         - in: path
-          name: id  
+          name: id
           required: true
           type: integer
           description: Task ID
       tags:
-      - TaskController
+        - TaskController
       summary: Accept Task
       responses:
         200:
           description: Accepted
           schema:
-            $ref: '#/definitions/Success'
+            $ref: "#/definitions/Success"
         501:
           description: Not implemented
   /task:
     get:
       tags:
-      - TaskController
+        - TaskController
       summary: Get all tasks
       responses:
         200:
           description: Tasks
           schema:
-            $ref: '#/definitions/Tasks'
+            $ref: "#/definitions/Tasks"
         501:
           description: Not implemented
         400:
@@ -185,42 +185,72 @@ paths:
     get:
       parameters:
         - in: path
-          name: id  
+          name: id
           required: true
           type: integer
           description: Task ID
       tags:
-      - TaskController
+        - TaskController
       summary: Get task by ID
       responses:
         200:
           description: Task
           schema:
-            $ref: '#/definitions/Task'
+            $ref: "#/definitions/Task"
         400:
           description: Bad Request
+    post:
+      tags:
+        - TaskController
+      summary: create task
+      responses:
+        200:
+          description: successfully created
+          schema:
+            $ref: "#/definitions/Success"
+        401:
+          description: Unauthorized
+      parameters:
+        - in: body
+          name: body
+          description: task information
+          required: true
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+              location:
+                type: string
+              price:
+                type: number
+              image:
+                type: string
+              photoStyle:
+                type: string
+                enum: [PRODUCT, GRADUATION, PLACE, WEDDING, RESTAURANT, EVENT]
   /task/available:
     get:
       tags:
-      - TaskController
+        - TaskController
       summary: Get available tasks
       responses:
         200:
           description: Tasks
           schema:
-            $ref: '#/definitions/Tasks'
+            $ref: "#/definitions/Tasks"
         400:
           description: Bad Request
   /task/pending:
     get:
       tags:
-      - TaskController
+        - TaskController
       summary: Get pending tasks
       responses:
         200:
           description: Tasks
           schema:
-            $ref: '#/definitions/Tasks'
+            $ref: "#/definitions/Tasks"
         501:
           description: Not implemented
         400:
@@ -228,13 +258,13 @@ paths:
   /task/matched:
     get:
       tags:
-      - TaskController
+        - TaskController
       summary: Get matched tasks
       responses:
         200:
           description: Tasks
           schema:
-            $ref: '#/definitions/Tasks'
+            $ref: "#/definitions/Tasks"
         501:
           description: Not implemented
         400:
@@ -242,13 +272,13 @@ paths:
   /task/reqfin:
     get:
       tags:
-      - TaskController
+        - TaskController
       summary: Get request finishing tasks
       responses:
         200:
           description: Tasks
           schema:
-            $ref: '#/definitions/Tasks'
+            $ref: "#/definitions/Tasks"
         501:
           description: Not implemented
         400:
@@ -256,18 +286,120 @@ paths:
   /task/finished:
     get:
       tags:
-      - TaskController
+        - TaskController
       summary: Get finished tasks
       responses:
         200:
           description: Tasks
           schema:
-            $ref: '#/definitions/Tasks'
+            $ref: "#/definitions/Tasks"
         501:
           description: Not implemented
         400:
           description: Bad Request
-          
+  /task/finish/{id}:
+    get:
+      tags:
+        - TaskController
+      summary: Finish this task
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+      responses:
+        200:
+          description: finished task
+          schema:
+            $ref: "#/definitions/Success"
+        401:
+          description: Unauthorized
+  /task/update/{id}:
+    post:
+      tags:
+        - TaskController
+      summary: update task
+      responses:
+        200:
+          description: Successfully update this task
+          schema:
+            $ref: "#/definitions/Success"
+        401:
+          description: Unauthorized
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+        - in: body
+          name: bodyUpdate
+          description: task information
+          required: true
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+              location:
+                type: string
+              price:
+                type: number
+              image:
+                type: string
+              photoStyle:
+                type: string
+                enum: [PRODUCT, GRADUATION, PLACE, WEDDING, RESTAURANT, EVENT]
+  /task/delete/{id}:
+    delete:
+      tags:
+        - TaskController
+      summary: delete this task
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+      responses:
+        200:
+          description: Successfully delete this task
+          schema:
+            $ref: "#/definitions/Success"
+        401:
+          description: Unauthorized
+
+  /users:
+    get:
+      tags:
+        - AdminController
+      summary: Fetch all user
+      responses:
+        200:
+          description: List of users
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Admin"
+        401:
+          description: Unauthorized
+
+  /blacklist/{userId}:
+    get:
+      tags:
+        - AdminController
+      summary: Blacklist user
+      parameters:
+        - in: path
+          name: userId
+          type: string
+          required: true
+      responses:
+        200:
+          description: Successfully blacklist user
+          schema:
+            $ref: "#/definitions/Success"
+        401:
+          description: Unauthorized
+
 # securityDefinitions:
 #   petstore_auth:
 #     type: oauth2
@@ -284,14 +416,14 @@ paths:
 definitions:
   User:
     type: object
-    required: 
-    - _id
-    - email
-    - firstname
-    - lastname
-    - role
-    - createTime
-    - password
+    required:
+      - _id
+      - email
+      - firstname
+      - lastname
+      - role
+      - createTime
+      - password
     properties:
       _id:
         type: integer
@@ -308,9 +440,9 @@ definitions:
         type: string
         description: User role for authorization
         enum:
-        - admin
-        - customer
-        - photographer
+          - admin
+          - customer
+          - photographer
       createTime:
         type: string
         format: time
@@ -318,59 +450,88 @@ definitions:
       name: User
   Task:
     type: object
-    required: 
-    - _id
-    - title
-    - location
-    - owner
-    - photoStyle
-    - price
-    - createTime
-    - status
+    required:
+      - _id
+      - title
+      - location
+      - owner
+      - photoStyle
+      - price
+      - createTime
+      - status
     properties:
       _id:
         type: integer
-      title: 
+      title:
         type: string
-      location: 
+      location:
         type: string
-      owner: 
+      owner:
         type: string
-      photoStyle: 
+      photoStyle:
         type: string
         enum:
-        - GRADUATION
-        - WEDDING
-        - EVENT
-        - PRODUCT
-        - PLACE
-        - RESTAURANT
-      price: 
+          - GRADUATION
+          - WEDDING
+          - EVENT
+          - PRODUCT
+          - PLACE
+          - RESTAURANT
+      price:
         type: number
-      image: 
+      image:
         type: string
-      createTime: 
+      createTime:
         type: string
         format: date
-      status: 
+      status:
         type: string
-      acceptedBy: 
+      acceptedBy:
         type: string
-      ratingScore: 
+      ratingScore:
         type: number
-      comment: 
+      comment:
         type: string
   Tasks:
     type: array
     items:
-      $ref: '#/definitions/Task'
+      $ref: "#/definitions/Task"
+  Admin:
+    type: object
+    required:
+      - _id
+      - email
+      - firstname
+      - lastname
+      - role
+      - createTime
+      - blacklist
+    properties:
+      _id:
+        type: string
+      email:
+        type: string
+      firstname:
+        type: string
+      lastname:
+        type: string
+      role:
+        type: string
+        enum: [CUSTOMER, PHOTOGRAPHER]
+      createTime:
+        type: string
+        format: date
+      blacklist:
+        type: boolean
+    xml:
+      name: Admin
   Success:
     type: object
     properties:
       status:
         type: string
         enum:
-        - success
+          - success
 
 # basePath: /
 # schemes:
