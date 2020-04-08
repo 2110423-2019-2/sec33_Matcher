@@ -53,51 +53,26 @@ export default () => {
             [field]: e.target.value,
         });
     };
-  const [taskInfo, setTaskInfo] = useState({
-    taskname: '',
-    location: '',
-    image: '',
-    tasktype: '',
-    price: '',
-  });
-  const [errorText, setErrorText] = useState({
-    taskname: '',
-    location: '',
-    image: '',
-    price: '',
-  });
 
-  const validate = () => {
-    setErrorText({
-      ...errorText,
-      taskname: taskInfo.taskname.length === 0 ? 'Taskname cannot be empty.' : '',
-      location: taskInfo.location.length === 0 ? 'Location cannot be empty.' : '',
-      image: taskInfo.image.length === 0 ? 'Image cannot be empty.' : '',
-      price: taskInfo.price.length === 0 ? 'Price cannot be empty.' : '',
-    });
-    if (taskInfo.taskname.length === 0) return false;
-    if (taskInfo.location.length === 0) return false;
-    if (taskInfo.image.length === 0) return false;
-    if (taskInfo.price.length === 0) return false;
-    return true;
-  };
+    const handleSubmit = (e: any) => {
+        e.preventDefault();
+        if (validate()) {
+            const task = {
+                title: taskInfo.taskname,
+                location: taskInfo.location,
+                image: taskInfo.image,
+                photoStyle: taskInfo.tasktype,
+                price: parseFloat(taskInfo.price),
+            }
+            upsertTask('', task).then(() => {
+                closeConfirm();
 
-  const history = useHistory();
+            }).catch(err => {
+                console.log(err);
+            })
 
-  const handleChange = (field: string) => (e: any) => {
-    setTaskInfo({
-      ...taskInfo,
-      [field]: e.target.value
-    })
-  }
-
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-    if (validate()) {
-      upsertTask('', taskInfo);
-      history.push('/');
-    }
-  };
+        }
+    };
 
     return (
         <div className="createTaskPage">
@@ -191,5 +166,5 @@ export default () => {
 
             />
         </div>
-  );
+    );
 };  
