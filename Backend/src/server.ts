@@ -18,7 +18,7 @@ dotenv.config();
 
 const port = process.env.PORT || 8080;
 
-const whitelist = ['http://localhost:3000', 'https://fast-photo-8e48a.web.app'];
+const whitelist = ['http://localhost:3000', 'http://frontend', 'http://34.87.169.228', process.env.WHITELIST];
 const corsOptions = {
     origin: (origin: string, callback: any): any => {
         if (whitelist.indexOf(origin) !== -1) {
