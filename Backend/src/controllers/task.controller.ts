@@ -4,7 +4,6 @@ import { Role, photoStyles, TaskStatus } from '../const';
 import HttpErrors from 'http-errors';
 import { Types } from 'mongoose';
 import pick from 'object.pick';
-import { urlencoded } from 'body-parser';
 
 export default class TaskController {
     private static requiredFields: Array<string> = ['title', 'location', 'photoStyle', 'price'];
@@ -22,6 +21,7 @@ export default class TaskController {
     }
 
     static async createTask(req: any, res: any): Promise<void> {
+        console.log(req.body);
         if (!TaskController.checkCreateTask(req)) throw new HttpErrors.BadRequest();
         const task = new Task({
             title: req.body.title,
@@ -174,23 +174,6 @@ export default class TaskController {
             throw new HttpErrors.BadRequest();
         }
     }
-    static async getReqFinTasks(req: any, res: any): Promise<any> {
-        try {
-            const user = await User.findById(req.user._id);
-            if (user.role === Role.CUSTOMER) {
-                const task = await Task.find({ owner: req.user._id, status: TaskStatus.REQ_FIN });
-                res.json(task);
-            } else if (user.role === Role.PHOTOGRAPHER) {
-                const task = await Task.find({ acceptedBy: req.user._id, status: TaskStatus.REQ_FIN });
-                res.json(task);
-            } else {
-                throw new HttpErrors.NotImplemented();
-            }
-        } catch (err) {
-            console.log(err);
-            throw new HttpErrors.BadRequest();
-        }
-    }
     static async acceptTask(req: any, res: any): Promise<any> {
         const user = await User.findById(req.user._id);
         if (user.role === Role.CUSTOMER) {
@@ -249,9 +232,9 @@ export default class TaskController {
             } else {
                 throw new HttpErrors.NotImplemented();
             }
-        }catch(err){
-          console.log(err);
-          throw new HttpErrors.BadRequest();
+        } catch (err) {
+            console.log(err);
+            throw new HttpErrors.BadRequest();
         }
     }
 
@@ -291,50 +274,8 @@ export default class TaskController {
             throw new HttpErrors.BadRequest();
         }
     }
-    static async acceptTask(req: any, res: any) {
-        const user = await User.findById(req.user._id);
-        if (user.role === Role.CUSTOMER) {
-            const task = await Task.findById(req.params.id)
-            task.status = TaskStatus.ACCEPTED;
-
-            await task.save()
-            res.json({ status: 'success' });
-        } else if (user.role === Role.PHOTOGRAPHER) {
-            const task = await Task.findById(req.params.id)
-            task.status = TaskStatus.PENDING;
-            task.acceptedBy = req.user._id;
-
-            await task.save()
-            res.json({ status: 'success' });
-        } else {
-            throw new HttpErrors.NotImplemented();
-        }
-    }
-    static async finishTask(req: any, res: any) {
-        const user = await User.findById(req.user._id);
-        if (user.role === Role.CUSTOMER) {
-            const task = await Task.findById(req.params.id)
-            task.status = TaskStatus.FINISHED;
-
-            await task.save()
-            res.json({ status: 'success' });
-        } else if (user.role === Role.PHOTOGRAPHER) {
-            const task = await Task.findById(req.params.id)
-            task.status = TaskStatus.REQ_FIN;
-
-            await task.save()
-            res.json({ status: 'success' });
-        } else {
-            throw new HttpErrors.NotImplemented();
-        }
-    }
-    static async getTaskById(req: any, res: any) {
-        try {
-            const task = await Task.findById(req.params.id);
-            res.json(task);
-        } catch (err) {
-            console.log(err);
-            throw new HttpErrors.BadRequest();
-        }
-    }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/dev_frontend
