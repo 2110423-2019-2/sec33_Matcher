@@ -57,21 +57,20 @@ export default () => {
     
     const handleSubmit = (e: any) => {
         e.preventDefault();
-        if (validate()) {   
+        if (validate()) {
             const task = {
                 title: taskInfo.taskname,
                 location: taskInfo.location,
                 image: taskInfo.image,
-                price: parseFloat(taskInfo.price),
                 photoStyle: taskInfo.tasktype,
-            };
-            console.log(task);
-            upsertTask('', task).then(res => {
-                console.log(res);
-            });
-            history.push('/console?tab=tasks')
-        }
-    };
+                price: parseFloat(taskInfo.price),
+            }
+            upsertTask('', task).then(() => {
+                closeConfirm();
+
+            }).catch(err => {
+                console.log(err);
+            })
 
     return (
         <div className="createTaskPage">
@@ -165,5 +164,10 @@ export default () => {
 
             />
         </div>
+<<<<<<< HEAD
   );
 };  
+=======
+    );
+};  
+>>>>>>> origin/dev_frontend
