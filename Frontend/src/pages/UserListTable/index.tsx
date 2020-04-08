@@ -9,10 +9,11 @@ import TableRow from '@material-ui/core/TableRow';
 import { Button } from "../../components";
 import { getUserList, blackList } from '../../api/admin';
 
+
 export default () => {
   
   interface Column {
-  id: 'name' | 'email' | 'role' | 'button';
+  id: 'name' | 'email' | 'role' | 'blacklist' | 'report';
   label: string;
   }
 
@@ -29,26 +30,31 @@ export default () => {
     { id: 'name', label: 'Name'},
     { id: 'email', label: 'Email'},
     { id: 'role',  label: 'Role'},
-    { id: 'button', label: 'Blacklist'},
+    { id: 'blacklist', label: 'Blacklist'},
+    { id: 'report', label: 'Report'},
   ];  
 
   const fillData = (data : Data) => {
     if(data.blacklist){
-      return {'name':data.firstname+' '+data.lastname, 'email':data.email, 'role':data.role, 'button':<Button
-      onClick={() => handleClick(data._id)}
+      return {'name':data.firstname+' '+data.lastname, 'email':data.email, 'role':data.role, 'blacklist':<Button
+      onClick={() => handleBlacklist(data._id)}
     >Undo
-    </Button>}
+    </Button>,
+    'report':<Button 
+    // onClick={handleClickOpen}
+    >View</Button>}
     }
-    return {'name':data.firstname+' '+data.lastname, 'email':data.email, 'role':data.role, 'button':<Button
-    onClick={() => handleClick(data._id)}
+    return {'name':data.firstname+' '+data.lastname, 'email':data.email, 'role':data.role, 'blacklist':<Button
+    onClick={() => handleBlacklist(data._id)}
   >Blacklist
-  </Button>
+  </Button>,
+  'report':<Button
+  // onClick={handleClickOpen}
+  >View</Button>
   }}; 
 
   const [userList, setUserList] = React.useState([]);
-
   const [page, setPage] = React.useState(0);
-
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const setUser = () => {
@@ -68,7 +74,7 @@ export default () => {
     setPage(0);
   };
 
-  const handleClick = (id : string) => {
+  const handleBlacklist = (id : string) => {
     blackList(id)
     .then(() => {
       setUser();
@@ -76,14 +82,17 @@ export default () => {
   }
 
   return (
+
     <div>
-      <TableContainer>
+      <TableContainer className="root">
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
               {columns.map((column) => (
                 <TableCell
                   key={column.id}
+                  align='center' 
+                  style={{ minWidth: 170 }}
                 >
                   {column.label}
                 </TableCell>
@@ -97,7 +106,8 @@ export default () => {
                   {columns.map((column) => {
                     const value = row[column.id];
                     return (
-                      <TableCell key={column.id} 
+                      <TableCell key={column.id}
+                      align='center' 
                       >
                         {value}
                       </TableCell>
