@@ -66,8 +66,8 @@ export default (props: any) => {
                         <img className="navBarProfilePic" src={awesome} alt="awesome" width="18" height="18"></img>
                         <p className="dropButton">{userBar.name}</p>
                         <div className="dropdown-content">
-                            <Link to="/console"><a>Profile</a></Link>
-                            <Link to="/console/tasks"><a>Your Tasks</a></Link>
+                            <Link to="/console/?tab=profile"><a>Profile</a></Link>
+                            <Link to="/console/?tab=task"><a>Your Tasks</a></Link>
                             <a
                                 href="/#"
                                 onClick={() => {
@@ -85,10 +85,10 @@ export default (props: any) => {
                         </div>
                     </div>
                 ) : (
-                    <Link to="/signin">
-                        <Button type="outlined">Sign In</Button>
-                    </Link>
-                )}
+                        <Link to="/signin">
+                            <Button type="outlined">Sign In</Button>
+                        </Link>
+                    )}
             </div>
         </div>
     );

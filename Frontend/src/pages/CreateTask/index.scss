@@ -18,3 +18,11 @@
 .messageTask {
     height: 5vw;
 }
+.prev-cover {
+    width: 300;
+    height: 150;
+    object-fit: cover;
+}
+.confirm-text {
+    color: $color-primary;
+}

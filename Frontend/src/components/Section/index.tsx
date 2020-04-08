@@ -13,10 +13,10 @@ export default ({ title, children }: SectionProps) => {
             <hr className="sectionLine" />
             <div className="row sectionContent">
                 {children ? (
-                    React.Children.map(children, child => <div className="col-4">{child}</div>)
+                    React.Children.map(children, (child, idx) => <div className="col-4" key={idx}>{child}</div>)
                 ) : (
-                    <h5 className="sectionNoTaskContent">No task to show yet</h5>
-                )}
+                        <h5 className="sectionNoTaskContent">No task to show yet</h5>
+                    )}
             </div>
         </div>
     );

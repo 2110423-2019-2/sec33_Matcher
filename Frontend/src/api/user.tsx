@@ -21,13 +21,15 @@ interface EditProfilePayload {
 }
 
 export const editProfile = async ({ password, firstname, lastname }: EditProfilePayload) =>
-    await axios.post(apiEndpointOf('/profile'), { password, firstname, lastname }, { withCredentials: true });
+    await axios.post(apiEndpointOf('/profile/update'), { password, firstname, lastname }, { withCredentials: true });
 
 export const register = async ({ email, password, firstname, lastname, role }: RegisterPayload) =>
     await axios.post(apiEndpointOf('/register'), { email, password, firstname, lastname, role });
 
 export const login = async ({ email, password }: LoginPayload) =>
     await axios.post(apiEndpointOf('/login'), { email, password }, { withCredentials: true });
+
+export const deleteUser = async (id: string) => await axios.delete(apiEndpointOf(`/profile/delete/${id}`), { withCredentials: true });
 
 export const logout = async () => await axios.get(apiEndpointOf('/logout'), { withCredentials: true });
 

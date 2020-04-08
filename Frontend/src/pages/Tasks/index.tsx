@@ -47,7 +47,6 @@ export default () => {
             });
         }
     };
-
     const closeDialog = () => {
         setDialog(false);
     };
@@ -117,7 +116,7 @@ export default () => {
                     return (
                         <div className="col">
                             <TaskCard
-                                onClick={onAccept(task._id)}
+                                onClick={() => onAccept(task._id)}
                                 name={task.title}
                                 location={task.location}
                                 profilePic={task.img}

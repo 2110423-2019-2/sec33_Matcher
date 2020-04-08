@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, Fragment, Suspense } from 'react';
 import './index.scss';
-import { Input, Button } from '../../components';
+import { Input, Button, Modal } from '../../components';
 import { ReactComponent as Chevron } from '../../assets/icons/chevron-right.svg';
-import { upsertTask } from '../../api/task';
-import { Select } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
+import { upsertTask } from '../../api/task';
+import { Select } from "@material-ui/core";
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
@@ -14,7 +14,7 @@ export default () => {
         taskname: '',
         location: '',
         image: '',
-        tasktype: '',
+        tasktype: 'PRODUCT',
         price: '',
     });
     const [errorText, setErrorText] = useState({
@@ -23,7 +23,22 @@ export default () => {
         image: '',
         price: '',
     });
+    const [confirm, setConfirm] = useState(false);
+    const closeConfirm = () => setConfirm(false);
+
     const history = useHistory();
+    const confirmTask = (e: any) => {
+        e.preventDefault();
+        if (validate()) {
+            setConfirm(true);
+        }
+    }
+    const handleChange = (field: string) => (e: any) => {
+        setTaskInfo({
+            ...taskInfo,
+            [field]: e.target.value,
+        });
+    };
 
     const validate = () => {
         setErrorText({
@@ -39,14 +54,7 @@ export default () => {
         if (isNaN(parseFloat(taskInfo.price)) || parseFloat(taskInfo.price) < 0) return false;
         return true;
     };
-
-    const handleChange = (field: string) => (e: any) => {
-        setTaskInfo({
-            ...taskInfo,
-            [field]: e.target.value,
-        });
-    };
-
+    
     const handleSubmit = (e: any) => {
         e.preventDefault();
         if (validate()) {   
@@ -127,13 +135,35 @@ export default () => {
                         />
                     </div>
                     <div className="col-6 createTaskTitle">
-                        <Button type="invert" onClick={handleSubmit} fullWidth>
+                        <Button type="invert" onClick={confirmTask} fullWidth>
                             Launch Task
                             <Chevron style={{ strokeWidth: 1 }} />
                         </Button>
                     </div>
                 </div>
             </form>
+            <Modal
+                open={confirm}
+                close={closeConfirm}
+                title='Do you want to create the following task ?'
+                description={
+                    <Fragment>
+                        <h6 className="confirm-text">{`Task name: ${taskInfo.taskname}`}</h6>
+                        <h6 className="confirm-text">{`Location: ${taskInfo.location}`}</h6>
+                        <h6 className="confirm-text">{`Cover image:`}</h6>
+                        <img src={taskInfo.image} alt="cover" className="prev-cover" />
+                        <h6 className="confirm-text">{`Task type: ${taskInfo.tasktype}`}</h6>
+                        <h6 className="confirm-text">{`Price rate(per hour): ${taskInfo.price}`}</h6>
+                    </Fragment>
+                }
+                action={
+                    <Fragment>
+                        <Button fullWidth type="outlined" onClick={closeConfirm}>Cancel</Button>
+                        <Button fullWidth onClick={handleSubmit}>Submit</Button>
+                    </Fragment>
+                }
+
+            />
         </div>
-    );
-};
+  );
+};  
