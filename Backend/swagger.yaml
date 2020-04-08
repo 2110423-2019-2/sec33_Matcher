@@ -149,7 +149,124 @@ paths:
           description: Updated profile
           schema:
             $ref: '#/definitions/Success'
-      
+  /task/accept/{id}:
+    get:
+      parameters:
+        - in: path
+          name: id  
+          required: true
+          type: integer
+          description: Task ID
+      tags:
+      - TaskController
+      summary: Accept Task
+      responses:
+        200:
+          description: Accepted
+          schema:
+            $ref: '#/definitions/Success'
+        501:
+          description: Not implemented
+  /task:
+    get:
+      tags:
+      - TaskController
+      summary: Get all tasks
+      responses:
+        200:
+          description: Tasks
+          schema:
+            $ref: '#/definitions/Tasks'
+        501:
+          description: Not implemented
+        400:
+          description: Bad Request
+  /task/{id}:
+    get:
+      parameters:
+        - in: path
+          name: id  
+          required: true
+          type: integer
+          description: Task ID
+      tags:
+      - TaskController
+      summary: Get task by ID
+      responses:
+        200:
+          description: Task
+          schema:
+            $ref: '#/definitions/Task'
+        400:
+          description: Bad Request
+  /task/available:
+    get:
+      tags:
+      - TaskController
+      summary: Get available tasks
+      responses:
+        200:
+          description: Tasks
+          schema:
+            $ref: '#/definitions/Tasks'
+        400:
+          description: Bad Request
+  /task/pending:
+    get:
+      tags:
+      - TaskController
+      summary: Get pending tasks
+      responses:
+        200:
+          description: Tasks
+          schema:
+            $ref: '#/definitions/Tasks'
+        501:
+          description: Not implemented
+        400:
+          description: Bad Request
+  /task/matched:
+    get:
+      tags:
+      - TaskController
+      summary: Get matched tasks
+      responses:
+        200:
+          description: Tasks
+          schema:
+            $ref: '#/definitions/Tasks'
+        501:
+          description: Not implemented
+        400:
+          description: Bad Request
+  /task/reqfin:
+    get:
+      tags:
+      - TaskController
+      summary: Get request finishing tasks
+      responses:
+        200:
+          description: Tasks
+          schema:
+            $ref: '#/definitions/Tasks'
+        501:
+          description: Not implemented
+        400:
+          description: Bad Request
+  /task/finished:
+    get:
+      tags:
+      - TaskController
+      summary: Get finished tasks
+      responses:
+        200:
+          description: Tasks
+          schema:
+            $ref: '#/definitions/Tasks'
+        501:
+          description: Not implemented
+        400:
+          description: Bad Request
           
 # securityDefinitions:
 #   petstore_auth:
@@ -203,9 +320,50 @@ definitions:
     type: object
     required: 
     - _id
+    - title
+    - location
+    - owner
+    - photoStyle
+    - price
+    - createTime
+    - status
     properties:
       _id:
         type: integer
+      title: 
+        type: string
+      location: 
+        type: string
+      owner: 
+        type: string
+      photoStyle: 
+        type: string
+        enum:
+        - GRADUATION
+        - WEDDING
+        - EVENT
+        - PRODUCT
+        - PLACE
+        - RESTAURANT
+      price: 
+        type: number
+      image: 
+        type: string
+      createTime: 
+        type: string
+        format: date
+      status: 
+        type: string
+      acceptedBy: 
+        type: string
+      ratingScore: 
+        type: number
+      comment: 
+        type: string
+  Tasks:
+    type: array
+    items:
+      $ref: '#/definitions/Task'
   Success:
     type: object
     properties:
@@ -213,6 +371,7 @@ definitions:
         type: string
         enum:
         - success
+
 # basePath: /
 # schemes:
 #  - http
