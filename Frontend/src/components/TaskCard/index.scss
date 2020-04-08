@@ -36,3 +36,25 @@ img.rounded {
     width: 300px;
     padding: 0;
 }
+.ratingTaskCardContainer {
+    margin-top: 30px;
+    text-align: center;
+    hr {
+        border: 1px solid #B7B7B7;
+    }
+    .content{
+        margin-top: 26px;
+        color: $color-dark;
+    }
+    .activeContent{
+        margin-top: 26px;
+        color: black;
+    }
+    .comment {
+        text-align: center;
+        word-wrap: break-word;
+        margin-top: 15px;
+        color: black;
+
+    }
+}
