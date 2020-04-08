@@ -63,22 +63,19 @@ export default class TaskController {
     }
 
     private static async checkUpdateTask(req: any): Promise<boolean> {
-        const id = new Types.ObjectId(req.params.taskId);
-        const task = await Task.findById(id);
+        const task = await Task.findById(req.params.taskId);
 
         if (!task) {
             return false;
         } else {
             if (req.user.role === Role.CUSTOMER) {
-                if (task.owner !== req.user._id) return false;
+                if (!task.owner.equals(req.user._id)) return false;
             } else if (req.user.role !== Role.ADMIN) {
                 return false;
             }
         }
 
-        if (!containAll(req.body, TaskController.requiredFields)) return false;
         if (!inRange(req.body.title.length, 1, 20)) return false;
-        if (!photoStyles.includes(req.body.photoStyle)) return false;
         if (req.body.price < 0) return false;
 
         return true;
@@ -129,13 +126,13 @@ export default class TaskController {
             res.json(finishedTasks);
         } catch (err) {
             console.log(err);
-            throw new HttpErrors.BadRequest()
+            throw new HttpErrors.BadRequest();
         }
     }
 
     static async getAvailableTasks(req: any, res: any): Promise<any> {
         try {
-            const user = await User.findOne({ _id: req.user._id });
+            const user = await User.findById(req.user._id);
             if (user.role === Role.CUSTOMER) {
                 const tasks = await Task.find({ status: TaskStatus.AVAILABLE, owner: req.user._id });
                 res.json(tasks);
@@ -188,6 +185,106 @@ export default class TaskController {
                 res.json(task);
             } else {
                 throw new HttpErrors.NotImplemented();
+            }
+        } catch (err) {
+            console.log(err);
+            throw new HttpErrors.BadRequest();
+        }
+    }
+    static async acceptTask(req: any, res: any): Promise<any> {
+        const user = await User.findById(req.user._id);
+        if (user.role === Role.CUSTOMER) {
+            const task = await Task.findById(req.params.id);
+            task.status = TaskStatus.ACCEPTED;
+
+            await task.save();
+            res.json({ status: 'success' });
+        } else if (user.role === Role.PHOTOGRAPHER) {
+            const task = await Task.findById(req.params.id);
+            task.status = TaskStatus.PENDING;
+            task.acceptedBy = req.user._id;
+
+            await task.save();
+            res.json({ status: 'success' });
+        } else {
+            throw new HttpErrors.NotImplemented();
+        }
+    }
+    static async finishTask(req: any, res: any): Promise<any> {
+        const user = await User.findById(req.user._id);
+        if (user.role === Role.CUSTOMER) {
+            const task = await Task.findById(req.params.id);
+            task.status = TaskStatus.FINISHED;
+
+            await task.save();
+            res.json({ status: 'success' });
+        } else if (user.role === Role.PHOTOGRAPHER) {
+            const task = await Task.findById(req.params.id);
+            task.status = TaskStatus.REQ_FIN;
+
+            await task.save();
+            res.json({ status: 'success' });
+        } else {
+            throw new HttpErrors.NotImplemented();
+        }
+    }
+    static async getTaskById(req: any, res: any): Promise<any> {
+        try {
+            const task = await Task.findById(req.params.id);
+            res.json(task);
+        } catch (err) {
+            console.log(err);
+            throw new HttpErrors.BadRequest();
+        }
+    }
+    static async getReqFinTasks(req: any, res: any): Promise<any> {
+        try {
+            const user = await User.findById(req.user._id);
+            if (user.role === Role.CUSTOMER) {
+                const task = await Task.find({ owner: req.user._id, status: TaskStatus.REQ_FIN });
+                res.json(task);
+            } else if (user.role === Role.PHOTOGRAPHER) {
+                const task = await Task.find({ acceptedBy: req.user._id, status: TaskStatus.REQ_FIN });
+                res.json(task);
+            } else {
+                throw new HttpErrors.NotImplemented();
+            }
+        }catch(err){
+          console.log(err);
+          throw new HttpErrors.BadRequest();
+        }
+    }
+
+    static async cancelTask(req: any, res: any): Promise<void> {
+        try {
+            const user = await User.findById(req.user._id);
+            const task = await Task.findById(req.params.id);
+            if (!task) {
+                throw new HttpErrors.NotFound();
+            }
+            if (task.status === TaskStatus.AVAILABLE || task.status === TaskStatus.FINISHED) {
+                throw new HttpErrors.BadRequest();
+            } //what is the task cancelling policy?
+            if (user.role === Role.CUSTOMER) {
+                if (!user._id.equals(task.owner)) {
+                    throw new HttpErrors.Unauthorized();
+                }
+                task.status = TaskStatus.AVAILABLE;
+                task.acceptedBy = null;
+                await task.save();
+                //TODO add notification
+                res.json({ status: 'success' });
+            } else if (user.role === Role.PHOTOGRAPHER) {
+                if (!user._id.equals(task.acceptedBy)) {
+                    throw new HttpErrors.Unauthorized();
+                }
+                task.status = TaskStatus.AVAILABLE;
+                task.acceptedBy = null;
+                await task.save();
+                //TODO add notification
+                res.json({ status: 'success' });
+            } else {
+                // TODO implement cancel task for admin here
             }
         } catch (err) {
             console.log(err);

@@ -116,7 +116,9 @@ export default ({
             <div className="taskCardContainer">
                 <UserCard name={name} location={location} profilePic={profilePic} options={options} />
                 <div className="row">
-                    <img src={thumbnail} className="taskPic" alt="task" />
+                    <div className="col-12">
+                        <img src={thumbnail} className="taskPic" alt="task" />
+                    </div>
                 </div>
                 <div className="row">
                     <div className="col-6 left">

@@ -4,7 +4,7 @@ import { Input, Button, Modal } from '../../components';
 import { ReactComponent as Chevron } from '../../assets/icons/chevron-right.svg';
 import { useHistory } from 'react-router-dom';
 import { upsertTask } from '../../api/task';
-import { Select } from '@material-ui/core';
+import { Select } from "@material-ui/core";
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
@@ -53,25 +53,51 @@ export default () => {
             [field]: e.target.value,
         });
     };
+  const [taskInfo, setTaskInfo] = useState({
+    taskname: '',
+    location: '',
+    image: '',
+    tasktype: '',
+    price: '',
+  });
+  const [errorText, setErrorText] = useState({
+    taskname: '',
+    location: '',
+    image: '',
+    price: '',
+  });
 
-    const handleSubmit = (e: any) => {
-        e.preventDefault();
-        if (validate()) {
-            console.log(taskInfo);
-            const task = {
-                title: taskInfo.taskname,
-                location: taskInfo.location,
-                image: taskInfo.image,
-                price: parseFloat(taskInfo.price),
-                photoStyle: taskInfo.tasktype,
-            };
-            console.log(task);
-            upsertTask('', task).then(res => {
-                console.log(res);
-            });
-            // history.push('/');
-        }
-    };
+  const validate = () => {
+    setErrorText({
+      ...errorText,
+      taskname: taskInfo.taskname.length === 0 ? 'Taskname cannot be empty.' : '',
+      location: taskInfo.location.length === 0 ? 'Location cannot be empty.' : '',
+      image: taskInfo.image.length === 0 ? 'Image cannot be empty.' : '',
+      price: taskInfo.price.length === 0 ? 'Price cannot be empty.' : '',
+    });
+    if (taskInfo.taskname.length === 0) return false;
+    if (taskInfo.location.length === 0) return false;
+    if (taskInfo.image.length === 0) return false;
+    if (taskInfo.price.length === 0) return false;
+    return true;
+  };
+
+  const history = useHistory();
+
+  const handleChange = (field: string) => (e: any) => {
+    setTaskInfo({
+      ...taskInfo,
+      [field]: e.target.value
+    })
+  }
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    if (validate()) {
+      upsertTask('', taskInfo);
+      history.push('/');
+    }
+  };
 
     return (
         <div className="createTaskPage">
@@ -165,5 +191,5 @@ export default () => {
 
             />
         </div>
-    );
-};
+  );
+};  

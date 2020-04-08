@@ -9,8 +9,10 @@ router.post('/', ensureLoggedIn(), asyncHandler(TaskController.createTask));
 router.delete('/delete/:taskId', ensureLoggedIn(), asyncHandler(TaskController.deleteTask));
 router.post('/update/:taskId', ensureLoggedIn(), asyncHandler(TaskController.updateTask));
 router.post('/rate', ensureLoggedIn(), asyncHandler(TaskController.rateTask));
+
 router.get('/accept/:id', ensureLoggedIn(), asyncHandler(TaskController.acceptTask));
 router.get('/finish/:id', ensureLoggedIn(), asyncHandler(TaskController.finishTask));
+
 router.get('/pending', ensureLoggedIn(), asyncHandler(TaskController.getPendingTasks));
 router.get('/matched', ensureLoggedIn(), asyncHandler(TaskController.getMatchedTasks));
 router.get('/reqfin', ensureLoggedIn(), asyncHandler(TaskController.getReqFinTasks));

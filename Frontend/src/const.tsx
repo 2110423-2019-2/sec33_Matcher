@@ -37,5 +37,7 @@ export const dummyTasks = [
     },
 ];
 
-export const apiEndpoint = 'http://localhost:8080';
-export const apiEndpointOf = (path: string) => `${apiEndpoint}${path}`;
+export const apiEndpoint = process.env.NODE_ENV === 'production' ?
+  "http://34.87.169.228/api" : // For production
+  "http://localhost:8080" // For dev
+export const apiEndpointOf = (path: string) => `${apiEndpoint}${path}`; 

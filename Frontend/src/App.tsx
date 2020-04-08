@@ -1,5 +1,5 @@
 import React from 'react';
-import { BodySignIn, Register, Home, CreateTask, Tasks, Console } from './pages';
+import { BodySignIn, Register, Home, CreateTask, Tasks, Console, UserListTable } from './pages';
 import './App.css';
 import { NavBar, ComponentList, PrivateRoute, PhotoType, Footer } from './components';
 import './index.scss';
@@ -14,14 +14,14 @@ const App: React.FC = () => {
 
                 <Switch>
                     <PrivateRoute path="/protected" component={ComponentList} roles={['admin']} />
-                    <PrivateRoute path="/console" component={Console} roles={['photographer', 'customer']} />
+                    <Route path="/console" component={Console} roles={['photographer', 'customer']} />
                     <Route path="/create" component={CreateTask} />
                     <Route path="/signin" component={BodySignIn} />
                     <Route path="/register" component={Register} />
-                    <Route path="/create" component={CreateTask} />
                     <Route path="/task" component={Tasks} />
                     <Route path="/comp" component={ComponentList} />
                     <Route path="/type" component={PhotoType} />
+                    <Route path="/users" component={UserListTable} />
                     <Route path="/" component={Home} />
                 </Switch>
                 <Footer />
