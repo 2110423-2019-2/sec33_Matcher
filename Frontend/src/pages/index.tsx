@@ -6,4 +6,6 @@ import Home from './Home';
 import Tasks from './Tasks';
 import Console from './Console';
 import Profile from './Profile';
-export { BodySignIn, Register, CreateTask, Home, Tasks, Console, EditProfile, Profile };
+import UserListTable from './UserListTable';
+
+export { BodySignIn, Register, CreateTask, Home, Tasks, Console, EditProfile, UserListTable, Profile };

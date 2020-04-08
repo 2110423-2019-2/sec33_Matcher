@@ -11,6 +11,7 @@ import PhotoType from './PhotoType';
 import Section from './Section';
 import UserTasks from './UserTasks';
 import CommentCard from './CommentCard';
+import Modal from './Modal';
 
 export {
     NavBar,
@@ -25,5 +26,6 @@ export {
     PhotoType,
     Section,
     UserTasks,
-    CommentCard
+    CommentCard,
+    Modal
 };
