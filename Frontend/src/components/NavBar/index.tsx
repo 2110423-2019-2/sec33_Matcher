@@ -96,7 +96,7 @@ export default (props: any) => {
                     >
                         <MenuItem onClick={handleRedirect('/console')}>Profile</MenuItem>
                         <MenuItem onClick={handleRedirect('/console?tab=task')}>Your Tasks</MenuItem>
-                        <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                        <MenuItem onClick={handleLogout}>Sign out</MenuItem>
                     </Menu>
                 </Fragment>
                     : (

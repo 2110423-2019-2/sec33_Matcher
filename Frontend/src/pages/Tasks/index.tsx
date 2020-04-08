@@ -3,12 +3,14 @@ import './index.scss';
 import { PHOTO_CATEGORIES, dummyTasks } from '../../const';
 import { TaskCard, Input, Button } from '../../components';
 import { AuthContext } from '../../context/AuthContext';
-import { getAvailableTasks, matchTask } from '../../api/task';
+import { getAvailableTasks, acceptTask } from '../../api/task';
 import { DialogContent, DialogContentText, DialogActions, Dialog, DialogTitle, Slider } from '@material-ui/core';
+import { useHistory } from 'react-router-dom';
 export default () => {
     const { auth, authDispatch } = useContext(AuthContext);
     const [dialog, setDialog] = useState(false);
     const [tasks, setTasks] = useState<Array<any>>([]);
+    const history = useHistory();
     const [dialogData, setDialogData] = useState({
         location: '',
         priceRange: [0, 20000],
@@ -47,7 +49,6 @@ export default () => {
             });
         }
     };
-
     const closeDialog = () => {
         setDialog(false);
     };
@@ -76,10 +77,13 @@ export default () => {
     };
 
     const onAccept = (id: string) => (e: any) => {
-        if (auth.role != 'photographer') {
+        if (auth.role !== 'photographer') {
             alert('Only Photographer is allower to accept task!');
         } else {
-            matchTask(id);
+            acceptTask(id).then((res) => {
+                console.log(res);
+                history.push('/console/?tab=task');
+            }).catch(err => console.log(err));
         }
     };
 
@@ -115,7 +119,7 @@ export default () => {
             <div className="row tasks">
                 {filteredTasks.map(task => {
                     return (
-                        <div className="col">
+                        <div className="col" key={task._id}>
                             <TaskCard
                                 onClick={onAccept(task._id)}
                                 name={task.title}

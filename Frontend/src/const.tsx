@@ -38,6 +38,6 @@ export const dummyTasks = [
 ];
 
 export const apiEndpoint = process.env.NODE_ENV === 'production' ?
-  "https://fast-photo-api-oxq6326c3a-de.a.run.app" : // For production
+  "http://34.87.169.228/api" : // For production
   "http://localhost:8080" // For dev
 export const apiEndpointOf = (path: string) => `${apiEndpoint}${path}`; 
