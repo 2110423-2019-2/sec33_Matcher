@@ -9,7 +9,7 @@ import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { IUser, User } from './models';
 import session from 'express-session';
-import { taskRoute, profileRoute, adminRoute } from './routes';
+import { taskRoute, profileRoute, adminRoute, reportRoute } from './routes';
 import { load as loadYAML } from 'yamljs';
 import * as swaggerUI from 'swagger-ui-express';
 import cors from 'cors';
@@ -105,7 +105,10 @@ export default class FastphotoApp {
         app.use('/task', taskRoute);
 
         app.use('/profile', profileRoute);
+
         app.use('/admin', adminRoute);
+
+        app.use('/report', reportRoute);
         /* Middleware for error handling */
         app.use(errorHandler);
         /* End of error handling */
