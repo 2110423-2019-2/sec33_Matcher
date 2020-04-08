@@ -38,6 +38,6 @@ export const dummyTasks = [
 ];
 
 export const apiEndpoint = process.env.NODE_ENV === 'production' ?
-  process.env.API_ENDPOINT : // For production
+  process.env.REACT_APP_API_ENDPOINT || "http://localhost:8080" : // For production
   "http://localhost:8080" // For dev
 export const apiEndpointOf = (path: string) => `${apiEndpoint}${path}`; 
