@@ -1,10 +1,14 @@
 @import "../colors.scss";
 
 .button {
-  padding: 10px 50px;
+  padding: 10px;
+  padding-left: auto;
+  padding-right: auto;
   font-size: 18px;
   background-color: $color-ternary;
-  min-width: 100px;
+  min-width: 134px;
+  // width: 134px;
+  justify-content: center;
   display: inline-flex;
   border: 2.5px solid $color-ternary;
   cursor: pointer;
@@ -20,11 +24,20 @@
   &.fullWidth {
     width: 100%;
   }
+  &.disable {
+    opacity: 0.5;
+  }
 }
 
 .button:hover {
   &.filled {
     background-color: rgba(255, 255, 255, 0);
+    &.disable{
+      background-color:rgb(248, 177, 149);
+      opacity: 0.5;
+      cursor: default;
+      user-select: none;
+    }
   }
 
   &.outlined {
