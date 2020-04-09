@@ -1,27 +1,32 @@
+@import "../colors.scss";
+
 .inc {
   font-size: 20px;
   color: #f8b195;
-  margin-left: 7.08vw;
   align-self: center;
 }
+
 .footer {
   display: flex;
-  background: #f67280;
-  height: 7.22vh;
-  width: 100vw;
+  background: $color-secondary;
+  height: 60px;
+  width: 100%;
   font-family: "Montserrat";
   align-self: center;
+  padding: 0 100px;
 }
+
 .contact {
   display: flex;
   margin-left: auto;
   align-self: center;
   justify-content: space-around;
 }
+
 .contact-logo {
-  margin-left: 3.78vw;
-  margin-right: 3.78vw;
+  margin-left: 40px;
 }
+
 @media only screen and (max-width: 768px) {
   .inc {
     font-size: 16px;

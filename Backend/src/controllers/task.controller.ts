@@ -21,6 +21,7 @@ export default class TaskController {
     }
 
     static async createTask(req: any, res: any): Promise<void> {
+        console.log(req.body);
         if (!TaskController.checkCreateTask(req)) throw new HttpErrors.BadRequest();
         const task = new Task({
             title: req.body.title,
@@ -203,6 +204,7 @@ export default class TaskController {
         await task.save();
         res.json({ status: 'success' });
     }
+    
     static async acceptTask(req: any, res: any): Promise<any> {
         const user = await User.findById(req.user._id);
         if (user.role === Role.CUSTOMER) {
@@ -244,6 +246,23 @@ export default class TaskController {
         try {
             const task = await Task.findById(req.params.id);
             res.json(task);
+        } catch (err) {
+            console.log(err);
+            throw new HttpErrors.BadRequest();
+        }
+    }
+    static async getReqFinTasks(req: any, res: any): Promise<any> {
+        try {
+            const user = await User.findById(req.user._id);
+            if (user.role === Role.CUSTOMER) {
+                const task = await Task.find({ owner: req.user._id, status: TaskStatus.REQ_FIN });
+                res.json(task);
+            } else if (user.role === Role.PHOTOGRAPHER) {
+                const task = await Task.find({ acceptedBy: req.user._id, status: TaskStatus.REQ_FIN });
+                res.json(task);
+            } else {
+                throw new HttpErrors.NotImplemented();
+            }
         } catch (err) {
             console.log(err);
             throw new HttpErrors.BadRequest();

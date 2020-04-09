@@ -1,0 +1,145 @@
+@import '../../components/colors.scss';
+
+.home {
+    padding-top: 4em;
+}
+
+.pad {
+    padding-left: 100px;
+    padding-right: 100px;
+}
+
+.home-sub-title {
+    display: flex;
+}
+.home-sub-title h5 {
+    color: $color-primary;
+    display: flex;
+    font-style: normal;
+    font-weight: normal;
+    margin-left: 1.74vw;
+    align-self: center;
+}
+
+.jobNearby {
+    display: inline-flex;
+    width: 100%;
+    margin: 24px 0 48px 0;
+}
+
+.jobNearby .seeall h5 {
+    display: inline-flex;
+    align-items: center;
+}
+
+.jobNearby .seeall svg {
+  margin-left: 8px;
+}
+
+.subHeader {
+    color: $color-primary;
+
+    &.seeall {
+        color: $color-dark;
+        margin-left: auto;
+    }
+}
+
+.line-before-home-sub-title {
+    display: flex;
+    background: $color-ternary;
+    width: 5.56vw;
+    height: 0.56vh;
+    align-self: center;
+}
+.home-title {
+    margin-top: 4.67vh;
+    width: 40vw;
+    height: auto;
+}
+.home-title h1 {
+    font-style: normal;
+    font-weight: normal;
+}
+
+.pic {
+    position: absolute;
+    right: 100px;
+    top: 200px;
+    float: right;
+}
+
+.seeBlock {
+    float: left;
+    position: relative;
+    height: 100px;
+    width: 50%;
+    background-color: whitesmoke;
+    top: 150px;
+    text-align: left;
+    padding-left: 100px;
+    color: grey;
+    display: flex;
+    align-items: center;
+}
+
+.matcherBlock {
+    float: left;
+    position: relative;
+    height: 100px;
+    width: 50%;
+    background-color: $color-secondary;
+    top: 150px;
+    text-align: left;
+    padding-left: 70px;
+    color: $color-ternary;
+}
+
+.matcherBlock2 {
+    float: left;
+    position: relative;
+    height: 100px;
+    width: 100%;
+    background-color: $color-secondary;
+    text-align: left;
+    padding-left: 70px;
+    color: $color-ternary;
+}
+
+.blank {
+    height: 300px;
+}
+
+.task {
+    display: flex;
+    flex-wrap: nowrap;
+    padding-bottom: 24px;
+}
+
+.task > div {
+    margin-right: 54px;
+}
+
+.socialicon {
+    position: relative;
+    top: 40px;
+    right: 100px;
+    float: right;
+}
+
+.matcherletter {
+    float: left;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.home-button-line {
+    .createTaskBtn {
+        margin-left: 25px;
+    }
+}
+
+.photo-type {
+  margin: 80px 0;
+}
