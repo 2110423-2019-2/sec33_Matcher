@@ -274,8 +274,4 @@ export default class TaskController {
             throw new HttpErrors.BadRequest();
         }
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> origin/dev_frontend
