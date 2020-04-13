@@ -64,8 +64,8 @@ export default () => {
         setSelectedTask(task);
     }
 
-    const handleReportTask = (id: string) => {
-        reportTask(id, rpt).then(res => {
+    const handleReportTask = (owner: string) => {
+        reportTask(owner, rpt).then(res => {
             console.log(res);
             fetchTasks();
             setReport(false);
@@ -182,7 +182,7 @@ export default () => {
                 action={
                     <Fragment>
                         <Button fullWidth type="outlined" onClick={closeReport}>Cancel</Button>
-                        <Button fullWidth onClick={() => handleReportTask(selectedTask._id)}>Submit</Button>
+                        <Button fullWidth onClick={() => handleReportTask(selectedTask.owner)}>Submit</Button>
                     </Fragment>
                 }
             />

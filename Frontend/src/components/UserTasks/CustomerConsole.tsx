@@ -101,8 +101,8 @@ export default () => {
             setReview(false);
         })
     }
-    const handleReportTask = (id: string) => {
-        reportTask(id, rpt).then(res => {
+    const handleReportTask = (acceptedBy: string) => {
+        reportTask(acceptedBy, rpt).then(res => {
             console.log(res);
             fetchTasks();
             setReport(false);
@@ -376,7 +376,7 @@ export default () => {
                 action={
                     <Fragment>
                         <Button fullWidth type="outlined" onClick={closeReport}>Cancel</Button>
-                        <Button fullWidth onClick={() => handleReportTask(selectedTask._id)}>Submit</Button>
+                        <Button fullWidth onClick={() => handleReportTask(selectedTask.acceptedBy ? selectedTask.acceptedBy : '')}>Submit</Button>
                     </Fragment>
                 }
             />
