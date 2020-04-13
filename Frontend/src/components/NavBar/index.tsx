@@ -1,9 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, Fragment } from 'react';
 import './index.scss';
 import { Button } from '../';
 import { AuthContext } from '../../context/AuthContext';
 import { Link, useHistory } from 'react-router-dom';
 import { whoami, logout } from '../../api/user';
+import { Avatar, Menu, MenuItem } from '@material-ui/core';
 
 const awesome = '/images/awesome.png';
 
@@ -13,7 +14,30 @@ export default (props: any) => {
         name: auth.firstname,
         isLogin: auth.isLogin,
     });
+
     const history = useHistory();
+
+    const [anchorEl, setAnchorEl] = useState(null);
+    const handleMenuClick = (event: any) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleMenuClose = () => {
+        setAnchorEl(null);
+    };
+
+    const handleLogout = () => {
+        logout().then(() => {
+            setUserBar({
+                ...userBar,
+                isLogin: false,
+            });
+            history.push('/');
+        });
+    }
+
+    const handleRedirect = (to: string) => () => {
+        history.push(to);
+    }
 
     useEffect(() => {
         whoami()
@@ -22,17 +46,25 @@ export default (props: any) => {
                 setUserBar({
                     ...userBar,
                     name: profile.firstname,
-                    isLogin: true
+                    isLogin: true,
                 });
             })
             .catch(() => {
                 console.log('Unauthenticated');
                 setUserBar({
                     ...userBar,
-                    isLogin: false
+                    isLogin: false,
                 });
             });
-    }, [auth, authDispatch]);
+    }, []);
+
+    useEffect(() => {
+        setUserBar({
+            ...userBar,
+            name: auth.firstname,
+            isLogin: auth.isLogin,
+        });
+    }, [auth]);
 
     return (
         <div className="navBar">
@@ -53,32 +85,21 @@ export default (props: any) => {
             </div>
 
             <div className="NavBarUser">
-                {userBar.isLogin ? (
-                    <div className="dropdown">
-                        <img className="navBarProfilePic" src={awesome} alt="awesome" width="18" height="18"></img>
-                        <p className="dropButton">{userBar.name}</p>
-                        <div className="dropdown-content">
-                            <Link to="/edit">
-                                <a>Profile</a>
-                            </Link>
-                            <a>Your Tasks</a>
-                            <a
-                                href="/#"
-                                onClick={() => {
-                                    logout().then(() => {
-                                        setUserBar({
-                                            ...userBar,
-                                            isLogin: false
-                                        });
-                                        history.push('/');
-                                    });
-                                }}
-                            >
-                                Sign out
-                            </a>
-                        </div>
-                    </div>
-                ) : (
+                {userBar.isLogin ? <Fragment>
+                    <Avatar src={awesome} onClick={handleMenuClick} />
+                    <Menu
+                        id="simple-menu"
+                        anchorEl={anchorEl}
+                        keepMounted
+                        open={Boolean(anchorEl)}
+                        onClose={handleMenuClose}
+                    >
+                        <MenuItem onClick={handleRedirect('/console')}>Profile</MenuItem>
+                        <MenuItem onClick={handleRedirect('/console?tab=task')}>Your Tasks</MenuItem>
+                        <MenuItem onClick={handleLogout}>Sign out</MenuItem>
+                    </Menu>
+                </Fragment>
+                    : (
                         <Link to="/signin">
                             <Button type="outlined">Sign In</Button>
                         </Link>

@@ -5,6 +5,9 @@ import validator from 'validator';
 import { Role } from '../const';
 import pick from 'object.pick';
 import { Types } from 'mongoose';
+import nodemailer from 'nodemailer';
+import cheerio from 'cheerio';
+import fs from 'fs';
 
 export default class UserController {
     private static async getUserAvgRating(userId: string): Promise<number> {
@@ -154,5 +157,72 @@ export default class UserController {
             if (!inRange(body.password.length, 8, 20)) return false;
         }
         return true;
+    }
+
+    static async getUserProfile(req: any, res: any) {
+        const userProfile = await User.findById(req.params.id);
+        if (!userProfile) throw new HttpErrors.NotFound();
+
+        let comments = [];
+        if (userProfile.role === Role.PHOTOGRAPHER) {
+            comments = await Task.find({
+                ratingScore: { $exists: true },
+                acceptedBy: userProfile._id,
+            })
+                .select('ratingScore comment')
+                .populate('owner', 'firstname lastname');
+        }
+
+        res.json({
+            firstname: userProfile.firstname,
+            lastname: userProfile.lastname,
+            role: userProfile.role,
+            createTime: userProfile.createTime,
+            score: await UserController.getUserAvgRating(req.params.id),
+            comments: comments.map(comment => ({
+                rating: comment.ratingScore,
+                comment: comment.comment || '',
+                ownerFirstname: comment.owner.firstname,
+                ownerLastname: comment.owner.lastname,
+            })),
+        });
+    }
+
+    static async notifyUserByEmail(task: any): Promise<any> {
+        const photographer = await User.findById({ _id: task.acceptedBy });
+        const owner = await User.findById({ _id: task.owner });
+        const data = fs.readFileSync(__dirname + '/../template/notify_owner.html', 'utf8');
+        const $ = cheerio.load(data);
+        $('#task-title').text(task.title);
+        $('#task-location').text(task.location);
+        $('#dummy-text').text(task.description);
+        $('#owner-name').text(owner.firstname + ' ' + owner.lastname);
+        $('#photographer-name').text([photographer.firstname + ' ' + photographer.lastname]);
+        $('#task-status').text(task.status);
+        const smtp = {
+            host: 'smtp.mailtrap.io',
+            port: 2525,
+            auth: {
+                user: '55ab6b1f60ab44',
+                pass: 'e005cf73b0626a',
+            },
+        };
+        // const smtp = {
+        //     host: 'in-v3.mailjet.com',
+        //     port: 587,
+        //     auth: {
+        //         user: '9418771ef8b38718549b6575fcc1456f',
+        //         pass: '<redacted>'
+        //     }
+        // };
+        const mail = {
+            from: 'no-reply@sec33matcher.io',
+            to: owner.email,
+            subject: 'Your task got a match!',
+            html: $.html(),
+        };
+        const smtpTransport = nodemailer.createTransport(smtp);
+        smtpTransport.sendMail(mail);
+        smtpTransport.close();
     }
 }

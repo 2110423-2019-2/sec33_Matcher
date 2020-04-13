@@ -1,6 +1,6 @@
 import React from 'react';
 import './index.scss';
-import { VerticalCard } from "../../components";
+import { VerticalCard } from '../../components';
 import graduation from '../../assets/vcard/graduation.svg';
 import wedding from '../../assets/vcard/wedding.svg';
 import event from '../../assets/vcard/event.svg';

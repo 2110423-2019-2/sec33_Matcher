@@ -16,6 +16,8 @@ You may add one more line if you use URI to connect a database:
 DB_CONNECTION_URI=mongodb+srv://<username>:<password>@matcher-cluster-grj4g.mongodb.net/test?retryWrites=true&w=majority
 ```
 
+You can also disable cors by putting `DISABLE_CORS=1`.
+
 Then run following command.
 ```
 cd Backend
