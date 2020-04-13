@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext, Fragment } from 'react';
 import { Section, TaskCard, Button, Input } from '..'
-import { getPendingTasks, getMatchedTasks, getReqFinTasks, getFinishedTasks, finishTask, getAvailableTasks, acceptTask, deleteTask, rateTask,reportTask } from '../../api/task';
+import { getPendingTasks, getMatchedTasks, getReqFinTasks, getFinishedTasks, finishTask, getAvailableTasks, acceptTask, deleteTask, rateTask, cancelTask, reportTask } from '../../api/task';
 import Modal from '../Modal';
 import { MenuItem, Dialog } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
@@ -88,12 +88,12 @@ export default () => {
             setDeleted(false);
         })
     }
-    // const handleCancelTask = (id: string) => {
-    //     cancelTask(id).then(res => {
-    //         fetchTasks();
-    //         setCancel(false);
-    //     })
-    // }
+    const handleCancelTask = (id: string) => {
+        cancelTask(id).then(res => {
+            fetchTasks();
+            setCancel(false);
+        })
+    }
     const handleReviewTask = (id: string) => {
         rateTask(id, rating, cmt).then(res => {
             console.log(res);
@@ -306,7 +306,7 @@ export default () => {
                     </Fragment>
                 }
             />
-            {/* <Modal
+            <Modal
                 open={cancel}
                 close={closeCancel}
                 title='Cancel task'
@@ -316,8 +316,8 @@ export default () => {
                         <Button fullWidth type="outlined" onClick={closeCancel}>Cancel</Button>
                         <Button fullWidth onClick={() => handleCancelTask(selectedTask._id)}>Accept</Button>
                     </Fragment>
-                }    
-            /> */}
+                }
+            />
             <Modal
                 open={finish}
                 close={closeFinish}

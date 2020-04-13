@@ -1,8 +1,7 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import { Section, TaskCard, Modal, Button, Input } from '..'
-import { getPendingTasks, getMatchedTasks, getReqFinTasks, getFinishedTasks, finishTask, reportTask } from '../../api/task';
+import { getPendingTasks, getMatchedTasks, getReqFinTasks, getFinishedTasks, finishTask, cancelTask, reportTask } from '../../api/task';
 import { MenuItem, Dialog } from '@material-ui/core';
-
 
 interface ITask {
     title: string;
@@ -21,7 +20,7 @@ export default () => {
     const [matchedTasks, setMatchedTasks] = useState<Array<ITask>>([]);
     const [reqFinTasks, setReqFinTasks] = useState<Array<ITask>>([]);
     const [finishedTasks, setFinishedTasks] = useState<Array<ITask>>([]);
-    
+    const [cancel, setCancel] = useState(false);
     const [selectedTask, setSelectedTask] = useState<ITask>({
         title: '',
         _id: '',
@@ -54,13 +53,22 @@ export default () => {
 
     const handleFinishTask = (id: string) => {
         finishTask(id).then(res => {
-            console.log(res)
             fetchTasks();
             setFinish(false);
         })
     }
+    const handleCancelTask = (id: string) => {
+        cancelTask(id).then(res => {
+            fetchTasks();
+            setCancel(false);
+        })
+    }
     const finishThisTask = (task: ITask) => {
         setFinish(true);
+        setSelectedTask(task);
+    }
+    const cancelThisTask = (task: ITask) => {
+        setCancel(true);
         setSelectedTask(task);
     }
 
@@ -86,7 +94,8 @@ export default () => {
     const closeFinish = () => {
         setFinish(false);
     }
-    
+    const closeCancel = () => setCancel(false);
+
     return (
         <div className="sectionContainer">
             <Section title="Pending task">
@@ -99,8 +108,8 @@ export default () => {
                                 location={t.location}
                                 profilePic={t.image}
                                 price={t.price}
-                                button='Pending'
-                                disable
+                                button='Cancel'
+                                onClick={() => cancelThisTask(t)}
                             />)
                 }
             </Section>
@@ -166,6 +175,18 @@ export default () => {
                     </Fragment>
                 }
 
+            />
+            <Modal
+                open={cancel}
+                close={closeCancel}
+                title='Cancel task'
+                description={`Do you cancel this task ?`}
+                action={
+                    <Fragment>
+                        <Button fullWidth type="outlined" onClick={closeCancel}>Cancel</Button>
+                        <Button fullWidth onClick={() => handleCancelTask(selectedTask._id)}>Accept</Button>
+                    </Fragment>
+                }
             />
             <Modal
                 open={report}
