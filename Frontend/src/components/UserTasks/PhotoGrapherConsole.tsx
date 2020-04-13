@@ -1,6 +1,7 @@
 import React, { useState, useEffect, Fragment } from 'react';
-import { Section, TaskCard, Modal, Button } from '..'
-import { getPendingTasks, getMatchedTasks, getReqFinTasks, getFinishedTasks, finishTask } from '../../api/task';
+import { Section, TaskCard, Modal, Button, Input } from '..'
+import { getPendingTasks, getMatchedTasks, getReqFinTasks, getFinishedTasks, finishTask, reportTask } from '../../api/task';
+import { MenuItem, Dialog } from '@material-ui/core';
 
 
 interface ITask {
@@ -20,6 +21,7 @@ export default () => {
     const [matchedTasks, setMatchedTasks] = useState<Array<ITask>>([]);
     const [reqFinTasks, setReqFinTasks] = useState<Array<ITask>>([]);
     const [finishedTasks, setFinishedTasks] = useState<Array<ITask>>([]);
+    
     const [selectedTask, setSelectedTask] = useState<ITask>({
         title: '',
         _id: '',
@@ -32,6 +34,8 @@ export default () => {
         acceptedBy: ''
     })
     const [finish, setFinish] = useState(false);
+    const [report, setReport] = useState(false);
+    const [rpt, setRpt] = useState('');
 
     const fetchTasks = () => {
         getPendingTasks().then(t => {
@@ -60,12 +64,29 @@ export default () => {
         setSelectedTask(task);
     }
 
+    const handleReportTask = (id: string) => {
+        reportTask(id, rpt).then(res => {
+            console.log(res);
+            fetchTasks();
+            setReport(false);
+        })
+    }
+    const reportChange = (e: any) => {
+        setRpt(e.target.value);
+    }
+    const closeReport = () => setReport(false);
+    const reportThisTask = (task: ITask) => {
+        setReport(true);
+        setSelectedTask(task);
+    }
+
     useEffect(() => {
         fetchTasks();
     }, [])
     const closeFinish = () => {
         setFinish(false);
     }
+    
     return (
         <div className="sectionContainer">
             <Section title="Pending task">
@@ -125,6 +146,11 @@ export default () => {
                             comment={t.comment}
                             review
                             disable
+                            options={
+                                <div>
+                                    <MenuItem onClick={() => reportThisTask(t)}><p>Report</p></MenuItem>
+                                </div>
+                            }
                         />)
                 }
             </Section>
@@ -140,6 +166,25 @@ export default () => {
                     </Fragment>
                 }
 
+            />
+            <Modal
+                open={report}
+                close={closeReport}
+                description={
+                    <Fragment>
+                        <h6 className="dialogContent">Report</h6>
+                        <br></br>
+                        <div className="comment">
+                            <Input variant="filled" onChange={reportChange} label="Type your report" fullWidth />
+                        </div>
+                    </Fragment>
+                }
+                action={
+                    <Fragment>
+                        <Button fullWidth type="outlined" onClick={closeReport}>Cancel</Button>
+                        <Button fullWidth onClick={() => handleReportTask(selectedTask._id)}>Submit</Button>
+                    </Fragment>
+                }
             />
         </div>
     )

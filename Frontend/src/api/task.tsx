@@ -27,3 +27,5 @@ export const deleteTask = async (id: string) =>
     (await axios.delete(apiEndpointOf(`/task/delete/${id}`), { withCredentials: true })).data;
 export const rateTask = (taskId: string, rating: number | null, comment?: string): Promise<any> =>
     axios.post(apiEndpointOf('/task/rate'), { taskId, rating, comment }, { withCredentials: true });
+export const reportTask = (taskId: string, report?: string): Promise<any> =>
+    axios.post(apiEndpointOf('/task/report'), { taskId, report }, { withCredentials: true });
