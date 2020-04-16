@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext, Fragment } from 'react';
 import { Section, TaskCard, Button, Input } from '..'
-import { getPendingTasks, getMatchedTasks, getReqFinTasks, getFinishedTasks, finishTask, getAvailableTasks, acceptTask, deleteTask, rateTask } from '../../api/task';
+import { getPendingTasks, getMatchedTasks, getReqFinTasks, getFinishedTasks, finishTask, getAvailableTasks, acceptTask, deleteTask, rateTask, cancelTask, reportTask } from '../../api/task';
 import Modal from '../Modal';
 import { MenuItem, Dialog } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
@@ -34,7 +34,9 @@ export default () => {
     const [finish, setFinish] = useState(false);
     const [review, setReview] = useState(false);
     const [rating, setRating] = useState<number | null>(0);
+    const [report, setReport] = useState(false);
     const [cmt, setCmt] = useState('');
+    const [rpt, setRpt] = useState('');
     const [selectedTask, setSelectedTask] = useState<ITask>(
         {
             title: '',
@@ -86,17 +88,24 @@ export default () => {
             setDeleted(false);
         })
     }
-    // const handleCancelTask = (id: string) => {
-    //     cancelTask(id).then(res => {
-    //         fetchTasks();
-    //         setCancel(false);
-    //     })
-    // }
+    const handleCancelTask = (id: string) => {
+        cancelTask(id).then(res => {
+            fetchTasks();
+            setCancel(false);
+        })
+    }
     const handleReviewTask = (id: string) => {
         rateTask(id, rating, cmt).then(res => {
             console.log(res);
             fetchTasks();
             setReview(false);
+        })
+    }
+    const handleReportTask = (acceptedBy: string) => {
+        reportTask(acceptedBy, rpt).then(res => {
+            console.log(res);
+            fetchTasks();
+            setReport(false);
         })
     }
     const viewPhotographer = (id: string) => {
@@ -105,12 +114,16 @@ export default () => {
     const commentChange = (e: any) => {
         setCmt(e.target.value);
     }
+    const reportChange = (e: any) => {
+        setRpt(e.target.value);
+    }
     const closeDeleted = () => setDeleted(false);
     const closeEdit = () => setEdit(false);
     const closeAccept = () => setAccept(false);
     const closeCancel = () => setCancel(false);
     const closeFinish = () => setFinish(false);
     const closeReview = () => setReview(false);
+    const closeReport = () => setReport(false);
     const editThisTask = (task: ITask) => {
         setEdit(true);
         setSelectedTask(task);
@@ -133,6 +146,10 @@ export default () => {
     }
     const reviewThisTask = (task: ITask) => {
         setReview(true);
+        setSelectedTask(task);
+    }
+    const reportThisTask = (task: ITask) => {
+        setReport(true);
         setSelectedTask(task);
     }
     useEffect(() => {
@@ -246,6 +263,12 @@ export default () => {
                                     comment={t.comment}
                                     review
                                     onClick={t.ratingScore ? () => { } : () => reviewThisTask(t)}
+                                    options={
+                                        <div>
+                                            <MenuItem onClick={() => reviewThisTask(t)}><p>Review</p></MenuItem>
+                                            <MenuItem onClick={() => reportThisTask(t)}><p>Report</p></MenuItem>
+                                        </div>
+                                    }
                                 />
                             )
                         })
@@ -283,7 +306,7 @@ export default () => {
                     </Fragment>
                 }
             />
-            {/* <Modal
+            <Modal
                 open={cancel}
                 close={closeCancel}
                 title='Cancel task'
@@ -293,8 +316,8 @@ export default () => {
                         <Button fullWidth type="outlined" onClick={closeCancel}>Cancel</Button>
                         <Button fullWidth onClick={() => handleCancelTask(selectedTask._id)}>Accept</Button>
                     </Fragment>
-                }    
-            /> */}
+                }
+            />
             <Modal
                 open={finish}
                 close={closeFinish}
@@ -335,6 +358,25 @@ export default () => {
                     <Fragment>
                         <Button fullWidth type="outlined" onClick={closeReview}>Cancel</Button>
                         <Button fullWidth onClick={() => handleReviewTask(selectedTask._id)}>Submit</Button>
+                    </Fragment>
+                }
+            />
+             <Modal
+                open={report}
+                close={closeReport}
+                description={
+                    <Fragment>
+                        <h6 className="dialogContent">Report</h6>
+                        <br></br>
+                        <div className="comment">
+                            <Input variant="filled" onChange={reportChange} label="Type your report" fullWidth />
+                        </div>
+                    </Fragment>
+                }
+                action={
+                    <Fragment>
+                        <Button fullWidth type="outlined" onClick={closeReport}>Cancel</Button>
+                        <Button fullWidth onClick={() => handleReportTask(selectedTask.acceptedBy ? selectedTask.acceptedBy : '')}>Submit</Button>
                     </Fragment>
                 }
             />
