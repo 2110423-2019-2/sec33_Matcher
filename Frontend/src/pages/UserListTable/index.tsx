@@ -16,6 +16,7 @@ import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
+import Moment from 'moment';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -128,7 +129,7 @@ export default () => {
 
   const fillReport = (data : Report) => {
     const reportee = userList.filter((user: Data) => user._id == data.reportee)[0];
-    return {'reportee':(reportee as Data).firstname+' '+(reportee as Data).lastname, 'createTime':data.createTime, 'reason':data.reason}
+    return {'reportee':(reportee as Data).firstname+' '+(reportee as Data).lastname, 'createTime':Moment(data.createTime).format('D MMM YYYY hh:mm A'), 'reason':data.reason}
   }
 
   const [userList, setUserList] = React.useState([]);
@@ -144,6 +145,8 @@ export default () => {
   const setReport = () => {
     getReport().then(reportsLists => setReportsList(reportsLists))
   };  
+
+  Moment.locale('en');
 
   useEffect(() => {setUser()}, []) 
   useEffect(() => {setReport()}, []) 
