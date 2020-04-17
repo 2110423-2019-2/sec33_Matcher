@@ -179,11 +179,11 @@ export default class UserController {
             role: userProfile.role,
             createTime: userProfile.createTime,
             score: await UserController.getUserAvgRating(req.params.id),
-            comments: comments.map(comment => ({ 
+            comments: comments.map(comment => ({
                 rating: comment.ratingScore,
                 comment: comment.comment || '',
-                ownerFirstname: comment.owner.firstname, 
-                ownerLastname: comment.owner.lastname
+                ownerFirstname: comment.owner.firstname,
+                ownerLastname: comment.owner.lastname,
             })),
         });
     }
