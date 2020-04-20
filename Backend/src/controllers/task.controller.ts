@@ -251,23 +251,6 @@ export default class TaskController {
             throw new HttpErrors.BadRequest();
         }
     }
-    static async getReqFinTasks(req: any, res: any): Promise<any> {
-        try {
-            const user = await User.findById(req.user._id);
-            if (user.role === Role.CUSTOMER) {
-                const task = await Task.find({ owner: req.user._id, status: TaskStatus.REQ_FIN });
-                res.json(task);
-            } else if (user.role === Role.PHOTOGRAPHER) {
-                const task = await Task.find({ acceptedBy: req.user._id, status: TaskStatus.REQ_FIN });
-                res.json(task);
-            } else {
-                throw new HttpErrors.NotImplemented();
-            }
-        } catch (err) {
-            console.log(err);
-            throw new HttpErrors.BadRequest();
-        }
-    }
 
     static async cancelTask(req: any, res: any): Promise<void> {
         try {
