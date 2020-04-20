@@ -59,17 +59,31 @@ export default class UserController {
                 role: req.user.role,
             });
         } else {
-            const id = new Types.ObjectId(req.params.userId);
-            const user = await User.findById({ _id: id });
-            if (!user) {
-                throw new HttpErrors.NotFound();
+            const userProfile = await User.findById(req.params.id);
+            if (!userProfile) throw new HttpErrors.NotFound();
+
+            let comments = [];
+            if (userProfile.role === Role.PHOTOGRAPHER) {
+                comments = await Task.find({
+                    ratingScore: { $exists: true },
+                    acceptedBy: userProfile._id,
+                })
+                    .select('ratingScore comment')
+                    .populate('owner', 'firstname lastname');
             }
+
             res.json({
-                firstname: user.firstname,
-                lastname: user.lastname,
-                role: user.role,
-                createTime: user.createTime,
-                score: await UserController.getUserAvgRating(req.params.userId),
+                firstname: userProfile.firstname,
+                lastname: userProfile.lastname,
+                role: userProfile.role,
+                createTime: userProfile.createTime,
+                score: await UserController.getUserAvgRating(req.params.id),
+                comments: comments.map(comment => ({
+                    rating: comment.ratingScore,
+                    comment: comment.comment || '',
+                    ownerFirstname: comment.owner.firstname,
+                    ownerLastname: comment.owner.lastname,
+                })),
             });
         }
     }
