@@ -1,6 +1,7 @@
 import { Task, User, ITask } from '../models';
 import { containAll, inRange } from '../utils/utils';
 import { Role, photoStyles, TaskStatus } from '../const';
+import UserController from './user.controller';
 import HttpErrors from 'http-errors';
 import { Types } from 'mongoose';
 import pick from 'object.pick';
@@ -50,6 +51,8 @@ export default class TaskController {
         } else {
             if (task.owner.toString() !== req.user._id.toString()) {
                 return false;
+            } else if (task.status != TaskStatus.AVAILABLE) {
+                return false;
             }
             return true;
         }
@@ -77,7 +80,7 @@ export default class TaskController {
 
         if (!inRange(req.body.title.length, 1, 20)) return false;
         if (req.body.price < 0) return false;
-
+        if (task.status !== TaskStatus.AVAILABLE) return false;
         return true;
     }
 
@@ -210,14 +213,14 @@ export default class TaskController {
         if (user.role === Role.CUSTOMER) {
             const task = await Task.findById(req.params.id);
             task.status = TaskStatus.ACCEPTED;
-
+            UserController.notifyUserByEmail(task, TaskStatus.ACCEPTED);
             await task.save();
             res.json({ status: 'success' });
         } else if (user.role === Role.PHOTOGRAPHER) {
             const task = await Task.findById(req.params.id);
             task.status = TaskStatus.PENDING;
             task.acceptedBy = req.user._id;
-
+            UserController.notifyUserByEmail(task, 'Requesting Accept');
             await task.save();
             res.json({ status: 'success' });
         } else {
@@ -230,13 +233,14 @@ export default class TaskController {
         if (user.role === Role.CUSTOMER) {
             const task = await Task.findById(req.params.id);
             task.status = TaskStatus.FINISHED;
+            UserController.notifyUserByEmail(task, TaskStatus.FINISHED);
 
             await task.save();
             res.json({ status: 'success' });
         } else if (user.role === Role.PHOTOGRAPHER) {
             const task = await Task.findById(req.params.id);
             task.status = TaskStatus.REQ_FIN;
-
+            UserController.notifyUserByEmail(task, 'Requesting Finish');
             await task.save();
             res.json({ status: 'success' });
         } else {
@@ -261,26 +265,26 @@ export default class TaskController {
             if (!task) {
                 throw new HttpErrors.NotFound();
             }
-            if (task.status === TaskStatus.AVAILABLE || task.status === TaskStatus.FINISHED) {
+            if (task.status != TaskStatus.PENDING) {
                 throw new HttpErrors.BadRequest();
-            } //what is the task cancelling policy?
+            } // can only cancel task when in pending state
             if (user.role === Role.CUSTOMER) {
                 if (!user._id.equals(task.owner)) {
                     throw new HttpErrors.Unauthorized();
                 }
                 task.status = TaskStatus.AVAILABLE;
+                await UserController.notifyUserByEmail(task, 'Task Cancelled');
                 task.acceptedBy = null;
                 await task.save();
-                //TODO add notification
                 res.json({ status: 'success' });
             } else if (user.role === Role.PHOTOGRAPHER) {
                 if (!user._id.equals(task.acceptedBy)) {
                     throw new HttpErrors.Unauthorized();
                 }
                 task.status = TaskStatus.AVAILABLE;
+                await UserController.notifyUserByEmail(task, 'Task Cancelled');
                 task.acceptedBy = null;
                 await task.save();
-                //TODO add notification
                 res.json({ status: 'success' });
             } else {
                 // TODO implement cancel task for admin here

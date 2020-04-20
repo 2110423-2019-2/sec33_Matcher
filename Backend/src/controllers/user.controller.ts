@@ -188,41 +188,58 @@ export default class UserController {
         });
     }
 
-    static async notifyUserByEmail(task: any): Promise<any> {
+    static async notifyUserByEmail(task: any, status: any): Promise<any> {
         const photographer = await User.findById({ _id: task.acceptedBy });
         const owner = await User.findById({ _id: task.owner });
         const data = fs.readFileSync(__dirname + '/../template/notify_owner.html', 'utf8');
         const $ = cheerio.load(data);
-        $('#task-title').text(task.title);
-        $('#task-location').text(task.location);
-        $('#dummy-text').text(task.description);
+        $('#task-title').text('Task: ' + task.title);
+        $('#task-location').text('Location: ' + task.location);
+        $('#task-desc').text('Style: ' + task.photoStyle);
+        if(task.image){
+            const inputs = $('#task-image');
+            inputs.attr('src', (i, id) =>{
+                return id.replace('https://firebasestorage.googleapis.com/v0/b/web-ar-text.appspot.com/o/dummy%20img.jpg?alt=media&token=686cd3e4-e769-4e18-bcfd-9fcc0864fe5d', task.image)
+            });
+        }
         $('#owner-name').text(owner.firstname + ' ' + owner.lastname);
         $('#photographer-name').text([photographer.firstname + ' ' + photographer.lastname]);
-        $('#task-status').text(task.status);
+        $('#task-status').text(status);
+        // const smtp = {
+        //     host: 'smtp.mailtrap.io',
+        //     port: 2525,
+        //     auth: {
+        //         user: '55ab6b1f60ab44',
+        //         pass: 'e005cf73b0626a',
+        //     },
+        // };
         const smtp = {
-            host: 'smtp.mailtrap.io',
-            port: 2525,
+            service: 'gmail',
+            port: 587,
             auth: {
-                user: '55ab6b1f60ab44',
-                pass: 'e005cf73b0626a',
+                user: 'matchersec33@gmail.com',
+                pass: '<redacted -> ask Dai>',
             },
         };
-        // const smtp = {
-        //     host: 'in-v3.mailjet.com',
-        //     port: 587,
-        //     auth: {
-        //         user: '9418771ef8b38718549b6575fcc1456f',
-        //         pass: '<redacted>'
-        //     }
-        // };
+        //send mail to task owner
         const mail = {
-            from: 'no-reply@sec33matcher.io',
+            from: 'matchersec33@gmail.com',
             to: owner.email,
-            subject: 'Your task got a match!',
+            subject: 'Matcher Notification',
             html: $.html(),
         };
-        const smtpTransport = nodemailer.createTransport(smtp);
-        smtpTransport.sendMail(mail);
-        smtpTransport.close();
+        try {
+            let smtpTransport = nodemailer.createTransport(smtp);
+            smtpTransport.sendMail(mail);
+            smtpTransport.close();
+            //send mail to photographer
+            mail.to = photographer.email;
+            smtpTransport = nodemailer.createTransport(smtp);
+            smtpTransport.sendMail(mail);
+            smtpTransport.close();
+        } catch (err) {
+            console.log(err);
+            throw new HttpErrors.BadRequest();
+        }
     }
 }
