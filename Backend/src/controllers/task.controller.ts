@@ -95,10 +95,10 @@ export default class TaskController {
         try {
             const user = await User.findById(req.user._id);
             if (user.role === Role.CUSTOMER) {
-                const tasks = await Task.find({ status: TaskStatus.AVAILABLE, owner: req.user._id });
+                const tasks = await Task.find({ status: TaskStatus.AVAILABLE, owner: req.user._id }).populate('owner');
                 res.json(tasks);
             } else if (user.role === Role.PHOTOGRAPHER || user.role === Role.ADMIN) {
-                const tasks = await Task.find({ status: TaskStatus.AVAILABLE });
+                const tasks = await Task.find({ status: TaskStatus.AVAILABLE }).populate('owner');
                 res.json(tasks);
             } else {
                 throw new HttpErrors.NotImplemented();
@@ -113,13 +113,13 @@ export default class TaskController {
         try {
             const user = await User.findById(req.user._id);
             if (user.role === Role.CUSTOMER) {
-                const task = await Task.find({ owner: req.user._id, status: TaskStatus.PENDING });
+                const task = await Task.find({ owner: req.user._id, status: TaskStatus.PENDING }).populate('owner');
                 res.json(task);
             } else if (user.role === Role.PHOTOGRAPHER) {
-                const task = await Task.find({ acceptedBy: req.user._id, status: TaskStatus.PENDING });
+                const task = await Task.find({ acceptedBy: req.user._id, status: TaskStatus.PENDING }).populate('owner');
                 res.json(task);
             } else if (user.role === Role.ADMIN) {
-                const tasks = await Task.find({ status: TaskStatus.PENDING });
+                const tasks = await Task.find({ status: TaskStatus.PENDING }).populate('owner');
                 res.json(tasks);
             } else {
                 throw new HttpErrors.NotImplemented();
@@ -134,13 +134,13 @@ export default class TaskController {
         try {
             const user = await User.findById(req.user._id);
             if (user.role === Role.CUSTOMER) {
-                const matchedTasks = await Task.find({ owner: req.user._id, status: TaskStatus.ACCEPTED });
+                const matchedTasks = await Task.find({ owner: req.user._id, status: TaskStatus.ACCEPTED }).populate('owner');
                 res.json(matchedTasks);
             } else if (user.role === Role.PHOTOGRAPHER) {
-                const matchedTasks = await Task.find({ acceptedBy: req.user._id, status: TaskStatus.ACCEPTED });
+                const matchedTasks = await Task.find({ acceptedBy: req.user._id, status: TaskStatus.ACCEPTED }).populate('owner');
                 res.json(matchedTasks);
             } else if (user.role === Role.ADMIN) {
-                const matchedTasks = await Task.find({ status: TaskStatus.ACCEPTED });
+                const matchedTasks = await Task.find({ status: TaskStatus.ACCEPTED }).populate('owner');
                 res.json(matchedTasks);
             } else {
                 // TODO add getMatchedTasks for admin
@@ -156,13 +156,13 @@ export default class TaskController {
         try {
             const user = await User.findById(req.user._id);
             if (user.role === Role.CUSTOMER) {
-                const task = await Task.find({ owner: req.user._id, status: TaskStatus.REQ_FIN });
+                const task = await Task.find({ owner: req.user._id, status: TaskStatus.REQ_FIN }).populate('owner');
                 res.json(task);
             } else if (user.role === Role.PHOTOGRAPHER) {
-                const task = await Task.find({ acceptedBy: req.user._id, status: TaskStatus.REQ_FIN });
+                const task = await Task.find({ acceptedBy: req.user._id, status: TaskStatus.REQ_FIN }).populate('owner');
                 res.json(task);
             } else if (user.role === Role.ADMIN) {
-                const tasks = await Task.find({ status: TaskStatus.REQ_FIN });
+                const tasks = await Task.find({ status: TaskStatus.REQ_FIN }).populate('owner');
                 res.json(tasks);
             } else {
                 throw new HttpErrors.NotImplemented();
@@ -178,11 +178,11 @@ export default class TaskController {
             const user = await User.findById(req.user._id);
             let finishedTasks: Array<ITask>;
             if (user.role === Role.CUSTOMER) {
-                finishedTasks = await Task.find({ owner: req.user._id, status: TaskStatus.FINISHED });
+                finishedTasks = await Task.find({ owner: req.user._id, status: TaskStatus.FINISHED }).populate('owner');
             } else if (user.role === Role.PHOTOGRAPHER) {
-                finishedTasks = await Task.find({ acceptedBy: req.user._id, status: TaskStatus.FINISHED });
+                finishedTasks = await Task.find({ acceptedBy: req.user._id, status: TaskStatus.FINISHED }).populate('owner');
             } else if (user.role === Role.ADMIN) {
-                finishedTasks = await Task.find({ status: TaskStatus.FINISHED });
+                finishedTasks = await Task.find({ status: TaskStatus.FINISHED }).populate('owner');
             } else {
                 throw new HttpErrors.Unauthorized();
             }
