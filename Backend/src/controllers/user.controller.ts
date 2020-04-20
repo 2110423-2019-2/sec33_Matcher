@@ -239,7 +239,7 @@ export default class UserController {
             smtpTransport.close();
         } catch (err) {
             console.log(err);
-            throw new HttpErrors.BadRequest();
+            // throw new HttpErrors.BadRequest();
         }
     }
 }
