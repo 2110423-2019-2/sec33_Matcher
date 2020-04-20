@@ -9,7 +9,7 @@ import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { IUser, User } from './models';
 import session from 'express-session';
-import { taskRoute, profileRoute, adminRoute } from './routes';
+import { taskRoute, profileRoute, adminRoute, reportRoute } from './routes';
 import { load as loadYAML } from 'yamljs';
 import * as swaggerUI from 'swagger-ui-express';
 import cors from 'cors';
@@ -18,7 +18,7 @@ dotenv.config();
 
 const port = process.env.PORT || 8080;
 
-const whitelist = ['http://localhost:3000', 'https://fast-photo-8e48a.web.app'];
+const whitelist = ['http://localhost:3000', 'http://frontend', 'http://34.87.169.228', process.env.WHITELIST];
 const corsOptions = {
     origin: (origin: string, callback: any): any => {
         if (whitelist.indexOf(origin) !== -1) {
@@ -105,7 +105,10 @@ export default class FastphotoApp {
         app.use('/task', taskRoute);
 
         app.use('/profile', profileRoute);
+
         app.use('/admin', adminRoute);
+
+        app.use('/report', reportRoute);
         /* Middleware for error handling */
         app.use(errorHandler);
         /* End of error handling */

@@ -1,0 +1,28 @@
+@import "../colors.scss";
+
+.createTaskPage {
+    padding: 7vh 15vw;
+    padding-bottom: 25vh;
+}
+
+.createTaskTitle {
+    display: flex;
+    align-items: center;
+    padding: .5vw 0vh;
+}
+
+.createTaskHeader{
+    color: $color-primary;
+}
+
+.messageTask {
+    height: 5vw;
+}
+.prev-cover {
+    width: 300;
+    height: 150;
+    object-fit: cover;
+}
+.confirm-text {
+    color: $color-primary;
+}
