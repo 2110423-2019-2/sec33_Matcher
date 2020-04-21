@@ -116,7 +116,9 @@ export default class TaskController {
                 const task = await Task.find({ owner: req.user._id, status: TaskStatus.PENDING }).populate('owner');
                 res.json(task);
             } else if (user.role === Role.PHOTOGRAPHER) {
-                const task = await Task.find({ acceptedBy: req.user._id, status: TaskStatus.PENDING }).populate('owner');
+                const task = await Task.find({ acceptedBy: req.user._id, status: TaskStatus.PENDING }).populate(
+                    'owner',
+                );
                 res.json(task);
             } else if (user.role === Role.ADMIN) {
                 const tasks = await Task.find({ status: TaskStatus.PENDING }).populate('owner');
@@ -134,10 +136,15 @@ export default class TaskController {
         try {
             const user = await User.findById(req.user._id);
             if (user.role === Role.CUSTOMER) {
-                const matchedTasks = await Task.find({ owner: req.user._id, status: TaskStatus.ACCEPTED }).populate('owner');
+                const matchedTasks = await Task.find({ owner: req.user._id, status: TaskStatus.ACCEPTED }).populate(
+                    'owner',
+                );
                 res.json(matchedTasks);
             } else if (user.role === Role.PHOTOGRAPHER) {
-                const matchedTasks = await Task.find({ acceptedBy: req.user._id, status: TaskStatus.ACCEPTED }).populate('owner');
+                const matchedTasks = await Task.find({
+                    acceptedBy: req.user._id,
+                    status: TaskStatus.ACCEPTED,
+                }).populate('owner');
                 res.json(matchedTasks);
             } else if (user.role === Role.ADMIN) {
                 const matchedTasks = await Task.find({ status: TaskStatus.ACCEPTED }).populate('owner');
@@ -159,7 +166,9 @@ export default class TaskController {
                 const task = await Task.find({ owner: req.user._id, status: TaskStatus.REQ_FIN }).populate('owner');
                 res.json(task);
             } else if (user.role === Role.PHOTOGRAPHER) {
-                const task = await Task.find({ acceptedBy: req.user._id, status: TaskStatus.REQ_FIN }).populate('owner');
+                const task = await Task.find({ acceptedBy: req.user._id, status: TaskStatus.REQ_FIN }).populate(
+                    'owner',
+                );
                 res.json(task);
             } else if (user.role === Role.ADMIN) {
                 const tasks = await Task.find({ status: TaskStatus.REQ_FIN }).populate('owner');
@@ -180,7 +189,9 @@ export default class TaskController {
             if (user.role === Role.CUSTOMER) {
                 finishedTasks = await Task.find({ owner: req.user._id, status: TaskStatus.FINISHED }).populate('owner');
             } else if (user.role === Role.PHOTOGRAPHER) {
-                finishedTasks = await Task.find({ acceptedBy: req.user._id, status: TaskStatus.FINISHED }).populate('owner');
+                finishedTasks = await Task.find({ acceptedBy: req.user._id, status: TaskStatus.FINISHED }).populate(
+                    'owner',
+                );
             } else if (user.role === Role.ADMIN) {
                 finishedTasks = await Task.find({ status: TaskStatus.FINISHED }).populate('owner');
             } else {

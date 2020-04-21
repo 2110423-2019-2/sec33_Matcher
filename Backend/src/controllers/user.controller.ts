@@ -8,8 +8,45 @@ import { Types } from 'mongoose';
 import nodemailer from 'nodemailer';
 import cheerio from 'cheerio';
 import fs from 'fs';
+import { containAll, inRange } from '../utils/utils';
 
 export default class UserController {
+    static async hello(req: any, res: any): Promise<void> {
+        res.send('Hello World!');
+    }
+
+    static async validateInput(body: any, fields: string[]): Promise<boolean> {
+        if (!containAll(body, fields)) return false;
+
+        if (fields.includes('email') && !validator.isEmail(body.email) && (await User.exists({ email: body.email })))
+            return false;
+        if (fields.includes('password') && !inRange(body.password.length, 8, 20)) return false;
+        if (fields.includes('firstname') && !inRange(body.firstname.length, 2, 20)) return false;
+        if (fields.includes('lastname') && !inRange(body.lastname.length, 2, 20)) return false;
+        if (fields.includes('role') && body.role !== Role.PHOTOGRAPHER && body.role !== Role.CUSTOMER) return false;
+
+        return true;
+    }
+
+    static async createUser(req: any, res: any): Promise<void> {
+        const fields = ['email', 'password', 'firstname', 'lastname', 'role'];
+        const inputBody = pick(req.body, fields);
+        if (!(await UserController.validateInput(inputBody, fields))) throw new HttpErrors.BadRequest();
+
+        const hash = await generateHash(req.body.password);
+        const user = new User({
+            email: req.body.email,
+            password: hash,
+            firstname: req.body.firstname,
+            lastname: req.body.lastname,
+            role: req.body.role,
+            image: req.body.image,
+            createTime: new Date(),
+        });
+        await user.save();
+        res.json({ status: 'success' });
+    }
+
     private static async getUserAvgRating(userId: string): Promise<number> {
         const avgRating = await Task.aggregate([
             { $match: { acceptedBy: Types.ObjectId(userId) } },
@@ -22,31 +59,9 @@ export default class UserController {
         ]);
         if (avgRating.length == 0) {
             return 0;
+        } else {
+            return avgRating[0].total;
         }
-        return avgRating[0].total;
-    }
-
-    static async createUser(req: any, res: any): Promise<void> {
-        const fields = ['email', 'password', 'firstname', 'lastname', 'role'];
-        //validate input ; pre-condition
-        const inputBody = pick(req.body, fields);
-        const check = await UserController.validateInput(inputBody, fields);
-        if (!check) throw new HttpErrors.BadRequest();
-        const hash = await generateHash(req.body.password);
-        const user = new User({
-            email: req.body.email,
-            password: hash,
-            firstname: req.body.firstname,
-            lastname: req.body.lastname,
-            role: req.body.role,
-            createTime: new Date(),
-        });
-        await user.save();
-        res.json({ status: 'success' });
-    }
-
-    static async hello(req: any, res: any): Promise<void> {
-        res.send('Hello World!');
     }
 
     static async getProfile(req: any, res: any): Promise<void> {
@@ -57,6 +72,7 @@ export default class UserController {
                 firstname: req.user.firstname,
                 lastname: req.user.lastname,
                 role: req.user.role,
+                image: req.user.image,
             });
         } else {
             const userProfile = await User.findById(req.params.userId);
@@ -76,6 +92,7 @@ export default class UserController {
                 firstname: userProfile.firstname,
                 lastname: userProfile.lastname,
                 role: userProfile.role,
+                image: userProfile.image,
                 createTime: userProfile.createTime,
                 score: await UserController.getUserAvgRating(req.params.userId),
                 comments: comments.map(comment => ({
@@ -90,7 +107,7 @@ export default class UserController {
 
     static async updateProfile(req: any, res: any): Promise<void> {
         //add fields by requested update and for only legal update field
-        const fields = ['email', 'password', 'firstname', 'lastname', 'role', 'createTime'];
+        const fields = ['email', 'password', 'firstname', 'lastname', 'role', 'image', 'createTime'];
         const inputBody = pick(req.body, fields);
         if (
             inputBody.hasOwnProperty('role') ||
@@ -110,12 +127,6 @@ export default class UserController {
         res.json({ status: 'success' });
     }
 
-    static async deleteProfile(req: any, res: any) {
-        if (!(await UserController.checkDelete(req))) throw new HttpErrors.BadRequest();
-        await User.findByIdAndDelete({ _id: Types.ObjectId(req.params.userId) });
-        res.json({ status: 'success' });
-    }
-
     static async checkDelete(req: any): Promise<boolean> {
         const id = new Types.ObjectId(req.params.userId);
         const userProfile = await User.findById(id);
@@ -131,49 +142,13 @@ export default class UserController {
         }
     }
 
-    static async validateInput(body: any, fields: string[]): Promise<boolean> {
-        // Preconditions begin
-        const inRange = (x: number, lowerBound: number, upperBound: number): boolean => {
-            return x >= lowerBound && x <= upperBound;
-        };
-
-        const fieldCheck = (body: any, fields: string[]): boolean =>
-            fields.every((field): boolean => {
-                return body.hasOwnProperty(field);
-            });
-
-        // Precondition : Should contains all require fields
-        if (!fieldCheck(body, fields)) return false;
-
-        if (fields.includes('role')) {
-            // Precondition : Role should be either "photographer" or "customer"
-            if (body.role !== Role.PHOTOGRAPHER && body.role !== Role.CUSTOMER) return false;
-        }
-
-        if (fields.includes('email')) {
-            // Precondition : Should reject bad email
-            if (!validator.isEmail(body.email)) return false;
-            // Precondition : Email must be unique
-            if (await User.exists({ email: body.email })) return false;
-        }
-
-        // Precondition : Firstname and Lastname length must be between 2 and 20 characters
-        if (fields.includes('firstname')) {
-            if (!inRange(body.firstname.length, 2, 20)) return false;
-        }
-
-        if (fields.includes('lastname')) {
-            if (!inRange(body.lastname.length, 2, 20)) return false;
-        }
-
-        if (fields.includes('password')) {
-            // Precondition : Password length must be between 8 and 20 characters
-            if (!inRange(body.password.length, 8, 20)) return false;
-        }
-        return true;
+    static async deleteProfile(req: any, res: any): Promise<void> {
+        if (!(await UserController.checkDelete(req))) throw new HttpErrors.BadRequest();
+        await User.findByIdAndDelete(req.params.userId);
+        res.json({ status: 'success' });
     }
 
-    static async getUserProfile(req: any, res: any) {
+    static async getUserProfile(req: any, res: any): Promise<void> {
         const userProfile = await User.findById(req.params.id);
         if (!userProfile) throw new HttpErrors.NotFound();
 
@@ -191,6 +166,7 @@ export default class UserController {
             firstname: userProfile.firstname,
             lastname: userProfile.lastname,
             role: userProfile.role,
+            image: userProfile.image,
             createTime: userProfile.createTime,
             score: await UserController.getUserAvgRating(req.params.id),
             comments: comments.map(comment => ({
