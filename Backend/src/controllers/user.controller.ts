@@ -59,7 +59,7 @@ export default class UserController {
                 role: req.user.role,
             });
         } else {
-            const userProfile = await User.findById(req.params.id);
+            const userProfile = await User.findById(req.params.userId);
             if (!userProfile) throw new HttpErrors.NotFound();
 
             let comments = [];
@@ -77,7 +77,7 @@ export default class UserController {
                 lastname: userProfile.lastname,
                 role: userProfile.role,
                 createTime: userProfile.createTime,
-                score: await UserController.getUserAvgRating(req.params.id),
+                score: await UserController.getUserAvgRating(req.params.userId),
                 comments: comments.map(comment => ({
                     rating: comment.ratingScore,
                     comment: comment.comment || '',
