@@ -72,6 +72,7 @@ export default class UserController {
                 firstname: req.user.firstname,
                 lastname: req.user.lastname,
                 role: req.user.role,
+                image: req.user.image,
             });
         } else {
             const userProfile = await User.findById(req.params.userId);
@@ -91,6 +92,7 @@ export default class UserController {
                 firstname: userProfile.firstname,
                 lastname: userProfile.lastname,
                 role: userProfile.role,
+                image: userProfile.image,
                 createTime: userProfile.createTime,
                 score: await UserController.getUserAvgRating(req.params.userId),
                 comments: comments.map(comment => ({
@@ -105,7 +107,7 @@ export default class UserController {
 
     static async updateProfile(req: any, res: any): Promise<void> {
         //add fields by requested update and for only legal update field
-        const fields = ['email', 'password', 'firstname', 'lastname', 'role', 'createTime'];
+        const fields = ['email', 'password', 'firstname', 'lastname', 'role', 'image', 'createTime'];
         const inputBody = pick(req.body, fields);
         if (
             inputBody.hasOwnProperty('role') ||
@@ -146,7 +148,7 @@ export default class UserController {
         res.json({ status: 'success' });
     }
 
-    static async getUserProfile(req: any, res: any) {
+    static async getUserProfile(req: any, res: any): Promise<void> {
         const userProfile = await User.findById(req.params.id);
         if (!userProfile) throw new HttpErrors.NotFound();
 
@@ -164,6 +166,7 @@ export default class UserController {
             firstname: userProfile.firstname,
             lastname: userProfile.lastname,
             role: userProfile.role,
+            image: userProfile.image,
             createTime: userProfile.createTime,
             score: await UserController.getUserAvgRating(req.params.id),
             comments: comments.map(comment => ({
