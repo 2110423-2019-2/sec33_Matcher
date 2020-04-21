@@ -11,46 +11,21 @@ import fs from 'fs';
 import { containAll, inRange } from '../utils/utils';
 
 export default class UserController {
+    static async hello(req: any, res: any): Promise<void> {
+        res.send('Hello World!');
+    }
+
     static async validateInput(body: any, fields: string[]): Promise<boolean> {
         if (!containAll(body, fields)) return false;
 
-        if (fields.includes('role')) {
-            if (body.role !== Role.PHOTOGRAPHER && body.role !== Role.CUSTOMER) return false;
-        }
+        if (fields.includes('email') && !validator.isEmail(body.email) && (await User.exists({ email: body.email })))
+            return false;
+        if (fields.includes('password') && !inRange(body.password.length, 8, 20)) return false;
+        if (fields.includes('firstname') && !inRange(body.firstname.length, 2, 20)) return false;
+        if (fields.includes('lastname') && !inRange(body.lastname.length, 2, 20)) return false;
+        if (fields.includes('role') && body.role !== Role.PHOTOGRAPHER && body.role !== Role.CUSTOMER) return false;
 
-        if (fields.includes('email')) {
-            if (!validator.isEmail(body.email)) return false;
-            if (await User.exists({ email: body.email })) return false;
-        }
-
-        if (fields.includes('firstname')) {
-            if (!inRange(body.firstname.length, 2, 20)) return false;
-        }
-
-        if (fields.includes('lastname')) {
-            if (!inRange(body.lastname.length, 2, 20)) return false;
-        }
-
-        if (fields.includes('password')) {
-            if (!inRange(body.password.length, 8, 20)) return false;
-        }
         return true;
-    }
-
-    private static async getUserAvgRating(userId: string): Promise<number> {
-        const avgRating = await Task.aggregate([
-            { $match: { acceptedBy: Types.ObjectId(userId) } },
-            {
-                $group: {
-                    _id: null,
-                    total: { $avg: '$ratingScore' },
-                },
-            },
-        ]);
-        if (avgRating.length == 0) {
-            return 0;
-        }
-        return avgRating[0].total;
     }
 
     static async createUser(req: any, res: any): Promise<void> {
@@ -65,14 +40,28 @@ export default class UserController {
             firstname: req.body.firstname,
             lastname: req.body.lastname,
             role: req.body.role,
+            image: req.body.image,
             createTime: new Date(),
         });
         await user.save();
         res.json({ status: 'success' });
     }
 
-    static async hello(req: any, res: any): Promise<void> {
-        res.send('Hello World!');
+    private static async getUserAvgRating(userId: string): Promise<number> {
+        const avgRating = await Task.aggregate([
+            { $match: { acceptedBy: Types.ObjectId(userId) } },
+            {
+                $group: {
+                    _id: null,
+                    total: { $avg: '$ratingScore' },
+                },
+            },
+        ]);
+        if (avgRating.length == 0) {
+            return 0;
+        } else {
+            return avgRating[0].total;
+        }
     }
 
     static async getProfile(req: any, res: any): Promise<void> {
@@ -122,12 +111,6 @@ export default class UserController {
         res.json({ status: 'success' });
     }
 
-    static async deleteProfile(req: any, res: any) {
-        if (!(await UserController.checkDelete(req))) throw new HttpErrors.BadRequest();
-        await User.findByIdAndDelete(req.params.userId);
-        res.json({ status: 'success' });
-    }
-
     static async checkDelete(req: any): Promise<boolean> {
         const id = new Types.ObjectId(req.params.userId);
         const userProfile = await User.findById(id);
@@ -141,6 +124,12 @@ export default class UserController {
             }
             return true;
         }
+    }
+
+    static async deleteProfile(req: any, res: any): Promise<void> {
+        if (!(await UserController.checkDelete(req))) throw new HttpErrors.BadRequest();
+        await User.findByIdAndDelete(req.params.userId);
+        res.json({ status: 'success' });
     }
 
     static async notifyUserByEmail(task: any): Promise<any> {
