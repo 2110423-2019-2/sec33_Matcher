@@ -1,0 +1,29 @@
+@import '../colors.scss';
+
+
+.consolePage{
+    padding: 5vh 10vw;
+}
+
+.consoleTitle {
+    display: flex;
+    align-items: center;
+}
+.consoleHeader{
+    color: $color-primary;
+}
+.consoleChoices{
+    margin-top: 3vh;
+    .selected {
+        color: $color-ternary;
+    }
+}
+.choice{
+    cursor: pointer;
+}
+.dialogTitle {
+    color: $color-secondary;
+}
+.dialogContent {
+    color: $color-primary;
+}
