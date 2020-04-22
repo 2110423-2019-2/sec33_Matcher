@@ -51,7 +51,7 @@ export default class TaskController {
         } else {
             if (task.owner.toString() !== req.user._id.toString()) {
                 return false;
-            } else if (task.status != TaskStatus.AVAILABLE) {
+            } else if (task.status !== TaskStatus.AVAILABLE) {
                 return false;
             }
             return true;
@@ -265,7 +265,7 @@ export default class TaskController {
             if (!task) {
                 throw new HttpErrors.NotFound();
             }
-            if (task.status != TaskStatus.PENDING) {
+            if (task.status !== TaskStatus.PENDING) {
                 throw new HttpErrors.BadRequest();
             } // can only cancel task when in pending state
             if (user.role === Role.CUSTOMER) {
