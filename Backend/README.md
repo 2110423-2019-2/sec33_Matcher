@@ -9,7 +9,9 @@ PORT=8080
 DB_HOST=db
 DB_NAME=fastphoto
 SESSION_SECRET=keyboardcat
+EMAIL_KEY=<password for matchersec33@gmail.com>
 ```
+You must change EMAIL_KEY to the correct password for the gmail account (without <>).
 
 You may add one more line if you use URI to connect a database:
 ```
