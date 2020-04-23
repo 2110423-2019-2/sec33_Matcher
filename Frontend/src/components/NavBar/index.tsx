@@ -94,8 +94,8 @@ export default (props: any) => {
                         open={Boolean(anchorEl)}
                         onClose={handleMenuClose}
                     >
-                        <MenuItem onClick={handleRedirect('/console')}>Profile</MenuItem>
-                        <MenuItem onClick={handleRedirect('/console?tab=task')}>Your Tasks</MenuItem>
+                        <MenuItem onClick={handleRedirect('/console/?tab=profile')}>Profile</MenuItem>
+                        <MenuItem onClick={handleRedirect('/console/?tab=task')}>Your Tasks</MenuItem>
                         <MenuItem onClick={handleLogout}>Sign out</MenuItem>
                     </Menu>
                 </Fragment>
