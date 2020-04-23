@@ -78,7 +78,7 @@ export default () => {
 
     const onAccept = (id: string) => (e: any) => {
         if (auth.role !== 'photographer') {
-            alert('Only Photographer is allower to accept task!');
+            alert('Only Photographer are allowed to accept task!');
         } else {
             acceptTask(id).then((res) => {
                 console.log(res);
@@ -124,9 +124,9 @@ export default () => {
                                 onClick={onAccept(task._id)}
                                 name={task.title}
                                 location={task.location}
-                                profilePic={task.img}
+                                profilePic={task.image}
                                 price={task.price}
-                                thumbnail={task.img}
+                                thumbnail={task.image}
                             />
                         </div>
                     );

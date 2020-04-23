@@ -6,7 +6,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { whoami, logout } from '../../api/user';
 import { Avatar, Menu, MenuItem } from '@material-ui/core';
 
-const awesome = '/images/awesome.png';
+const profile = '/images/profile-placeholder2.png';
 
 export default (props: any) => {
     const { auth, authDispatch } = useContext(AuthContext);
@@ -86,7 +86,7 @@ export default (props: any) => {
 
             <div className="NavBarUser">
                 {userBar.isLogin ? <Fragment>
-                    <Avatar src={awesome} onClick={handleMenuClick} />
+                    <Avatar src={profile} onClick={handleMenuClick} />
                     <Menu
                         id="simple-menu"
                         anchorEl={anchorEl}
