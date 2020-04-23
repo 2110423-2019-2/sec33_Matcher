@@ -118,7 +118,9 @@ export default () => {
                     <div className="col-2 col-6-sm">
                         <GmailLogin />
                     </div>
+
                 </div>
+                <div className="blankSpace"></div>
             </div>
         </div>
     );
