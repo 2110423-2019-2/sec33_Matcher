@@ -100,9 +100,9 @@ export default () => {
                                     onClick={onAccept(task._id)}
                                     name={task.title}
                                     location={task.location}
-                                    profilePic={task.img}
+                                    profilePic={task.image}
                                     price={task.price}
-                                    thumbnail={task.img}
+                                    thumbnail={task.image}
                                 />
                             </div>
                         );
