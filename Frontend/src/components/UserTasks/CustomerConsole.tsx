@@ -66,7 +66,10 @@ export default () => {
             setFinishedTasks(t);
         })
     }
-
+    const handleEditTask = () => {
+        fetchTasks();
+        closeEdit();
+    }
     const handleFinishTask = (id: string) => {
         finishTask(id).then(res => {
             console.log(res)
@@ -291,7 +294,7 @@ export default () => {
                 close={closeEdit}
                 title="Edit task"
                 description={
-                    <EditTask init={selectedTask} />
+                    <EditTask init={selectedTask} finish={handleEditTask} />
                 }
             />
             <Modal
@@ -361,7 +364,7 @@ export default () => {
                     </Fragment>
                 }
             />
-             <Modal
+            <Modal
                 open={report}
                 close={closeReport}
                 description={
