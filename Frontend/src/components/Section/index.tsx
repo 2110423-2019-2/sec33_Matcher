@@ -15,7 +15,7 @@ export default ({ title, children }: SectionProps) => {
                 {children ? (
                     React.Children.map(children, (child, idx) => <div className="col-4" key={idx}>{child}</div>)
                 ) : (
-                        <h5 className="sectionNoTaskContent">No task to show yet</h5>
+                        <h6 className="sectionNoTaskContent">No task to show yet</h6>
                     )}
             </div>
         </div>
