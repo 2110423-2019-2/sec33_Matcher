@@ -1,7 +1,7 @@
 import React from 'react';
-import { BodySignIn, Register, Home, CreateTask, Tasks, Console, UserListTable, Profile } from './pages';
+import { BodySignIn, Register, Home, CreateTask, Tasks, Console, UserListTable, Profile, PhotoType } from './pages';
 import './App.css';
-import { NavBar, ComponentList, PrivateRoute, PhotoType, Footer } from './components';
+import { NavBar, ComponentList, PrivateRoute, Footer } from './components';
 import './index.scss';
 import { authReducer, defaultAuth, AuthContextProvider } from './context/AuthContext';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
