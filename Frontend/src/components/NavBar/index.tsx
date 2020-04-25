@@ -101,7 +101,7 @@ export default (props: any) => {
                 </Fragment>
                     : (
                         <Link to="/signin">
-                            <Button type="outlined">Sign In</Button>
+                            <Button type="outlined" className="navbarBtn">Sign In</Button>
                         </Link>
                     )}
             </div>

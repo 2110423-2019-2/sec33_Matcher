@@ -112,7 +112,7 @@ export default () => {
                         }}
                         className="pButton"
                     >
-                        more filter
+                        Filter by
                     </p>
                 </div>
             </div>
