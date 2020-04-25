@@ -32,6 +32,7 @@ export default (props: any) => {
                 isLogin: false,
             });
             history.push('/');
+            window.location.reload(false);
         });
     }
 
