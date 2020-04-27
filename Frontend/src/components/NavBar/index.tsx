@@ -32,10 +32,12 @@ export default (props: any) => {
                 isLogin: false,
             });
             history.push('/');
+            window.location.reload(false);
         });
     }
 
     const handleRedirect = (to: string) => () => {
+        handleMenuClose();
         history.push(to);
     }
 

@@ -1,19 +1,20 @@
 import React, { useEffect, useState, useContext } from 'react';
 import './index.scss';
 import { AuthContext } from '../../context/AuthContext';
-import { Button, VerticalCard, TaskCard, PhotoType } from '../../components/index';
+import { Button, VerticalCard, TaskCard, PhotoType, Modal } from '../../components/index';
 import { ReactComponent as Chevron } from '../../assets/icons/chevron-right.svg';
 import { ReactComponent as ArrowRight } from '../../assets/icons/arrow-right.svg';
 import { getAvailableTasks, acceptTask } from '../../api/task';
 // import camera from '../../assets/camera.svg';
 import social from '../../assets/icons/social icon.svg';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import Lottie from 'react-lottie';
 import LottieCamera from '../../assets/lottie-camera-home.json';
 
 export default () => {
     const { auth, authDispatch } = useContext(AuthContext);
     const [tasks, setTasks] = useState<Array<any>>([]);
+    const history = useHistory();
     useEffect(() => {
         getAvailableTasks()
             .then(tasks => {
@@ -24,10 +25,13 @@ export default () => {
     }, []);
 
     const onAccept = (id: string) => (e: any) => {
-        if (auth.role != 'photographer') {
+        if (auth.role !== 'photographer') {
             alert("Only Photographer is allower to accept task!")
         } else {
-            acceptTask(id);
+            acceptTask(id).then((res) => {
+                console.log(res);
+                history.push('/console?tab=task');
+            }).catch(err => console.log(err))
         }
     };
 
@@ -57,8 +61,8 @@ export default () => {
                     <Link to="/task">
                         <Button type="filled" className="homeBtn">Find jobs</Button>
                     </Link>
-                    <Link to="/create">
-                        <Button type="outlined" className="createTaskBtn homeBtn">
+                    <Link to="/console?tab=create">
+                        <Button type="outlined" className="homeBtn">
                             Create task
                         </Button>
                     </Link>

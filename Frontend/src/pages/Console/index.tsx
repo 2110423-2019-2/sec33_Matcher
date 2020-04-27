@@ -16,6 +16,7 @@ export default withRouter((props: any) => {
         console.log('deleted');
         whoami().then(profile => {
             deleteUser(profile._id).then(() => {
+                authDispatch({ type: 'SIGN_OUT', payload: {} });
                 logout().then(res => {
                     props.history.push('/')
                 })
