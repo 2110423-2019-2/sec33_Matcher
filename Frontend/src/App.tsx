@@ -13,14 +13,14 @@ const App: React.FC = () => {
                 <NavBar />
                 <Switch>
                     <PrivateRoute path="/protected" component={ComponentList} roles={['admin']} />
-                    <Route path="/console" component={Console} roles={['photographer', 'customer']} />
+                    <Route path="/console" component={Console} />
                     <Route path="/signin" component={BodySignIn} />
                     <Route path="/register" component={Register} />
                     <Route path="/task" component={Tasks} />
                     <Route path="/comp" component={ComponentList} />
                     <Route path="/type" component={PhotoType} />
-                    <Route path='/profile/:id' component={Profile} roles={['admin', 'photographer', 'customer']} />
-                    <Route path="/users" component={UserListTable} roles={['admin']} />
+                    <Route path='/profile/:id' component={Profile} />
+                    <Route path="/users" component={UserListTable} />
                     <Route path="/" component={Home} />
                 </Switch>
                 <Footer />
