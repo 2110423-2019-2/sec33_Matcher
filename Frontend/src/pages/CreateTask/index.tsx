@@ -152,7 +152,6 @@ export default () => {
                     <Fragment>
                         <h6 className="confirm-text"><span>Task name: </span>{taskInfo.taskname}</h6>
                         <h6 className="confirm-text"><span>Location: </span>{taskInfo.location}</h6>
-                        {/* <h6 className="confirm-text">{`Cover image:`}</h6> */}
                         <img src={taskInfo.image} alt="cover" className="prev-cover" />
                         <h6 className="confirm-text"><span>Task type: </span>{taskInfo.tasktype}</h6>
                         <h6 className="confirm-text"><span>Price rate (per hour): </span>{taskInfo.price}</h6>
