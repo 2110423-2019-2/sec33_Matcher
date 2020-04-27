@@ -142,7 +142,7 @@ export default () => {
   }}; 
 
   const fillReport = (data : Report) => {
-    const reportee = userList.filter((user: Data) => user._id == data.reportee)[0];
+    const reportee = userList.filter((user: Data) => user._id === data.reportee)[0];
     if(reportee){
       return {'reportee':(reportee as Data).firstname+' '+(reportee as Data).lastname, 'createTime':Moment(data.createTime).format('D MMM YYYY hh:mm A'), 'reason':data.reason}
     }
@@ -172,7 +172,7 @@ export default () => {
   useEffect(() => {setUser()}, []) 
   useEffect(() => {setReport()}, []) 
   
-  const rows = userList.map((user : Data) => fillData(user, allReportsLists.filter((report: Report) => report.reporter == user._id)));
+  const rows = userList.map((user : Data) => fillData(user, allReportsLists.filter((report: Report) => report.reporter === user._id)));
   const reportRows = reportsList.slice(1,).map(report => fillReport(report));
   
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -195,7 +195,7 @@ export default () => {
     setOpen(true);
     getReport().then(report =>{
       setAllReportsLists(report)
-      setReportsList(report.filter((report: Report) => report.reporter == id))
+      setReportsList(report.filter((report: Report) => report.reporter === id))
     })
   }
 
