@@ -1,6 +1,7 @@
 import { Task, User, ITask } from '../models';
 import { containAll, inRange } from '../utils/utils';
 import { Role, photoStyles, TaskStatus } from '../const';
+import UserController from './user.controller';
 import HttpErrors from 'http-errors';
 import { Types } from 'mongoose';
 import pick from 'object.pick';
@@ -50,6 +51,8 @@ export default class TaskController {
         } else {
             if (task.owner.toString() !== req.user._id.toString()) {
                 return false;
+            } else if (task.status !== TaskStatus.AVAILABLE) {
+                return false;
             }
             return true;
         }
@@ -77,7 +80,7 @@ export default class TaskController {
 
         if (!inRange(req.body.title.length, 1, 20)) return false;
         if (req.body.price < 0) return false;
-
+        if (task.status !== TaskStatus.AVAILABLE) return false;
         return true;
     }
 
@@ -95,10 +98,10 @@ export default class TaskController {
         try {
             const user = await User.findById(req.user._id);
             if (user.role === Role.CUSTOMER) {
-                const tasks = await Task.find({ status: TaskStatus.AVAILABLE, owner: req.user._id });
+                const tasks = await Task.find({ status: TaskStatus.AVAILABLE, owner: req.user._id }).populate('owner');
                 res.json(tasks);
             } else if (user.role === Role.PHOTOGRAPHER || user.role === Role.ADMIN) {
-                const tasks = await Task.find({ status: TaskStatus.AVAILABLE });
+                const tasks = await Task.find({ status: TaskStatus.AVAILABLE }).populate('owner');
                 res.json(tasks);
             } else {
                 throw new HttpErrors.NotImplemented();
@@ -113,13 +116,15 @@ export default class TaskController {
         try {
             const user = await User.findById(req.user._id);
             if (user.role === Role.CUSTOMER) {
-                const task = await Task.find({ owner: req.user._id, status: TaskStatus.PENDING });
+                const task = await Task.find({ owner: req.user._id, status: TaskStatus.PENDING }).populate('owner');
                 res.json(task);
             } else if (user.role === Role.PHOTOGRAPHER) {
-                const task = await Task.find({ acceptedBy: req.user._id, status: TaskStatus.PENDING });
+                const task = await Task.find({ acceptedBy: req.user._id, status: TaskStatus.PENDING }).populate(
+                    'owner',
+                );
                 res.json(task);
             } else if (user.role === Role.ADMIN) {
-                const tasks = await Task.find({ status: TaskStatus.PENDING });
+                const tasks = await Task.find({ status: TaskStatus.PENDING }).populate('owner');
                 res.json(tasks);
             } else {
                 throw new HttpErrors.NotImplemented();
@@ -134,13 +139,18 @@ export default class TaskController {
         try {
             const user = await User.findById(req.user._id);
             if (user.role === Role.CUSTOMER) {
-                const matchedTasks = await Task.find({ owner: req.user._id, status: TaskStatus.ACCEPTED });
+                const matchedTasks = await Task.find({ owner: req.user._id, status: TaskStatus.ACCEPTED }).populate(
+                    'owner',
+                );
                 res.json(matchedTasks);
             } else if (user.role === Role.PHOTOGRAPHER) {
-                const matchedTasks = await Task.find({ acceptedBy: req.user._id, status: TaskStatus.ACCEPTED });
+                const matchedTasks = await Task.find({
+                    acceptedBy: req.user._id,
+                    status: TaskStatus.ACCEPTED,
+                }).populate('owner');
                 res.json(matchedTasks);
             } else if (user.role === Role.ADMIN) {
-                const matchedTasks = await Task.find({ status: TaskStatus.ACCEPTED });
+                const matchedTasks = await Task.find({ status: TaskStatus.ACCEPTED }).populate('owner');
                 res.json(matchedTasks);
             } else {
                 // TODO add getMatchedTasks for admin
@@ -156,13 +166,15 @@ export default class TaskController {
         try {
             const user = await User.findById(req.user._id);
             if (user.role === Role.CUSTOMER) {
-                const task = await Task.find({ owner: req.user._id, status: TaskStatus.REQ_FIN });
+                const task = await Task.find({ owner: req.user._id, status: TaskStatus.REQ_FIN }).populate('owner');
                 res.json(task);
             } else if (user.role === Role.PHOTOGRAPHER) {
-                const task = await Task.find({ acceptedBy: req.user._id, status: TaskStatus.REQ_FIN });
+                const task = await Task.find({ acceptedBy: req.user._id, status: TaskStatus.REQ_FIN }).populate(
+                    'owner',
+                );
                 res.json(task);
             } else if (user.role === Role.ADMIN) {
-                const tasks = await Task.find({ status: TaskStatus.REQ_FIN });
+                const tasks = await Task.find({ status: TaskStatus.REQ_FIN }).populate('owner');
                 res.json(tasks);
             } else {
                 throw new HttpErrors.NotImplemented();
@@ -178,11 +190,13 @@ export default class TaskController {
             const user = await User.findById(req.user._id);
             let finishedTasks: Array<ITask>;
             if (user.role === Role.CUSTOMER) {
-                finishedTasks = await Task.find({ owner: req.user._id, status: TaskStatus.FINISHED });
+                finishedTasks = await Task.find({ owner: req.user._id, status: TaskStatus.FINISHED }).populate('owner');
             } else if (user.role === Role.PHOTOGRAPHER) {
-                finishedTasks = await Task.find({ acceptedBy: req.user._id, status: TaskStatus.FINISHED });
+                finishedTasks = await Task.find({ acceptedBy: req.user._id, status: TaskStatus.FINISHED }).populate(
+                    'owner',
+                );
             } else if (user.role === Role.ADMIN) {
-                finishedTasks = await Task.find({ status: TaskStatus.FINISHED });
+                finishedTasks = await Task.find({ status: TaskStatus.FINISHED }).populate('owner');
             } else {
                 throw new HttpErrors.Unauthorized();
             }
@@ -210,14 +224,14 @@ export default class TaskController {
         if (user.role === Role.CUSTOMER) {
             const task = await Task.findById(req.params.id);
             task.status = TaskStatus.ACCEPTED;
-
+            UserController.notifyUserByEmail(task, TaskStatus.ACCEPTED);
             await task.save();
             res.json({ status: 'success' });
         } else if (user.role === Role.PHOTOGRAPHER) {
             const task = await Task.findById(req.params.id);
             task.status = TaskStatus.PENDING;
             task.acceptedBy = req.user._id;
-
+            UserController.notifyUserByEmail(task, 'Requesting Accept');
             await task.save();
             res.json({ status: 'success' });
         } else {
@@ -230,13 +244,14 @@ export default class TaskController {
         if (user.role === Role.CUSTOMER) {
             const task = await Task.findById(req.params.id);
             task.status = TaskStatus.FINISHED;
+            UserController.notifyUserByEmail(task, TaskStatus.FINISHED);
 
             await task.save();
             res.json({ status: 'success' });
         } else if (user.role === Role.PHOTOGRAPHER) {
             const task = await Task.findById(req.params.id);
             task.status = TaskStatus.REQ_FIN;
-
+            UserController.notifyUserByEmail(task, 'Requesting Finish');
             await task.save();
             res.json({ status: 'success' });
         } else {
@@ -261,26 +276,26 @@ export default class TaskController {
             if (!task) {
                 throw new HttpErrors.NotFound();
             }
-            if (task.status === TaskStatus.AVAILABLE || task.status === TaskStatus.FINISHED) {
+            if (task.status !== TaskStatus.PENDING) {
                 throw new HttpErrors.BadRequest();
-            } //what is the task cancelling policy?
+            } // can only cancel task when in pending state
             if (user.role === Role.CUSTOMER) {
                 if (!user._id.equals(task.owner)) {
                     throw new HttpErrors.Unauthorized();
                 }
                 task.status = TaskStatus.AVAILABLE;
+                await UserController.notifyUserByEmail(task, 'Task Cancelled');
                 task.acceptedBy = null;
                 await task.save();
-                //TODO add notification
                 res.json({ status: 'success' });
             } else if (user.role === Role.PHOTOGRAPHER) {
                 if (!user._id.equals(task.acceptedBy)) {
                     throw new HttpErrors.Unauthorized();
                 }
                 task.status = TaskStatus.AVAILABLE;
+                await UserController.notifyUserByEmail(task, 'Task Cancelled');
                 task.acceptedBy = null;
                 await task.save();
-                //TODO add notification
                 res.json({ status: 'success' });
             } else {
                 // TODO implement cancel task for admin here

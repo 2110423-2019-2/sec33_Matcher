@@ -16,6 +16,7 @@ import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
+import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Moment from 'moment';
 
 const styles = (theme: Theme) =>
@@ -68,7 +69,7 @@ const DialogActions = withStyles((theme: Theme) => ({
 export default () => {
   
   interface Column {
-  id: 'name' | 'email' | 'role' | 'blacklist' | 'report';
+  id: 'name' | 'email' | 'role' | 'recentReport' | 'blacklist' | 'report';
   label: string;
   }
 
@@ -83,6 +84,8 @@ export default () => {
   lastname: string;
   email: string;
   role: string;
+  report: Report[];
+  recent: string;
   blacklist: boolean;
   }
 
@@ -100,6 +103,7 @@ export default () => {
     { id: 'role',  label: 'Role'},
     { id: 'blacklist', label: 'Blacklist'},
     { id: 'report', label: 'Report'},
+    { id: 'recentReport', label: 'Recent Report'},
   ];  
 
   const reportColumns: ReportColum[] = [
@@ -108,9 +112,13 @@ export default () => {
     { id: 'reason', label: 'Reason'},
   ]; 
 
-  const fillData = (data : Data) => {
+  const fillData = (data : Data, reports : Report[]) => {
+    let recent = '-'
+    if(data.recent != '-'){
+      recent = Moment(data.recent).format('D MMM YYYY hh:mm A')
+    }
     if(data.blacklist){
-      return {'name':data.firstname+' '+data.lastname, 'email':data.email, 'role':data.role, 'blacklist':<Button
+      return {'name':data.firstname+' '+data.lastname, 'email':data.email, 'role':data.role,'recentReport':recent, 'blacklist':<Button
       onClick={() => handleBlacklist(data._id)}
     >Undo
     </Button>,
@@ -118,7 +126,7 @@ export default () => {
       onClick={() => handleReport(data._id)}
     >View</Button>}
     }
-    return {'name':data.firstname+' '+data.lastname, 'email':data.email, 'role':data.role, 'blacklist':<Button
+    return {'name':data.firstname+' '+data.lastname, 'email':data.email, 'role':data.role,'recentReport':recent, 'blacklist':<Button
     onClick={() => handleBlacklist(data._id)}
   >Blacklist
   </Button>,
@@ -128,35 +136,74 @@ export default () => {
   }}; 
 
   const fillReport = (data : Report) => {
-    const reportee = userList.filter((user: Data) => user._id == data.reportee)[0];
+    const reportee = userList.filter((user: Data) => user._id === data.reportee)[0];
     if(reportee){
       return {'reportee':(reportee as Data).firstname+' '+(reportee as Data).lastname, 'createTime':Moment(data.createTime).format('D MMM YYYY hh:mm A'), 'reason':data.reason}
     }
     return {'reportee':'', 'createTime':'', 'reason':''}
   }
 
-  const [userList, setUserList] = React.useState([]);
-  const [reportsList, setReportsList] = React.useState([]);  
+  const [userList, setUserList] = React.useState([] as Data[]);
+  const [reportsList, setReportsList] = React.useState([] as Report[]);  
+  const [allReportsLists, setAllReportsLists] = React.useState([] as Report[]);   
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [open, setOpen] = React.useState(false);
 
   const setUser = () => {
-    getUserList().then(userLists => setUserList(userLists));
+    getUserList().then((userLists:Data[]) => {
+      getReport().then((reportsLists:Report[]) =>{
+        for(var i=0;i<userLists.length;i++){
+          userLists[i]['report'] = new Array();
+          for(var j=0;j<reportsLists.length;j++){
+            if(userLists[i]._id == reportsLists[j].reporter){
+              userLists[i]['report'].push(reportsLists[j])
+            }
+          }
+          let recentReport;
+          if(userLists[i]['report'].length > 0){
+            recentReport = Moment(userLists[i]['report'][0]['createTime'])
+          }
+          for(var k=1;k<userLists[i]['report'].length;k++) {
+            if(Moment(userLists[i]['report'][k]['createTime']).isAfter(recentReport)){
+              recentReport = Moment(userLists[i]['report'][k]['createTime'])
+            }
+          }
+          userLists[i]['recent'] = '-'
+          if(recentReport){
+            userLists[i]['recent'] = recentReport.toISOString()
+          }
+        }
+        userLists = userLists.sort(function(a:Data, b:Data) {
+          if (!a.recent) {
+             return 0;
+          }
+      
+          if (!b.recent) {
+             return 0;
+          }
+          return b.recent.localeCompare(a.recent);
+      });
+      setUserList(userLists)
+      })
+    });
   };
 
   const setReport = () => {
-    getReport().then(reportsLists => setReportsList(reportsLists))
+    getReport().then(reportsLists => {
+    setReportsList(reportsLists)
+    setAllReportsLists(reportsLists)
+    })
   };  
 
   Moment.locale('en');
 
   useEffect(() => {setUser()}, []) 
   useEffect(() => {setReport()}, []) 
-
-  const rows = userList.map(user => fillData(user));
-  const reportRows = reportsList.slice(1,).map(report => fillReport(report));
   
+  const rows = userList.map((user : Data) => fillData(user, allReportsLists.filter((report: Report) => report.reporter === user._id)));
+  const reportRows = reportsList.map(report => fillReport(report));
+
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
   };
@@ -172,10 +219,13 @@ export default () => {
       setUser();
   })
   }
-
+  
   const handleReport = (id : string) => {
     setOpen(true);
-    getReport().then(reportsLists => setReportsList(reportsLists.filter((report: Report) => report.reporter == id)))
+    getReport().then(report =>{
+      setAllReportsLists(report)
+      setReportsList(report.filter((report: Report) => report.reporter === id))
+    })
   }
 
   const handleClose = () => {
@@ -195,13 +245,17 @@ export default () => {
                   align='center' 
                   style={{ minWidth: 170 }}
                 >
+                  <TableSortLabel>
                   {column.label}
-                </TableCell>
+                  </TableSortLabel>
+                </TableCell>  
               ))}
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+            {rows
+            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            .map((row) => {
               return (
                 <TableRow hover role="checkbox" tabIndex={-1} key={row.email}>
                   {columns.map((column) => {

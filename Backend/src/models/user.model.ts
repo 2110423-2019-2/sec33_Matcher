@@ -6,6 +6,7 @@ const UserSchema = new Schema({
     firstname: { type: String, required: [true, 'required'] },
     lastname: { type: String, required: [true, 'required'] },
     role: { type: String, required: [true, 'required'] },
+    image: { type: String },
     createTime: { type: Date, required: [true, 'required'] },
     blacklist: { type: Boolean },
 });
@@ -16,6 +17,7 @@ export interface IUser extends Document {
     firstname: string;
     lastname: string;
     role: string;
+    image: string;
     createTime: Date;
     blacklist: boolean | undefined;
 }
