@@ -79,7 +79,9 @@ export default class TaskController {
         }
 
         if (!inRange(req.body.title.length, 1, 20)) return false;
-        if (req.body.price < 0) return false;
+        if (!inRange(req.body.location.length, 1, 20)) return false;
+        const isnum = /^\d*\.?\d+$/.test(req.body.price);
+        if (req.body.price < 0 || !isnum) return false;
         if (task.status !== TaskStatus.AVAILABLE) return false;
         return true;
     }
