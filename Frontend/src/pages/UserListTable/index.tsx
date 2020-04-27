@@ -143,7 +143,10 @@ export default () => {
 
   const fillReport = (data : Report) => {
     const reportee = userList.filter((user: Data) => user._id == data.reportee)[0];
-    return {'reportee':(reportee as Data).firstname+' '+(reportee as Data).lastname, 'createTime':Moment(data.createTime).format('D MMM YYYY hh:mm A'), 'reason':data.reason}
+    if(reportee){
+      return {'reportee':(reportee as Data).firstname+' '+(reportee as Data).lastname, 'createTime':Moment(data.createTime).format('D MMM YYYY hh:mm A'), 'reason':data.reason}
+    }
+    return {'reportee':'', 'createTime':'', 'reason':''}
   }
 
   const [userList, setUserList] = React.useState([]);
@@ -170,7 +173,7 @@ export default () => {
   useEffect(() => {setReport()}, []) 
   
   const rows = userList.map((user : Data) => fillData(user, allReportsLists.filter((report: Report) => report.reporter == user._id)));
-  const reportRows = reportsList.map(report => fillReport(report))
+  const reportRows = reportsList.slice(1,).map(report => fillReport(report));
   
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);

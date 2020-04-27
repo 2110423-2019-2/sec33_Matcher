@@ -82,7 +82,7 @@ export default () => {
         } else {
             acceptTask(id).then((res) => {
                 console.log(res);
-                history.push('/console/?tab=task');
+                history.push('/console?tab=task');
             }).catch(err => console.log(err));
         }
     };

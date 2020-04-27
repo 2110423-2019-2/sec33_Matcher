@@ -24,7 +24,6 @@ export const authReducer = (state: any, action: { type: string; payload: any }) 
         case 'SIGN_OUT':
             return {
                 ...initialState,
-                isLogin: false, // TODO remove when initialState.isLogin is false
             };
     }
     return initialState;

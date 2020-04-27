@@ -32,10 +32,12 @@ export default (props: any) => {
                 isLogin: false,
             });
             history.push('/');
+            window.location.reload(false);
         });
     }
 
     const handleRedirect = (to: string) => () => {
+        handleMenuClose();
         history.push(to);
     }
 
@@ -86,7 +88,10 @@ export default (props: any) => {
 
             <div className="NavBarUser">
                 {userBar.isLogin ? <Fragment>
-                    <Avatar src={profile} onClick={handleMenuClick} />
+                    <div className="navUser" onClick={handleMenuClick}>
+                        <Avatar src={profile} />
+                        <p className="username">{userBar.name}</p>
+                    </div>
                     <Menu
                         id="simple-menu"
                         anchorEl={anchorEl}
