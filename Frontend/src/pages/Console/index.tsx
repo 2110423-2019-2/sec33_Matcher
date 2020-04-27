@@ -13,7 +13,7 @@ export default withRouter((props: any) => {
     const [open, setOpen] = useState(false);
     const pages = { profile: <EditProfile />, task: <UserTasks />, create: <CreateTask /> };
     const deleteAccount = () => {
-        console.log('deleted');
+        // console.log('deleted');
         whoami().then(profile => {
             deleteUser(profile._id).then(() => {
                 authDispatch({ type: 'SIGN_OUT', payload: {} });
@@ -25,7 +25,7 @@ export default withRouter((props: any) => {
 
     };
     const signOut = () => {
-        console.log('sign out');
+        // console.log('sign out');
         authDispatch({ type: 'SIGN_OUT' });
         logout().then(res =>
             props.history.push('/')
@@ -38,7 +38,7 @@ export default withRouter((props: any) => {
         } else {
             setCurrentPage(props.location.search.slice(5, props.location.search.length));
         }
-        console.log(props.location)
+        // console.log(props.location)
     }, [props.location.search])
     return (
         <div className="consolePage">

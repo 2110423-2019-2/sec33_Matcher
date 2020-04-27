@@ -16,7 +16,6 @@ import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Moment from 'moment';
 
 const styles = (theme: Theme) =>
@@ -245,9 +244,7 @@ export default () => {
                   align='center' 
                   style={{ minWidth: 170 }}
                 >
-                  <TableSortLabel>
                   {column.label}
-                  </TableSortLabel>
                 </TableCell>  
               ))}
             </TableRow>

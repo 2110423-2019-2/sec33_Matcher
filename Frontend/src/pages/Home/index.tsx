@@ -18,7 +18,7 @@ export default () => {
     useEffect(() => {
         getAvailableTasks()
             .then(tasks => {
-                console.log(tasks);
+                // console.log(tasks);
                 setTasks(tasks);
             })
             .catch(err => console.log(err));
@@ -29,7 +29,7 @@ export default () => {
             alert("Only Photographer is allower to accept task!")
         } else {
             acceptTask(id).then((res) => {
-                console.log(res);
+                // console.log(res);
                 history.push('/console?tab=task');
             }).catch(err => console.log(err))
         }
