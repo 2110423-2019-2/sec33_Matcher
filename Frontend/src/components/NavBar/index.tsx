@@ -37,6 +37,7 @@ export default (props: any) => {
     }
 
     const handleRedirect = (to: string) => () => {
+        handleMenuClose();
         history.push(to);
     }
 
