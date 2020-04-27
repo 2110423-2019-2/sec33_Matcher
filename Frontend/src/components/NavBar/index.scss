@@ -2,6 +2,21 @@
     box-sizing: border-box;
 }
 
+.navUser {
+    display: flex;
+    align-items: center;
+}
+
+.navUser .username {
+    color: #00577f;
+    margin-left: 16px;
+    pointer-events: none;
+}
+
+.navbarBtn {
+    padding: 14px 48px !important;
+}
+
 .navMenu {
     display: inline-flex;
     justify-content: space-between;

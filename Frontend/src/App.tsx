@@ -1,7 +1,7 @@
 import React from 'react';
-import { BodySignIn, Register, Home, CreateTask, Tasks, Console, UserListTable, Profile } from './pages';
+import { BodySignIn, Register, Home, CreateTask, Tasks, Console, UserListTable, Profile, PhotoType } from './pages';
 import './App.css';
-import { NavBar, ComponentList, PrivateRoute, PhotoType, Footer } from './components';
+import { NavBar, ComponentList, PrivateRoute, Footer } from './components';
 import './index.scss';
 import { authReducer, defaultAuth, AuthContextProvider } from './context/AuthContext';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
@@ -13,8 +13,7 @@ const App: React.FC = () => {
                 <NavBar />
                 <Switch>
                     <PrivateRoute path="/protected" component={ComponentList} roles={['admin']} />
-                    <Route path="/console" component={Console} roles={['photographer', 'customer']} />
-                    <Route path="/create" component={CreateTask} />
+                    <Route path="/console" component={Console} />
                     <Route path="/signin" component={BodySignIn} />
                     <Route path="/register" component={Register} />
                     <Route path="/task" component={Tasks} />

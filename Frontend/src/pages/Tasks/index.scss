@@ -1,8 +1,14 @@
 @import '../colors.scss';
+
+.taskPage .tasks .col {
+    margin-bottom: 32px;
+}
+
 .taskPage {
     padding: 1px 7.29vw;
     padding-bottom: 14.11vh;
     background-color: #fbfbfb;
+    min-height: 83vh;
 }
 
 .taskTitle {

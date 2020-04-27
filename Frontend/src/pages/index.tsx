@@ -7,5 +7,6 @@ import Tasks from './Tasks';
 import Console from './Console';
 import Profile from './Profile';
 import UserListTable from './UserListTable';
+import PhotoType from './PhotoType';
 
-export { BodySignIn, Register, CreateTask, Home, Tasks, Console, EditProfile, UserListTable, Profile };
+export { BodySignIn, Register, CreateTask, Home, Tasks, Console, EditProfile, UserListTable, Profile, PhotoType };

@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import './index.scss';
 import Checkbox from '@material-ui/core/Checkbox';
 import { AppleLogin, FacebookLogin, GmailLogin, ChevronRight, RegisterBackground, ChooseImage } from '../../assets';
 import { Input, Button } from '../../components';
 import isEmail from 'validator/lib/isEmail';
 import { Link, useHistory } from 'react-router-dom';
-import { register } from '../../api/user';
+import { register, login, whoami } from '../../api/user';
+import { AuthContext } from '../../context/AuthContext';
 
 export default () => {
     const [userInfo, setUserInfo] = useState({
@@ -24,7 +25,7 @@ export default () => {
         lastname: '',
     });
     const history = useHistory();
-
+    const { authDispatch } = useContext(AuthContext);
     const validate = () => {
         setErrorText({
             ...errorText,
@@ -55,15 +56,22 @@ export default () => {
         });
     };
 
-    const handleSubmit = (e: any) => {
+    const handleSubmit = async (e: any) => {
         e.preventDefault();
         if (validate()) {
-            register(userInfo)
-                .then(() => history.push('/signin'))
-                .catch((err) => {
-                    console.log(err)
-                    setErrorText({ ...errorText, email: 'Error' });
-                });
+            try {
+                const registerResponse = await register(userInfo)
+                if (registerResponse.status === 200) {
+                    const loginResponse = await login({ email: userInfo.email, password: userInfo.password });
+                    if (loginResponse.status === 200) {
+                        const profile = await whoami();
+                        authDispatch({ type: 'FETCH_AUTH_STATUS', payload: { profile } });
+                        history.push('/');
+                    }
+                }
+            } catch (err) {
+                console.log(err);
+            }
         }
     };
 
@@ -75,7 +83,7 @@ export default () => {
             <div className="col-1" />
             <div className="col-4">
                 <div className="row">
-                    <h1 className="signInHeader">SIGN UP</h1>
+                    <h1 className="signUpHeader">SIGN UP</h1>
                 </div>
                 <div className="row" style={{ display: 'inline-flex' }}>
                     <div className="col-6">
@@ -155,7 +163,7 @@ export default () => {
                         <Input label="National Card Image" variant="filled" fullWidth />
                     </div>
                 </div>
-                <div className="row">
+                <div className="row signupBtn">
                     <div className="col-8 col-7-sm">
                         <p>
                             Already a member?{' '}

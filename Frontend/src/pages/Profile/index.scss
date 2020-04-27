@@ -1,8 +1,9 @@
 @import '../colors.scss';
 
 .profileContainer {
-    padding: 1px 7.29vw;
-
+    padding: 64px 7.29vw;
+    background-color: #FBFBFB;
+    min-height: 83vh;
     h4 {
         color: $color-primary;
     }
