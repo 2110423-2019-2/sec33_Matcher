@@ -84,6 +84,8 @@ export default () => {
   lastname: string;
   email: string;
   role: string;
+  report: Report[];
+  recent: string;
   blacklist: boolean;
   }
 
@@ -150,15 +152,52 @@ export default () => {
     return {'reportee':'', 'createTime':'', 'reason':''}
   }
 
-  const [userList, setUserList] = React.useState([]);
-  const [reportsList, setReportsList] = React.useState([]);  
-  const [allReportsLists, setAllReportsLists] = React.useState([]);   
+  const [userList, setUserList] = React.useState([] as Data[]);
+  const [reportsList, setReportsList] = React.useState([] as Report[]);  
+  const [allReportsLists, setAllReportsLists] = React.useState([] as Report[]);   
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [open, setOpen] = React.useState(false);
 
   const setUser = () => {
-    getUserList().then(userLists => setUserList(userLists));
+    getUserList().then((userLists:Data[]) => {
+      getReport().then((reportsLists:Report[]) =>{
+        for(var i=0;i<userLists.length;i++){
+          userLists[i]['report'] = new Array();
+          for(var j=0;j<reportsLists.length;j++){
+            if(userLists[i]._id == reportsLists[j].reporter){
+              userLists[i]['report'].push(reportsLists[j])
+            }
+          }
+          let recentReport;
+          if(userLists[i]['report'].length > 0){
+            recentReport = Moment(userLists[i]['report'][0]['createTime'])
+          }
+          for(var k=1;k<userLists[i]['report'].length;k++) {
+            if(Moment(userLists[i]['report'][k]['createTime']).isAfter(recentReport)){
+              recentReport = Moment(userLists[i]['report'][k]['createTime'])
+            }
+          }
+          userLists[i]['recent'] = '-'
+          if(recentReport){
+            userLists[i]['recent'] = recentReport.toISOString()
+          }
+        }
+      })
+      userLists = userLists.sort(function(a, b) {
+        console.log(a['report'])
+        console.log(b)
+        if (!a.recent) {
+           return 0;
+        }
+    
+        if (!b.recent) {
+           return 0;
+        }
+        return b.recent.localeCompare(a.recent);
+    });
+      setUserList(userLists)
+    });
   };
 
   const setReport = () => {
