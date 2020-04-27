@@ -25,7 +25,7 @@ export default () => {
     });
     const [confirm, setConfirm] = useState(false);
     const closeConfirm = () => setConfirm(false)
-    
+
 
     const history = useHistory();
     const confirmTask = (e: any) => {
@@ -34,14 +34,14 @@ export default () => {
             setConfirm(true);
         }
     }
-        
+
     const validate = () => {
         setErrorText({
             ...errorText,
             taskname: taskInfo.taskname.length === 0 ? 'Taskname cannot be empty.' : '',
             location: taskInfo.location.length === 0 ? 'Location cannot be empty.' : '',
             image: taskInfo.image.length === 0 ? 'Image cannot be empty.' : '',
-            price: isNaN(parseFloat(taskInfo.price)) || parseFloat(taskInfo.price) < 0? 'Invalid price.' : '',
+            price: isNaN(parseFloat(taskInfo.price)) || parseFloat(taskInfo.price) < 0 ? 'Invalid price.' : '',
         });
         if (taskInfo.taskname.length === 0) return false;
         if (taskInfo.location.length === 0) return false;
@@ -49,7 +49,7 @@ export default () => {
         if (isNaN(parseFloat(taskInfo.price)) || parseFloat(taskInfo.price) < 0) return false;
         return true;
     };
-    
+
     const handleChange = (field: string) => (e: any) => {
         setTaskInfo({
             ...taskInfo,
@@ -137,7 +137,7 @@ export default () => {
                         />
                     </div>
                     <div className="col-6 createTaskTitle">
-                        <Button type="invert" onClick={confirmTask} fullWidth>
+                        <Button type="invert" className="creatTaskBtn" onClick={confirmTask} fullWidth>
                             Launch Task
                             <Chevron style={{ strokeWidth: 1 }} />
                         </Button>
@@ -150,12 +150,12 @@ export default () => {
                 title='Do you want to create the following task ?'
                 description={
                     <Fragment>
-                        <h6 className="confirm-text">{`Task name: ${taskInfo.taskname}`}</h6>
-                        <h6 className="confirm-text">{`Location: ${taskInfo.location}`}</h6>
-                        <h6 className="confirm-text">{`Cover image:`}</h6>
+                        <h6 className="confirm-text"><span>Task name: </span>{taskInfo.taskname}</h6>
+                        <h6 className="confirm-text"><span>Location: </span>{taskInfo.location}</h6>
+                        {/* <h6 className="confirm-text">{`Cover image:`}</h6> */}
                         <img src={taskInfo.image} alt="cover" className="prev-cover" />
-                        <h6 className="confirm-text">{`Task type: ${taskInfo.tasktype}`}</h6>
-                        <h6 className="confirm-text">{`Price rate(per hour): ${taskInfo.price}`}</h6>
+                        <h6 className="confirm-text"><span>Task type: </span>{taskInfo.tasktype}</h6>
+                        <h6 className="confirm-text"><span>Price rate (per hour): </span>{taskInfo.price}</h6>
                     </Fragment>
                 }
                 action={
@@ -167,5 +167,5 @@ export default () => {
 
             />
         </div>
-        );
+    );
 };
