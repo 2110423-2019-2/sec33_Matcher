@@ -65,7 +65,7 @@ export default () => {
                     const loginResponse = await login({ email: userInfo.email, password: userInfo.password });
                     if (loginResponse.status === 200) {
                         const profile = await whoami();
-                        authDispatch({ type: 'FETCH_AUTH_STATUS', payload: { profile } });
+                        authDispatch({ type: 'FETCH_AUTH_STATUS', payload: profile });
                         history.push('/');
                     }
                 }
