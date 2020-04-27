@@ -107,11 +107,13 @@ export default () => {
         })
     }
     const handleReportTask = (acceptedBy: string) => {
+        if (validate()){
         reportTask(acceptedBy, rpt).then(res => {
             console.log(res);
             fetchTasks();
             setReport(false);
-        })
+            setRpt('');
+        })}
     }
     const viewPhotographer = (id: string) => {
         history.push(`/profile/${id}`);
@@ -165,6 +167,20 @@ export default () => {
     useEffect(() => {
         fetchTasks();
     }, [])
+
+    const [errorText, setErrorText] = useState({
+        report: '',
+    });
+
+
+    const validate = () => {
+        setErrorText({
+            ...errorText,
+            report: rpt.length === 0 ? 'Report cannot be empty.' : '',
+        });
+        if (rpt.length === 0) return false;
+        return true;
+    };
 
 
     return (
@@ -410,7 +426,13 @@ export default () => {
                         <h6 className="dialogContent">Report</h6>
                         <br></br>
                         <div className="comment">
-                            <Input variant="filled" onChange={reportChange} label="Type your report" fullWidth />
+                            <Input  
+                            variant="filled" 
+                            error={Boolean(errorText.report)}
+                            helperText={errorText.report}
+                            onChange={reportChange} 
+                            label="Type your report" 
+                            fullWidth />
                         </div>
                     </Fragment>
                 }
