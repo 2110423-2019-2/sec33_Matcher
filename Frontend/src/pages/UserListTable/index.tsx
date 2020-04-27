@@ -148,6 +148,7 @@ export default () => {
 
   const [userList, setUserList] = React.useState([]);
   const [reportsList, setReportsList] = React.useState([]);  
+  const [allReportsLists, setAllReportsLists] = React.useState([]);   
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [open, setOpen] = React.useState(false);
@@ -157,15 +158,18 @@ export default () => {
   };
 
   const setReport = () => {
-    getReport().then(reportsLists => setReportsList(reportsLists))
+    getReport().then(reportsLists => {
+    setReportsList(reportsLists)
+    setAllReportsLists(reportsLists)
+    })
   };  
 
   Moment.locale('en');
 
   useEffect(() => {setUser()}, []) 
   useEffect(() => {setReport()}, []) 
-
-  const rows = userList.map((user : Data) => fillData(user, reportsList.filter((report: Report) => report.reporter == user._id)));
+  
+  const rows = userList.map((user : Data) => fillData(user, allReportsLists.filter((report: Report) => report.reporter == user._id)));
   const reportRows = reportsList.map(report => fillReport(report))
   
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -183,10 +187,13 @@ export default () => {
       setUser();
   })
   }
-
+  
   const handleReport = (id : string) => {
     setOpen(true);
-    getReport().then(reportsLists => setReportsList(reportsLists.filter((report: Report) => report.reporter == id)))
+    getReport().then(report =>{
+      setAllReportsLists(report)
+      setReportsList(report.filter((report: Report) => report.reporter == id))
+    })
   }
 
   const handleClose = () => {
