@@ -87,7 +87,10 @@ export default (props: any) => {
 
             <div className="NavBarUser">
                 {userBar.isLogin ? <Fragment>
-                    <Avatar src={profile} onClick={handleMenuClick} />
+                    <div className="navUser" onClick={handleMenuClick}>
+                        <Avatar src={profile} />
+                        <p className="username">{userBar.name}</p>
+                    </div>
                     <Menu
                         id="simple-menu"
                         anchorEl={anchorEl}
