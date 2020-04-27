@@ -62,7 +62,7 @@ export default () => {
                         <Button type="filled" className="homeBtn">Find jobs</Button>
                     </Link>
                     <Link to="/console?tab=create">
-                        <Button type="outlined" className="createTaskBtn">
+                        <Button type="outlined" className="homeBtn">
                             Create task
                         </Button>
                     </Link>
