@@ -6,7 +6,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { whoami, logout } from '../../api/user';
 import { Avatar, Menu, MenuItem } from '@material-ui/core';
 
-const awesome = '/images/awesome.png';
+const profile = '/images/profile-placeholder2.png';
 
 export default (props: any) => {
     const { auth, authDispatch } = useContext(AuthContext);
@@ -32,6 +32,7 @@ export default (props: any) => {
                 isLogin: false,
             });
             history.push('/');
+            window.location.reload(false);
         });
     }
 
@@ -87,7 +88,10 @@ export default (props: any) => {
 
             <div className="NavBarUser">
                 {userBar.isLogin ? <Fragment>
-                    <Avatar src={awesome} onClick={handleMenuClick} />
+                    <div className="navUser" onClick={handleMenuClick}>
+                        <Avatar src={profile} />
+                        <p className="username">{userBar.name}</p>
+                    </div>
                     <Menu
                         id="simple-menu"
                         anchorEl={anchorEl}
@@ -95,14 +99,14 @@ export default (props: any) => {
                         open={Boolean(anchorEl)}
                         onClose={handleMenuClose}
                     >
-                        <MenuItem onClick={handleRedirect('/console?tab=profile')}>Profile</MenuItem>
-                        <MenuItem onClick={handleRedirect('/console?tab=task')}>Your Tasks</MenuItem>
+                        <MenuItem onClick={handleRedirect('/console/?tab=profile')}>Profile</MenuItem>
+                        <MenuItem onClick={handleRedirect('/console/?tab=task')}>Your Tasks</MenuItem>
                         <MenuItem onClick={handleLogout}>Sign out</MenuItem>
                     </Menu>
                 </Fragment>
                     : (
                         <Link to="/signin">
-                            <Button type="outlined">Sign In</Button>
+                            <Button type="outlined" className="navbarBtn">Sign In</Button>
                         </Link>
                     )}
             </div>

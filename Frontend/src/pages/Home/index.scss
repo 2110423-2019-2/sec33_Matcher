@@ -5,8 +5,11 @@
 }
 
 .pad {
-    padding-left: 100px;
-    padding-right: 100px;
+    padding: 40px 100px;
+}
+
+.padTop {
+    padding-left: 160px;
 }
 
 .home-sub-title {
@@ -64,8 +67,8 @@
 
 .pic {
     position: absolute;
-    right: 100px;
-    top: 200px;
+    right: 200px;
+    top: 150px;
     float: right;
 }
 
@@ -81,6 +84,8 @@
     color: grey;
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    padding-right: 88px;
 }
 
 .matcherBlock {
@@ -107,7 +112,7 @@
 }
 
 .blank {
-    height: 300px;
+    height: 260px;
 }
 
 .task {
@@ -142,4 +147,8 @@
 
 .photo-type {
   margin: 80px 0;
+}
+
+.homeBtn {
+    padding: 14px 48px;
 }

@@ -140,7 +140,7 @@ export default () => {
                         />
                     </div>
                     <div className="col-6">
-                        <Button type="invert" onClick={handleSubmit} fullWidth>
+                        <Button type="invert" className="editProfileBtn" onClick={handleSubmit} fullWidth>
                             Save Changes
                             <Chevron style={{ strokeWidth: 1 }} />
                         </Button>

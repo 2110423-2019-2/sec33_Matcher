@@ -1,47 +1,66 @@
-@import "../colors.scss";
+@import '../colors.scss';
 
-.signIn {
-  height: 80vh;
+.signinFlex {
+    display: flex;
+    align-items: center;
+}
+
+.siginContainer {
+    height: 82vh;
+    background-color: #fbfbfb;
 }
 
 .signinForm {
-  padding-top: 56px;
+    padding-top: 88px;
 }
 
-.signInHeader{
-  color: $color-dark;
-  font-size: 36px;
-  font-weight: 300;
+.signInHeader {
+    color: $color-dark;
+    font-size: 36px;
+    font-weight: 300;
+    margin-bottom: 48px;
 }
 
 .loginBox {
-  margin-left: 3em;
+    margin-left: 3em;
 }
 
 .loginFormSection {
-  margin: 1.5em 0;
+    margin: 1.5em 0;
+    margin-bottom: 32px;
 
-  .MuiTextField-root {
-    width: 100% !important;
-  }
+    .MuiTextField-root {
+        width: 100% !important;
+    }
 }
 
 .signUpLink {
-  color: $color-secondary;
+    color: $color-secondary;
 }
 
 .loginButton {
-  color: $color-white;
+    color: $color-white;
 }
 
 .altSignin {
-  margin-top: 15px;
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    margin: 28px 2%;
 }
 
 .loginBackground {
-  position: absolute;
-  left: 0;
-  height: 80vh;
+    position: absolute;
+    left: 0;
+    height: 80vh;
+}
+
+.blankSpace {
+    height: 200px;
+}
+
+.orLine {
+    margin-top: 32px;
 }
 
 // @media only screen and (max-width: 720px) {

@@ -1,5 +1,36 @@
 @import "../colors.scss";
 
+.createTaskPage .MuiFormLabel-root {
+    padding-left: 26px;
+}
+
+.createTaskPage input, .createTaskPage .MuiSelect-root {
+    padding-left: 32px;
+}
+
+.creatTaskBtn {
+    padding: 14px 32px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.MuiDialogTitle-root, .MuiDialogContent-root, .MuiDialogActions-root {
+    padding-left: 48px !important;
+    padding-right: 48px !important;
+}
+
+.MuiDialogActions-root {
+    margin-bottom: 40px;
+}
+
+.MuiDialogTitle-root {
+    margin-top: 24px !important;
+}
+
+.MuiDialogTitle-root h3 {
+    font-size: 32px;
+}
+
 .createTaskPage {
     padding: 7vh 15vw;
     padding-bottom: 25vh;
@@ -19,10 +50,15 @@
     height: 5vw;
 }
 .prev-cover {
-    width: 300;
-    height: 150;
+    width: 100%;
+    height: 256px;
     object-fit: cover;
+    margin: 16px 0;
 }
 .confirm-text {
     color: $color-primary;
+}
+
+.confirm-text span {
+    color: $color-dark;
 }

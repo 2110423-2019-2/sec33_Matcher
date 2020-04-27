@@ -3,8 +3,9 @@ import './index.scss';
 import { AuthContext } from '../../context/AuthContext';
 import { Button, VerticalCard, TaskCard, PhotoType, Modal } from '../../components/index';
 import { ReactComponent as Chevron } from '../../assets/icons/chevron-right.svg';
+import { ReactComponent as ArrowRight } from '../../assets/icons/arrow-right.svg';
 import { getAvailableTasks, acceptTask } from '../../api/task';
-import camera from '../../assets/camera.svg';
+// import camera from '../../assets/camera.svg';
 import social from '../../assets/icons/social icon.svg';
 import { Link, useHistory } from 'react-router-dom';
 import Lottie from 'react-lottie';
@@ -36,7 +37,7 @@ export default () => {
 
     return (
         <div className="home">
-            <div className="pad">
+            <div className="pad padTop">
                 <div className="home-sub-title">
                     <div className="line-before-home-sub-title" />
                     <h5>A picture is worth a thousand words</h5>
@@ -48,13 +49,17 @@ export default () => {
                 </div>
 
                 <div className="pic">
-                    <img src={camera} alt="camera" />
+                    <Lottie options={{ animationData: LottieCamera }}
+                        height={500}
+                        width={500}
+                    />
+                    {/* <img src={camera} alt="camera" /> */}
                 </div>
-                <br></br>
+                <br /><br /><br /><br />
 
                 <div className="home-button-line">
                     <Link to="/task">
-                        <Button type="filled">Find jobs</Button>
+                        <Button type="filled" className="homeBtn">Find jobs</Button>
                     </Link>
                     <Link to="/console?tab=create">
                         <Button type="outlined" className="createTaskBtn">
@@ -68,6 +73,7 @@ export default () => {
                 <Link to="/task">
                     <h5>see all task</h5>
                 </Link>
+                <ArrowRight/>
             </div>
 
             <div className="matcherBlock">
@@ -83,15 +89,23 @@ export default () => {
             <div className="blank"></div>
 
             <div className="pad">
-                <div className="row">
+                {/* <div className="row">
                     <div className="col-6 left subHeader">
                         <h5>Jobs near by you</h5>
                     </div>
                     <div className="col-6 right subHeader seeall">
                         <Link to="/task">
-                            <h5>
-                                see all <Chevron />
-                            </h5>
+                            <h5>see all <Chevron /></h5>
+                        </Link>
+                    </div>
+                </div> */}
+                <div className="jobNearby">
+                    <div className="subHeader">
+                        <h5>Jobs near by you</h5>
+                    </div>
+                    <div className="subHeader seeall">
+                        <Link to="/task">
+                            <h5>see all <Chevron /></h5>
                         </Link>
                     </div>
                 </div>
@@ -104,9 +118,9 @@ export default () => {
                                     onClick={onAccept(task._id)}
                                     name={task.title}
                                     location={task.location}
-                                    profilePic={task.img}
+                                    profilePic={task.image}
                                     price={task.price}
-                                    thumbnail={task.img}
+                                    thumbnail={task.image}
                                 />
                             </div>
                         );

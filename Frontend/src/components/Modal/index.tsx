@@ -15,9 +15,9 @@ export default ({ title, description, action, open, close }: ModalProps) => {
     return (
         <Dialog open={open} onClose={close} fullWidth>
             <DialogTitle>
-                <h3>
+                <h4>
                     {title}
-                </h3>
+                </h4>
             </DialogTitle>
             <DialogContent>
                 <DialogContentText>

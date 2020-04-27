@@ -13,7 +13,7 @@ import { ReactComponent as Chevron } from '../../assets/icons/chevron-right.svg'
 import { upsertTask, getTaskById } from '../../api/task';
 import { useHistory } from 'react-router-dom';
 import { dummyTasks } from '../../const';
-export default ({ init }: any) => {
+export default ({ init, finish }: any) => {
     const [task, setTask] = useState({
         title: '',
         location: '',
@@ -59,6 +59,7 @@ export default ({ init }: any) => {
             upsertTask(init._id, { ...task, price: parseFloat(task.price) }).then(res => {
                 console.log(res);
                 history.push('/console');
+                finish();
             }).catch(err => console.log(err));
         }
     };

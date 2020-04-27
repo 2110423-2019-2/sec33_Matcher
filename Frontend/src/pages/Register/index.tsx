@@ -83,7 +83,7 @@ export default () => {
             <div className="col-1" />
             <div className="col-4">
                 <div className="row">
-                    <h1 className="signInHeader">SIGN UP</h1>
+                    <h1 className="signUpHeader">SIGN UP</h1>
                 </div>
                 <div className="row" style={{ display: 'inline-flex' }}>
                     <div className="col-6">
@@ -163,7 +163,7 @@ export default () => {
                         <Input label="National Card Image" variant="filled" fullWidth />
                     </div>
                 </div>
-                <div className="row">
+                <div className="row signupBtn">
                     <div className="col-8 col-7-sm">
                         <p>
                             Already a member?{' '}

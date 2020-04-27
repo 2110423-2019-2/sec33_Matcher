@@ -35,7 +35,7 @@ interface TaskCardProps extends UserCardProps {
 const UserCard = ({
     name = 'User Name',
     location = 'Job Location',
-    profilePic = '/images/profile-placeholder.png',
+    profilePic = '/images/profile-placeholder2.png',
     options = null,
 }: UserCardProps) => {
     const [anchor, setAnchor] = useState<HTMLElement | null>(null);
@@ -114,7 +114,7 @@ export default ({
 }: TaskCardProps) => (
         <div style={{ display: 'inline-flex' }}>
             <div className="taskCardContainer">
-                <UserCard name={name} location={location} profilePic={profilePic} options={options} />
+                <UserCard name={name} location={location} profilePic={'/images/profile-placeholder2.png'} options={options} />
                 <div className="row">
                     <div className="col-12">
                         <img src={thumbnail} className="taskPic" alt="task" />

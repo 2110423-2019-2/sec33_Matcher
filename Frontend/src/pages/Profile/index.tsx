@@ -54,6 +54,8 @@ export default () => {
         getPhotographerProfile(id || '')
             .then(profile => setProfile({ ...profile, comments: profile.comments || [] }))
             .catch(err => console.log(err));
+
+        console.log(profile)
     }, [])
 
     return (

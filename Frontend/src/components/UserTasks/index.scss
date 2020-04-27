@@ -3,6 +3,25 @@
     margin-left: 1.5vw;
 }
 
+.paymentInput {
+    margin-bottom: 24px;
+}
+
+.paymentHalf {
+    display: flex;
+    justify-content: space-between;
+}
+
+.creditCardLogo {
+    position: absolute;
+    top: 45px;
+    right: 40px;
+}
+
+.creditCardLogo img {
+    height: 40px;
+}
+
 .comment {
     width: 100%;
 }

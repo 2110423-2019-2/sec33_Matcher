@@ -73,11 +73,13 @@ export default () => {
     }
 
     const handleReportTask = (owner: string) => {
+        if (validate()){
         reportTask(owner, rpt).then(res => {
             console.log(res);
             fetchTasks();
             setReport(false);
-        })
+            setRpt('');
+        })}
     }
     const reportChange = (e: any) => {
         setRpt(e.target.value);
@@ -95,6 +97,21 @@ export default () => {
         setFinish(false);
     }
     const closeCancel = () => setCancel(false);
+
+    const [errorText, setErrorText] = useState({
+        report: '',
+    });
+
+
+    const validate = () => {
+        setErrorText({
+            ...errorText,
+            report: rpt.length === 0 ? 'Report cannot be empty.' : '',
+        });
+        if (rpt.length === 0) return false;
+        return true;
+    };
+
 
     return (
         <div className="sectionContainer">
@@ -196,7 +213,13 @@ export default () => {
                         <h6 className="dialogContent">Report</h6>
                         <br></br>
                         <div className="comment">
-                            <Input variant="filled" onChange={reportChange} label="Type your report" fullWidth />
+                            <Input 
+                            variant="filled" 
+                            error={Boolean(errorText.report)}
+                            helperText={errorText.report}
+                            onChange={reportChange} 
+                            label="Type your report" 
+                            fullWidth />
                         </div>
                     </Fragment>
                 }

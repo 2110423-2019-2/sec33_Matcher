@@ -27,6 +27,7 @@ export default () => {
     const [finishedTasks, setFinishedTasks] = useState<Array<ITask>>([]);
     const history = useHistory();
     const awesome = '/images/awesome.png';
+    const [payment, setPayment] = useState(false);
     const [edit, setEdit] = useState(false);
     const [deleted, setDeleted] = useState(false);
     const [accept, setAccept] = useState(false);
@@ -66,12 +67,16 @@ export default () => {
             setFinishedTasks(t);
         })
     }
-
+    const handleEditTask = () => {
+        fetchTasks();
+        closeEdit();
+    }
     const handleFinishTask = (id: string) => {
         finishTask(id).then(res => {
             console.log(res)
             fetchTasks();
-            setFinish(false);
+            // setFinish(false);
+            setPayment(false);
         })
     }
     const handleAcceptTask = (id: string) => {
@@ -102,11 +107,13 @@ export default () => {
         })
     }
     const handleReportTask = (acceptedBy: string) => {
+        if (validate()){
         reportTask(acceptedBy, rpt).then(res => {
             console.log(res);
             fetchTasks();
             setReport(false);
-        })
+            setRpt('');
+        })}
     }
     const viewPhotographer = (id: string) => {
         history.push(`/profile/${id}`);
@@ -121,7 +128,8 @@ export default () => {
     const closeEdit = () => setEdit(false);
     const closeAccept = () => setAccept(false);
     const closeCancel = () => setCancel(false);
-    const closeFinish = () => setFinish(false);
+    // const closeFinish = () => setFinish(false);
+    const closePayment = () => setPayment(false);
     const closeReview = () => setReview(false);
     const closeReport = () => setReport(false);
     const editThisTask = (task: ITask) => {
@@ -140,8 +148,12 @@ export default () => {
         setCancel(true);
         setSelectedTask(task);
     }
-    const finishThisTask = (task: ITask) => {
-        setFinish(true);
+    // const finishThisTask = (task: ITask) => {
+    //     setFinish(true);
+    //     setSelectedTask(task);
+    // }
+    const paymentThisTask = (task: ITask) => {
+        setPayment(true);
         setSelectedTask(task);
     }
     const reviewThisTask = (task: ITask) => {
@@ -155,6 +167,20 @@ export default () => {
     useEffect(() => {
         fetchTasks();
     }, [])
+
+    const [errorText, setErrorText] = useState({
+        report: '',
+    });
+
+
+    const validate = () => {
+        setErrorText({
+            ...errorText,
+            report: rpt.length === 0 ? 'Report cannot be empty.' : '',
+        });
+        if (rpt.length === 0) return false;
+        return true;
+    };
 
 
     return (
@@ -239,8 +265,8 @@ export default () => {
                                 location={t.location}
                                 profilePic={t.image}
                                 price={t.price}
-                                button='Confirm'
-                                onClick={() => finishThisTask(t)}
+                                button='Payment'
+                                onClick={() => paymentThisTask(t)}
                             />
                         )
                 }
@@ -274,6 +300,37 @@ export default () => {
                         })
                 }
             </Section>
+
+            <Modal
+                open={payment}
+                close={closePayment}
+                title={"Payment Details"}
+                description={
+                    <Fragment>
+                        <div className="creditCardLogo">
+                            <img src="/images/credit-logo.png" alt="Credit card logo" />
+                        </div>
+                        <h6>Please fill your payment informations correctly</h6>
+                        <br />
+                        <div className="paymentInput">
+                            <Input label="Card Number" variant="filled" fullWidth />
+                        </div>
+                        <div className="paymentInput">
+                            <Input label="Card Holder's Name" variant="filled" fullWidth />
+                        </div>
+                        <div className="paymentHalf paymentInput">
+                            <Input label="EXP" variant="filled" />
+                            <Input label="CCV" variant="filled" />
+                        </div>
+                    </Fragment>
+                }
+                action={
+                    <Fragment>
+                        <Button fullWidth type="outlined" onClick={closePayment}>Cancel</Button>
+                        <Button fullWidth onClick={() => handleFinishTask(selectedTask._id)}>Confirm</Button>
+                    </Fragment>
+                }
+            />
             <Modal
                 open={deleted}
                 close={closeDeleted}
@@ -291,7 +348,7 @@ export default () => {
                 close={closeEdit}
                 title="Edit task"
                 description={
-                    <EditTask init={selectedTask} />
+                    <EditTask init={selectedTask} finish={handleEditTask} />
                 }
             />
             <Modal
@@ -318,7 +375,7 @@ export default () => {
                     </Fragment>
                 }
             />
-            <Modal
+            {/* <Modal
                 open={finish}
                 close={closeFinish}
                 title='Finish task'
@@ -329,7 +386,7 @@ export default () => {
                         <Button fullWidth onClick={() => handleFinishTask(selectedTask._id)}>Confirm</Button>
                     </Fragment>
                 }
-            />
+            /> */}
             <Modal
                 open={review}
                 close={closeReview}
@@ -361,7 +418,7 @@ export default () => {
                     </Fragment>
                 }
             />
-             <Modal
+            <Modal
                 open={report}
                 close={closeReport}
                 description={
@@ -369,7 +426,13 @@ export default () => {
                         <h6 className="dialogContent">Report</h6>
                         <br></br>
                         <div className="comment">
-                            <Input variant="filled" onChange={reportChange} label="Type your report" fullWidth />
+                            <Input  
+                            variant="filled" 
+                            error={Boolean(errorText.report)}
+                            helperText={errorText.report}
+                            onChange={reportChange} 
+                            label="Type your report" 
+                            fullWidth />
                         </div>
                     </Fragment>
                 }
