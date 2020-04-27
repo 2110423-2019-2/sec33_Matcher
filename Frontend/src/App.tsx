@@ -20,7 +20,7 @@ const App: React.FC = () => {
                     <Route path="/comp" component={ComponentList} />
                     <Route path="/type" component={PhotoType} />
                     <PrivateRoute path='/profile/:id' component={Profile} roles={['admin', 'photographer', 'customer']} />
-                    <PrivateRoute path="/users" component={UserListTable} roles={['admin']} />
+                    <Route path="/users" component={UserListTable} />
                     <Route path="/" component={Home} />
                 </Switch>
                 <Footer />

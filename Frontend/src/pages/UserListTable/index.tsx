@@ -16,6 +16,7 @@ import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
+import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Moment from 'moment';
 
 const styles = (theme: Theme) =>
@@ -83,6 +84,7 @@ export default () => {
   lastname: string;
   email: string;
   role: string;
+  recentReport: Moment;
   blacklist: boolean;
   }
 
@@ -174,7 +176,7 @@ export default () => {
   
   const rows = userList.map((user : Data) => fillData(user, allReportsLists.filter((report: Report) => report.reporter === user._id)));
   const reportRows = reportsList.slice(1,).map(report => fillReport(report));
-  
+
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
   };
@@ -216,8 +218,10 @@ export default () => {
                   align='center' 
                   style={{ minWidth: 170 }}
                 >
+                  <TableSortLabel>
                   {column.label}
-                </TableCell>
+                  </TableSortLabel>
+                </TableCell>  
               ))}
             </TableRow>
           </TableHead>
