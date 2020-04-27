@@ -113,21 +113,12 @@ export default () => {
   ]; 
 
   const fillData = (data : Data, reports : Report[]) => {
-    var recentReport;
-    var stringRecent = '-';
-    if(reports.length > 0){
-      recentReport = Moment(reports[0]['createTime'])
-    }
-    for(var i=1;i<reports.length;i++) {
-      if(Moment(reports[i]['createTime']).isAfter(recentReport)){
-        recentReport = Moment(reports[i]['createTime'])
-      }
-    }
-    if(recentReport){
-      stringRecent = recentReport.format('D MMM YYYY hh:mm A')
+    let recent = '-'
+    if(data.recent != '-'){
+      recent = Moment(data.recent).format('D MMM YYYY hh:mm A')
     }
     if(data.blacklist){
-      return {'name':data.firstname+' '+data.lastname, 'email':data.email, 'role':data.role,'recentReport':stringRecent, 'blacklist':<Button
+      return {'name':data.firstname+' '+data.lastname, 'email':data.email, 'role':data.role,'recentReport':recent, 'blacklist':<Button
       onClick={() => handleBlacklist(data._id)}
     >Undo
     </Button>,
@@ -135,7 +126,7 @@ export default () => {
       onClick={() => handleReport(data._id)}
     >View</Button>}
     }
-    return {'name':data.firstname+' '+data.lastname, 'email':data.email, 'role':data.role,'recentReport':stringRecent, 'blacklist':<Button
+    return {'name':data.firstname+' '+data.lastname, 'email':data.email, 'role':data.role,'recentReport':recent, 'blacklist':<Button
     onClick={() => handleBlacklist(data._id)}
   >Blacklist
   </Button>,
@@ -183,20 +174,18 @@ export default () => {
             userLists[i]['recent'] = recentReport.toISOString()
           }
         }
-      })
-      userLists = userLists.sort(function(a, b) {
-        console.log(a['report'])
-        console.log(b)
-        if (!a.recent) {
-           return 0;
-        }
-    
-        if (!b.recent) {
-           return 0;
-        }
-        return b.recent.localeCompare(a.recent);
-    });
+        userLists = userLists.sort(function(a:Data, b:Data) {
+          if (!a.recent) {
+             return 0;
+          }
+      
+          if (!b.recent) {
+             return 0;
+          }
+          return b.recent.localeCompare(a.recent);
+      });
       setUserList(userLists)
+      })
     });
   };
 
@@ -213,7 +202,7 @@ export default () => {
   useEffect(() => {setReport()}, []) 
   
   const rows = userList.map((user : Data) => fillData(user, allReportsLists.filter((report: Report) => report.reporter === user._id)));
-  const reportRows = reportsList.slice(1,).map(report => fillReport(report));
+  const reportRows = reportsList.map(report => fillReport(report));
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
