@@ -84,7 +84,6 @@ export default () => {
   lastname: string;
   email: string;
   role: string;
-  recentReport: Moment;
   blacklist: boolean;
   }
 
