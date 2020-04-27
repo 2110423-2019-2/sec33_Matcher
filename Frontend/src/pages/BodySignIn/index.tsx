@@ -37,7 +37,6 @@ export default () => {
                 .then(() => {
                     whoami()
                         .then(profile => {
-                            console.log(profile);
                             authDispatch({ type: 'FETCH_AUTH_STATUS', payload: profile });
                             history.push('/');
                         })
