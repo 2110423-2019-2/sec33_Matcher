@@ -68,7 +68,7 @@ const DialogActions = withStyles((theme: Theme) => ({
 export default () => {
   
   interface Column {
-  id: 'name' | 'email' | 'role' | 'blacklist' | 'report';
+  id: 'name' | 'email' | 'role' | 'recentReport' | 'blacklist' | 'report';
   label: string;
   }
 
@@ -100,6 +100,7 @@ export default () => {
     { id: 'role',  label: 'Role'},
     { id: 'blacklist', label: 'Blacklist'},
     { id: 'report', label: 'Report'},
+    { id: 'recentReport', label: 'Recent Report'},
   ];  
 
   const reportColumns: ReportColum[] = [
@@ -108,9 +109,22 @@ export default () => {
     { id: 'reason', label: 'Reason'},
   ]; 
 
-  const fillData = (data : Data) => {
+  const fillData = (data : Data, reports : Report[]) => {
+    var recentReport;
+    var stringRecent = '-';
+    if(reports.length > 0){
+      recentReport = Moment(reports[0]['createTime'])
+    }
+    for(var i=1;i<reports.length;i++) {
+      if(Moment(reports[i]['createTime']).isAfter(recentReport)){
+        recentReport = Moment(reports[i]['createTime'])
+      }
+    }
+    if(recentReport){
+      stringRecent = recentReport.format('D MMM YYYY hh:mm A')
+    }
     if(data.blacklist){
-      return {'name':data.firstname+' '+data.lastname, 'email':data.email, 'role':data.role, 'blacklist':<Button
+      return {'name':data.firstname+' '+data.lastname, 'email':data.email, 'role':data.role,'recentReport':stringRecent, 'blacklist':<Button
       onClick={() => handleBlacklist(data._id)}
     >Undo
     </Button>,
@@ -118,7 +132,7 @@ export default () => {
       onClick={() => handleReport(data._id)}
     >View</Button>}
     }
-    return {'name':data.firstname+' '+data.lastname, 'email':data.email, 'role':data.role, 'blacklist':<Button
+    return {'name':data.firstname+' '+data.lastname, 'email':data.email, 'role':data.role,'recentReport':stringRecent, 'blacklist':<Button
     onClick={() => handleBlacklist(data._id)}
   >Blacklist
   </Button>,
@@ -151,7 +165,7 @@ export default () => {
   useEffect(() => {setUser()}, []) 
   useEffect(() => {setReport()}, []) 
 
-  const rows = userList.map(user => fillData(user));
+  const rows = userList.map((user : Data) => fillData(user, reportsList.filter((report: Report) => report.reporter == user._id)));
   const reportRows = reportsList.map(report => fillReport(report))
   
   const handleChangePage = (event: unknown, newPage: number) => {
