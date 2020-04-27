@@ -24,7 +24,7 @@ export default () => {
     }, []);
 
     const onAccept = (id: string) => (e: any) => {
-        if (auth.role != 'photographer') {
+        if (auth.role !== 'photographer') {
             alert("Only Photographer is allower to accept task!")
         } else {
             acceptTask(id).then((res) => {
