@@ -1,17 +1,16 @@
 import { User, IUser } from '../models';
 import bcrypt from 'bcryptjs';
+import HttpErrors from 'http-errors';
 
 export default class AuthController {
     static async loginLocal(email: string, password: string, done: any): Promise<any> {
         const user: IUser = await User.findOne({ email });
         if (!user) {
-            // no user in database
-            return done(null, false);
+            return done(new HttpErrors.Unauthorized('This email is not registered!'), false);
         } else if (!(await bcrypt.compare(password, user.password))) {
-            return done(null, false);
+            return done(new HttpErrors.Unauthorized('Wrong Password!'), false);
         } else if (user.blacklist === true) {
-            // user is blacklisted
-            return done(null, false);
+            return done(new HttpErrors.Unauthorized('The account is banned!'), false);
         }
         return done(null, user);
     }
