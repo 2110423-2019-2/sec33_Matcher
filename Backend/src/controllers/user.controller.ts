@@ -186,22 +186,31 @@ export default class UserController {
         $('#task-title').text('Task: ' + task.title);
         $('#task-location').text('Location: ' + task.location);
         $('#task-desc').text('Style: ' + task.photoStyle);
-        if(task.image){
+        if (task.image) {
             const inputs = $('#task-image');
-            inputs.attr('src', (i, id) =>{
-                return id.replace('https://firebasestorage.googleapis.com/v0/b/web-ar-text.appspot.com/o/dummy%20img.jpg?alt=media&token=686cd3e4-e769-4e18-bcfd-9fcc0864fe5d', task.image)
+            inputs.attr('src', (i, id) => {
+                return id.replace(
+                    'https://firebasestorage.googleapis.com/v0/b/web-ar-text.appspot.com/o/dummy%20img.jpg?alt=media&token=686cd3e4-e769-4e18-bcfd-9fcc0864fe5d',
+                    task.image,
+                );
             });
         }
-        if(owner.image){
+        if (owner.image) {
             const inputs = $('#owner-image');
-            inputs.attr('src', (i, id) =>{
-                return id.replace('https://firebasestorage.googleapis.com/v0/b/web-ar-text.appspot.com/o/dummy%20img.jpg?alt=media&token=686cd3e4-e769-4e18-bcfd-9fcc0864fe5d', owner.image)
+            inputs.attr('src', (i, id) => {
+                return id.replace(
+                    'https://firebasestorage.googleapis.com/v0/b/web-ar-text.appspot.com/o/dummy%20img.jpg?alt=media&token=686cd3e4-e769-4e18-bcfd-9fcc0864fe5d',
+                    owner.image,
+                );
             });
         }
-        if(photographer.image){
+        if (photographer.image) {
             const inputs = $('#photographer-image');
-            inputs.attr('src', (i, id) =>{
-                return id.replace('https://firebasestorage.googleapis.com/v0/b/web-ar-text.appspot.com/o/dummy%20img.jpg?alt=media&token=686cd3e4-e769-4e18-bcfd-9fcc0864fe5d', photographer.image)
+            inputs.attr('src', (i, id) => {
+                return id.replace(
+                    'https://firebasestorage.googleapis.com/v0/b/web-ar-text.appspot.com/o/dummy%20img.jpg?alt=media&token=686cd3e4-e769-4e18-bcfd-9fcc0864fe5d',
+                    photographer.image,
+                );
             });
         }
         $('#owner-name').text(owner.firstname + ' ' + owner.lastname);
