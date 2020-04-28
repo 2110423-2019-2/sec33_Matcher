@@ -45,7 +45,7 @@ export default () => {
                         });
                 })
                 .catch((error) => {
-                    setErrorText(error.message);
+                    setErrorText(error.response.data.message);
                 });
         } else {
             setErrorText('Email or Password is invalid');
