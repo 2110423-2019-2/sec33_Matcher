@@ -44,11 +44,11 @@ export default () => {
                             console.log('Unauthenticated');
                         });
                 })
-                .catch(() => {
-                    setErrorText('Email or password is invalid, please try again.');
+                .catch((error) => {
+                    setErrorText(error.message);
                 });
         } else {
-            setErrorText('Email is invalid');
+            setErrorText('Email or Password is invalid');
         }
     };
 
