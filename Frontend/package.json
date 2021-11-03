@@ -33,7 +33,7 @@
     "react-virtualized": "^9.21.2",
     "simplebar-react": "^2.1.0",
     "typescript": "~3.7.2",
-    "validator": "^12.2.0",
+    "validator": "^13.7.0",
     "@babel/compat-data": "^7.8.6"
   },
   "scripts": {
